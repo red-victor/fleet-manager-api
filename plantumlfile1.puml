@@ -1,0 +1,52 @@
+﻿@startuml
+skinparam classAttributeIconSize 0
+
+abstract class User{
+	id: int
+	name: string
+	CNP: int
+	email: string
+}
+
+class Employee{
+	UploadCosts()
+}
+
+class Admin{
+	CreateNewEmployeeAccount()
+	RegisterNewCar()
+	CRUDCar()
+	UpdateRCA()
+	UpdateCASCO()
+	UpdateImpozit()
+}
+
+class Car{
+	id: int
+	SerieSasiu: string
+	brand: string
+	model: string
+	first_registration_date: Datetime
+	color: string
+	mileage: int
+	employee_id: int
+}
+
+class EmployeeServices{
+	GetAll()
+	Get()
+}
+
+class VehicleServices{
+	GetAll()
+	Get()
+}
+
+User <|--- Employee
+User <|--- Admin
+
+''class Ceva{}
+''class Ceva2{}
+''Ceva <|--- Ceva2
+''Ceva2 "1" *-- "1" Ceva : contains
+@enduml
