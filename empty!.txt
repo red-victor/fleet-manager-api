@@ -1,0 +1,96 @@
+Login Page (employee, admin)
+
+Admin Page {
+
+	Create new Employee Account
+	Register new Car
+
+	Car Management {
+		
+		Assign or Remove from Employee
+		Manage Costs {
+			Insurance (RCA, CASCO)
+			Impozit
+		}
+
+	}
+	
+}
+
+Employee Page {
+
+	Car Management {
+		Service {
+			ITP
+			MISC (Planetare, Schimb Ulei, etc)
+		}
+
+		Upload Costs w/ receipt (Roviniete, Viniete, Taxe Drumuri/Poduri, Consumabile - lichid parbriz, antigel, Combustibil){
+			Form (Picture, Details, Date)
+		}
+
+		Report Problem ()
+	}
+
+
+}
+
+Overview Page
+
+
+
+Table Car {
+	id: int,
+	serie_sasiu: string,
+	brand: string,
+	model: string,
+	production_year: int,
+	color: string,
+	mileage: int,
+	employee_id: int - FK,
+}
+
+Table CarPayments {
+	id: int,
+	serie_sasiu: string - FK,
+	RCA: DateTime,
+	CASCO: DateTime,
+	impozit: DateTime,
+}
+
+Table CarService {
+	id: int,
+	serie_sasiu: string - FK,
+	oil_change_date: DateTime,
+	oil_change_kilometers: int,
+	air_filters: DateTime,
+}
+
+Table Employee {
+	id: int,
+	first_name: string,
+	last_name: string,
+	CNP: int,
+	cars: string,
+	admin: bool,
+}
+
+Table Costs {
+	id: int,
+	car_id: int - FK
+	employee_id: int - FK
+	title: string,
+	image: string,
+	details: string,
+	date: DateTime
+}
+
+Table Tickets {
+	id: int,
+	car_id: int - FK
+	employee_id: int - FK
+	title: string,
+	image: string,
+	details: string,
+	date: DateTime
+}

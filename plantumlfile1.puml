@@ -1,0 +1,31 @@
+﻿@startuml
+skinparam classAttributeIconSize 0
+
+abstract class User{
+	id: int
+	name: string
+	CNP: int
+	email: string
+}
+
+class Employee{
+	UploadCosts()
+}
+
+class Admin{
+	CreateNewEmployeeAccount()
+	RegisterNewCar()
+	CRUDCar()
+	UpdateRCA()
+	UpdateCASCO()
+	UpdateImpozit()
+}
+
+User <|--- Employee
+User <|--- Admin
+
+''class Ceva{}
+''class Ceva2{}
+''Ceva <|--- Ceva2
+''Ceva2 "1" *-- "1" Ceva : contains
+@enduml
