@@ -11,16 +11,21 @@ namespace EmployeeManager.Models
     {
         [Key]
         public int Id { get; set; }
-
+        [Required]
         [Column("ChassisSeries")]
         public Car Car { get; set; }
         public int ServiceTypeId { get; set; }
         public ServiceType ServiceType { get; set; }
         public string Details { get; set; }
+        [Required]
         public DateTime ExecutionDate { get; set; }
+        [Required]
         public int MileageAtExecution { get; set; }
+        [Required]
         public DateTime RenewDate { get; set; }
+        [Required]
         public decimal CostInCents { get; set; }
+        [Required]
         public bool IsPayed { get; set; }
     }
 }
