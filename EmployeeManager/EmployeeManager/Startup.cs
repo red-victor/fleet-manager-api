@@ -58,6 +58,8 @@ namespace EmployeeManager
             services.AddAuthorization();
             
             services.AddScoped<ICarService, Services.CarService>();
+
+            services.AddScoped<TokenService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

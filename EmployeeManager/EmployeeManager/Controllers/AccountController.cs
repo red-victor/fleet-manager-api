@@ -1,5 +1,6 @@
 ﻿using EmployeeManager.DTOs;
 using EmployeeManager.Models;
+using EmployeeManager.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -12,14 +13,16 @@ namespace EmployeeManager.Controllers
     public class AccountController : BaseApiController
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly TokenService _tokenService;
 
-        public AccountController(UserManager<ApplicationUser> userManager)
+        public AccountController(UserManager<ApplicationUser> userManager, TokenService tokenService)
         {
             _userManager = userManager;
+            _tokenService = tokenService;
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<ApplicationUser>> Login(CredentialDto credentialDto)
+        public async Task<ActionResult<UserTokenDto>> Login(CredentialDto credentialDto)
         {
             var user = await _userManager.FindByEmailAsync(credentialDto.Email);
 
@@ -28,7 +31,11 @@ namespace EmployeeManager.Controllers
                 return Unauthorized();
             }
 
-            return user;
+            return new UserTokenDto 
+            { 
+                Email = user.Email,
+                Token = await _tokenService.GenerateToken(user)
+            };
         }
 
         [HttpPost("register")]
