@@ -1,4 +1,5 @@
 ﻿using EmployeeManager.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -21,5 +22,15 @@ namespace EmployeeManager.Data
         public DbSet<ServiceToProcess> ServicesToProcess { get; set; }
         public DbSet<ServiceType> ServiceTypes { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<IdentityRole>().HasData(
+                new IdentityRole { Name = "Admin", NormalizedName = "ADMIN"},
+                new IdentityRole { Name = "Employee", NormalizedName = "EMPLOYEE" }
+            );
+        }
     }
 }
