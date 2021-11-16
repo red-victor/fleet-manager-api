@@ -13,7 +13,7 @@ namespace EmployeeManager.Models
         public int Id { get; set; }
 
         [Required]
-        public User User { get; set; }
+        public ApplicationUser User { get; set; }
 
         [Required]
         public Car Car { get; set; }

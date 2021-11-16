@@ -23,6 +23,6 @@ namespace EmployeeManager.Models
         [Required]
         public int Mileage { get; set; }
 
-        public User User { get; set; }
+        public ApplicationUser User { get; set; }
     }
 }
