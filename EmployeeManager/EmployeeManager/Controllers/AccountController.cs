@@ -1,6 +1,7 @@
 ﻿using EmployeeManager.DTOs;
 using EmployeeManager.Models;
 using EmployeeManager.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -57,6 +58,19 @@ namespace EmployeeManager.Controllers
             await _userManager.AddToRoleAsync(user, "Employee");
 
             return StatusCode(201);
+        }
+
+        [Authorize]
+        [HttpGet("currentUser")]
+        public async Task<ActionResult<UserTokenDto>> GetCurrentUser()
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+
+            return new UserTokenDto
+            {
+                Email = user.Email,
+                Token = await _tokenService.GenerateToken(user)
+            };
         }
     }
 }
