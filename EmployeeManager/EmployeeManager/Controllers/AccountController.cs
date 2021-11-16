@@ -49,7 +49,9 @@ namespace EmployeeManager.Controllers
                 return ValidationProblem();
             }
 
-            return Ok();
+            await _userManager.AddToRoleAsync(user, "Employee");
+
+            return StatusCode(201);
         }
     }
 }
