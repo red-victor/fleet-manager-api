@@ -4,14 +4,16 @@ using EmployeeManager.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EmployeeManager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211116072942_ChangeDecimalTypeForCarServiceCost")]
+    partial class ChangeDecimalTypeForCarServiceCost
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,16 +23,10 @@ namespace EmployeeManager.Migrations
 
             modelBuilder.Entity("EmployeeManager.Models.Car", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("ChassisSeries")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Brand")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ChassisSeries")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -51,7 +47,7 @@ namespace EmployeeManager.Migrations
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("ChassisSeries");
 
                     b.HasIndex("UserId");
 
@@ -65,8 +61,8 @@ namespace EmployeeManager.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CarId")
-                        .HasColumnType("int");
+                    b.Property<string>("CarChassisSeries")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("Cost")
                         .HasColumnType("decimal(18,2)");
@@ -91,7 +87,7 @@ namespace EmployeeManager.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CarId");
+                    b.HasIndex("CarChassisSeries");
 
                     b.HasIndex("ServiceTypeId");
 
@@ -105,8 +101,8 @@ namespace EmployeeManager.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CarId")
-                        .HasColumnType("int");
+                    b.Property<string>("CarChassisSeries")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -126,7 +122,7 @@ namespace EmployeeManager.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CarId");
+                    b.HasIndex("CarChassisSeries");
 
                     b.HasIndex("UserId");
 
@@ -156,8 +152,8 @@ namespace EmployeeManager.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CarId")
-                        .HasColumnType("int");
+                    b.Property<string>("CarChassisSeries")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -181,7 +177,7 @@ namespace EmployeeManager.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CarId");
+                    b.HasIndex("CarChassisSeries");
 
                     b.HasIndex("UserId");
 
@@ -225,7 +221,7 @@ namespace EmployeeManager.Migrations
                 {
                     b.HasOne("EmployeeManager.Models.Car", "Car")
                         .WithMany()
-                        .HasForeignKey("CarId");
+                        .HasForeignKey("CarChassisSeries");
 
                     b.HasOne("EmployeeManager.Models.ServiceType", "ServiceType")
                         .WithMany()
@@ -242,7 +238,7 @@ namespace EmployeeManager.Migrations
                 {
                     b.HasOne("EmployeeManager.Models.Car", "Car")
                         .WithMany()
-                        .HasForeignKey("CarId");
+                        .HasForeignKey("CarChassisSeries");
 
                     b.HasOne("EmployeeManager.Models.User", "User")
                         .WithMany()
@@ -257,7 +253,7 @@ namespace EmployeeManager.Migrations
                 {
                     b.HasOne("EmployeeManager.Models.Car", "Car")
                         .WithMany()
-                        .HasForeignKey("CarId");
+                        .HasForeignKey("CarChassisSeries");
 
                     b.HasOne("EmployeeManager.Models.User", "User")
                         .WithMany()
