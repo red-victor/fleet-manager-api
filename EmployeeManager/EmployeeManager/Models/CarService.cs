@@ -12,7 +12,6 @@ namespace EmployeeManager.Models
         [Key]
         public int Id { get; set; }
         [Required]
-        [Column("ChassisSeries")]
         public Car Car { get; set; }
         public int ServiceTypeId { get; set; }
         public ServiceType ServiceType { get; set; }
@@ -24,7 +23,8 @@ namespace EmployeeManager.Models
         [Required]
         public DateTime RenewDate { get; set; }
         [Required]
-        public decimal CostInCents { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal Cost { get; set; }
         [Required]
         public bool IsPayed { get; set; }
     }

@@ -16,7 +16,6 @@ namespace EmployeeManager.Models
         public User User { get; set; }
 
         [Required]
-        [Column("ChassisSeries")]
         public Car Car { get; set; }
 
         [Required]

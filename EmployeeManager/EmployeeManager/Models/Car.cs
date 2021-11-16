@@ -9,6 +9,8 @@ namespace EmployeeManager.Models
     public class Car
     {
         [Key]
+        public int Id{ get; set; }
+        [Required]
         public string ChassisSeries { get; set; }
         [Required]
         public string Brand { get; set; }
