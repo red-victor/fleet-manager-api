@@ -1,10 +1,12 @@
 using EmployeeManager.Data;
 using EmployeeManager.Models;
 using EmployeeManager.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text;
 
 namespace EmployeeManager
 {
@@ -42,7 +45,7 @@ namespace EmployeeManager
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
             });
 
-            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            services.AddIdentityCore<ApplicationUser>(options =>
             {
                 options.Password.RequiredUniqueChars = 3;
                 options.Password.RequireNonAlphanumeric = false;
@@ -51,6 +54,7 @@ namespace EmployeeManager
                 options.Password.RequireDigit = false;
                 options.User.RequireUniqueEmail = true;
             })
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
