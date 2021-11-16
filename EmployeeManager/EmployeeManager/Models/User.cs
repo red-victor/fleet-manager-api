@@ -12,6 +12,6 @@ namespace EmployeeManager.Models
         public string LastName { get; set; }
         public string CNP { get; set; }
         public string Adress { get; set; }
-        public List<Car> Cars { get; set; }
+        public List<Car> Cars { get; set; } = new List<Car>();
     }
 }
