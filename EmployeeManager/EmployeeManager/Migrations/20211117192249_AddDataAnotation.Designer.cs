@@ -4,14 +4,16 @@ using EmployeeManager.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EmployeeManager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211117192249_AddDataAnotation")]
+    partial class AddDataAnotation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -109,7 +111,7 @@ namespace EmployeeManager.Migrations
 
                     b.Property<string>("ChassisSeries")
                         .IsRequired()
-                        .HasColumnType("varchar(17)");
+                        .HasColumnType("char(17)");
 
                     b.Property<string>("Color")
                         .IsRequired()
@@ -120,7 +122,7 @@ namespace EmployeeManager.Migrations
 
                     b.Property<string>("LicencePlate")
                         .IsRequired()
-                        .HasColumnType("varchar(10)");
+                        .HasColumnType("char(10)");
 
                     b.Property<int>("Mileage")
                         .HasColumnType("int");
@@ -248,15 +250,15 @@ namespace EmployeeManager.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1d67c4c5-e850-4534-91ef-a96f0918b61a",
-                            ConcurrencyStamp = "102bdc29-0d1b-4138-8747-ff1e15dd5d97",
+                            Id = "1e570d8a-4879-4e80-9836-54a9c59d289b",
+                            ConcurrencyStamp = "dadec0cb-126b-46ab-8e06-8e691c39387a",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "b0648a41-c517-47e9-8759-0804e7b2e0d2",
-                            ConcurrencyStamp = "058fb9ea-3a7d-4edb-9f57-3562b22ca21c",
+                            Id = "e8e041d3-2d5b-4f3a-9d48-a56a40b92b6e",
+                            ConcurrencyStamp = "b064bb26-5324-4bf5-a1a0-a8fc27573939",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });

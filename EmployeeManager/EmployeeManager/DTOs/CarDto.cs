@@ -11,6 +11,8 @@ namespace EmployeeManager.DTOs
         [Key]
         public int Id { get; set; }
         [Required]
+        public string LicencePlate { get; set; }
+        [Required]
         public string ChassisSeries { get; set; }
         [Required]
         public string Brand { get; set; }

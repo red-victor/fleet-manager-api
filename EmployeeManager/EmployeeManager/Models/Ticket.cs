@@ -19,10 +19,13 @@ namespace EmployeeManager.Models
         public Car Car { get; set; }
 
         [Required]
+        [Column(TypeName = "varchar(100)")]
         public string Title { get; set; }
 
+        [Column(TypeName = "varchar(150)")]
         public string ImagePath { get; set; }
 
+        [Column(TypeName = "varchar(max)")]
         public string Details { get; set; }
 
         [Required]
@@ -32,6 +35,7 @@ namespace EmployeeManager.Models
         public TicketType Type { get; set; }
 
         [Required]
+        [Column(TypeName = "varchar(20)")]
         public string Status { get; set; }
     }
 }

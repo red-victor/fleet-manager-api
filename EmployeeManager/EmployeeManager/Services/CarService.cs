@@ -44,6 +44,7 @@ namespace EmployeeManager.Services
             return new Car
             {
                 Id = dto.Id,
+                LicencePlate = dto.LicencePlate,
                 ChassisSeries = dto.ChassisSeries,
                 Brand = dto.Brand,
                 Model = dto.Model,
@@ -67,6 +68,7 @@ namespace EmployeeManager.Services
             var dto = new CarDto
             {
                 Id = car.Id,
+                LicencePlate = car.LicencePlate,
                 ChassisSeries = car.ChassisSeries,
                 Brand = car.Brand,
                 Model = car.Model,
