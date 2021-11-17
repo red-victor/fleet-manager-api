@@ -1,4 +1,5 @@
 ﻿using EmployeeManager.Data;
+using EmployeeManager.DTOs;
 using EmployeeManager.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,7 +11,6 @@ namespace EmployeeManager.Services
 {
     public class CarService : ICarService
     {
-        //private readonly ICarDao _carDao;
         private readonly ApplicationDbContext _db;
 
         public CarService(ApplicationDbContext db)
@@ -18,32 +18,77 @@ namespace EmployeeManager.Services
             _db = db;
         }
 
-        public void Add(Car car)
+        public async Task AddAsync(Car car)
         {
-            _db.Cars.Add(car);
-            _db.SaveChanges();
+            await _db.Cars.AddAsync(car);
         }
 
-        public Car Get(int id)
+        public async Task<Car> GetAsync(int id)
         {
-            return _db.Cars.Where(c => c.Id == id).Include(c => c.User).FirstOrDefault();
+            return await _db.Cars.Where(c => c.Id == id).Include(c => c.User).FirstOrDefaultAsync();
         }
 
-        public IEnumerable<Car> GetAll()
+        public async Task<IEnumerable<Car>> GetAllAsync()
         {
-            return _db.Cars;
+            return await _db.Cars.Include(c => c.User).ToListAsync();
         }
 
-
-        public Car GetCarByChassis(string chassisSeries)
+        public async void RemoveAsync(int id)
         {
-            return _db.Cars.Where(x => x.ChassisSeries == chassisSeries).FirstOrDefault();
-            //return _db.Cars.Where(x => x.ChassisSeries == chassisSeries).Include(c => c.User).FirstOrDefault();
+            _db.Cars.Remove(await GetAsync(id));
+            await _db.SaveChangesAsync();
         }
 
-        public void Remove(int id)
+        public async Task<Car> TransposeFromDtoAsync(CarDto dto)
         {
-            _db.Cars.Remove(this.Get(id));
+            return new Car
+            {
+                Id = dto.Id,
+                ChassisSeries = dto.ChassisSeries,
+                Brand = dto.Brand,
+                Model = dto.Model,
+                FirstRegistrationDate = dto.FirstRegistrationDate,
+                Color = dto.Color,
+                Mileage = dto.Mileage,
+                User = await _db.Users.FindAsync(dto.UserId),
+            };
+        }
+
+        public async Task<List<Car>> TransposeFromDtoAsync(List<CarDto> dtos)
+        {
+            var list = new List<Car>();
+            foreach (var dto in dtos)
+                list.Add(await TransposeFromDtoAsync(dto));
+            return list;
+        }
+
+        public CarDto TransposeToDto(Car car)
+        {
+            var dto = new CarDto
+            {
+                Id = car.Id,
+                ChassisSeries = car.ChassisSeries,
+                Brand = car.Brand,
+                Model = car.Model,
+                FirstRegistrationDate = car.FirstRegistrationDate,
+                Color = car.Color,
+                Mileage = car.Mileage,
+            };
+
+            if (car.User != null)
+                dto.UserId = car.User.Id;
+            else
+                dto.UserId = null;
+
+            return dto;
+        }
+
+        public List<CarDto> TransposeToDto(IEnumerable<Car> cars)
+        {
+            var list = new List<CarDto>();
+            foreach (var car in cars)
+                list.Add(TransposeToDto(car));
+            return list;
         }
     }
 }

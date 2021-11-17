@@ -1,13 +1,15 @@
-﻿using EmployeeManager.Models;
-using System;
+﻿using EmployeeManager.DTOs;
+using EmployeeManager.Models;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace EmployeeManager.Services
 {
     public interface ICarService : IService<Car>
     {
-        Car GetCarByChassis(string chassisSeries);
+        Task<Car> TransposeFromDtoAsync(CarDto dto);
+        Task<List<Car>> TransposeFromDtoAsync(List<CarDto> dtos);
+        CarDto TransposeToDto(Car car);
+        List<CarDto> TransposeToDto(IEnumerable<Car> cars);
     }
 }

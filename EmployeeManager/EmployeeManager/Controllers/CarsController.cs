@@ -1,4 +1,5 @@
 ﻿using EmployeeManager.Data;
+using EmployeeManager.DTOs;
 using EmployeeManager.Models;
 using EmployeeManager.Services;
 using Microsoft.AspNetCore.Http;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace EmployeeManager.Controllers
@@ -26,49 +28,67 @@ namespace EmployeeManager.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddNewCar(Car car)
+        public async Task<JsonResult> AddNewCar(CarDto car)
         {
-            _carService.Add(car);
-            _db.SaveChanges();
+            await _carService.AddAsync(await _carService.TransposeFromDtoAsync(car));
+            await _db.SaveChangesAsync();
             return Json(new { success = true, responseText = $"Car {car.ChassisSeries} saved" });
         }
 
+        ///<summary>
+        /// Aici le aduc si eu pe toate
+        ///</summary>
         [HttpGet]
-        public ActionResult GetAll()
+        public async Task<ActionResult> GetAll()
         {
-            var cars = _carService.GetAll();
-            return Ok(cars.ToList());
+            var cars = await _carService.GetAllAsync();
+            return Ok(_carService.TransposeToDto(cars));
         }
 
         [HttpGet("{id}")]
-        public ActionResult Get(int id)
+        public async Task<ActionResult> Get(int id)
         {
-            var cars = _carService.Get(id);
-            return Ok(cars);
+            var car = await _carService.GetAsync(id);
+
+            if (car != null)
+                return Ok(_carService.TransposeToDto(car));
+            return BadRequest();
         }
 
         [HttpPut("{carId}/assignUser")]
         public async Task<ActionResult> AssignUser([FromBody] string userId, int carId)
         {
-            var car = _carService.Get(carId);
+            var car = await _carService.GetAsync(carId);
             var user = await _userManager.FindByIdAsync(userId);
+
+            if (car.User != null)
+            {
+                return BadRequest();
+            }
+
             car.User = user;
-            //_db.SaveChanges();
-            return Ok(car);
+            if (user.Cars == null)
+                user.Cars = new List<Car>();
+            user.Cars.Add(car);
+            await _db.SaveChangesAsync();
+            return Ok(_carService.TransposeToDto(car));
         }
 
         [HttpPut("{carId}/dissociateUser")]
-        public ActionResult DissociateUser([FromBody] string userId, int carId)
+        public async Task<ActionResult> DissociateUser([FromBody] string userId, int carId)
         {
-            var car = _carService.Get(carId);
+            var car = await _carService.GetAsync(carId);
+            var user = await _userManager.FindByIdAsync(userId);
 
-            if (car.User.Id == userId)
+            if (car.User != null && car.User.Id == userId)
             {
                 car.User = null;
-                _db.SaveChanges();
+                user.Cars.Remove(car);
+                await _db.SaveChangesAsync();
+                return Ok(_carService.TransposeToDto(car));
             }
 
-            return Ok();
+            return BadRequest();
         }
     }
 }
