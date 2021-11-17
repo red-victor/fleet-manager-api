@@ -287,6 +287,16 @@ namespace EmployeeManager.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "19886906-d501-4825-893d-6ea520ff6738", "754f3c15-eef0-4493-8dfc-d36eb0dcf4cd", "Admin", "ADMIN" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "7af4a232-74db-4778-a3eb-afa3e59f572a", "3227b2a5-9546-4241-9559-481c4a0afb1a", "Employee", "EMPLOYEE" });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",

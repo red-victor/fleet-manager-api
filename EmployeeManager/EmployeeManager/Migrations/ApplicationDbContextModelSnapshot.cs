@@ -294,15 +294,15 @@ namespace EmployeeManager.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "73454cb5-28ed-4dc6-9e51-190d1a9b6b45",
-                            ConcurrencyStamp = "1b2ef298-7be2-4c3c-8351-8cf8ac785d72",
+                            Id = "19886906-d501-4825-893d-6ea520ff6738",
+                            ConcurrencyStamp = "754f3c15-eef0-4493-8dfc-d36eb0dcf4cd",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "fb746e24-59ff-4375-b82c-9e4b12a443d5",
-                            ConcurrencyStamp = "71110913-2a95-4da7-ad37-51e0aa4aed8a",
+                            Id = "7af4a232-74db-4778-a3eb-afa3e59f572a",
+                            ConcurrencyStamp = "3227b2a5-9546-4241-9559-481c4a0afb1a",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });
