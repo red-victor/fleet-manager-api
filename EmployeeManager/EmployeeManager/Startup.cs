@@ -19,6 +19,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Text;
+using System.IO;
+using System.Reflection;
 
 namespace EmployeeManager
 {
@@ -39,6 +41,9 @@ namespace EmployeeManager
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "EmployeeManager", Version = "v1" });
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
             services.AddDbContext<ApplicationDbContext>(options => 
             {
@@ -74,8 +79,7 @@ namespace EmployeeManager
             services.AddAuthorization();
             
             services.AddScoped<ICarService, Services.CarService>();
-            services.AddScoped<IServiceService, Services.ServiceService>();
-
+            services.AddScoped<ITicketService, TicketService>();
             services.AddScoped<TokenService>();
         }
 

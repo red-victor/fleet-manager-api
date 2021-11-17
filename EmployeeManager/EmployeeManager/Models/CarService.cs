@@ -14,7 +14,7 @@ namespace EmployeeManager.Models
         [Required]
         public Car Car { get; set; }
         public int ServiceTypeId { get; set; }
-        public ServiceType ServiceType { get; set; }
+        public TicketType ServiceType { get; set; }
         public string Details { get; set; }
         [Required]
         public DateTime ExecutionDate { get; set; }

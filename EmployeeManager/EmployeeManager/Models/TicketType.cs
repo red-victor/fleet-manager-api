@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace EmployeeManager.Models
 {
-    public class ServiceType
+    public enum TicketType
     {
-        [Key]
-        public int Id { get; set; }
-        [Required]
-        public string Name { get; set; }
+        [Display(Name = "RCA")]
+        RCA,
+        CASCO,
+        ITP,
+        Revision,
+        Other
     }
 }
