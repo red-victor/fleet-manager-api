@@ -2,6 +2,7 @@
 using EmployeeManager.Models;
 using EmployeeManager.Services;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -15,10 +16,13 @@ namespace EmployeeManager.Controllers
         private readonly ApplicationDbContext _db;
 
         private readonly ICarService _carService;
-        public CarsController(ApplicationDbContext db, ICarService carService)
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public CarsController(ApplicationDbContext db, ICarService carService, UserManager<ApplicationUser> userManager)
         {
             _db = db;
             _carService = carService;
+            _userManager = userManager;
         }
 
         [HttpPost]
@@ -41,6 +45,30 @@ namespace EmployeeManager.Controllers
         {
             var cars = _carService.Get(id);
             return Ok(cars);
+        }
+
+        [HttpPut("{carId}/assignUser")]
+        public async Task<ActionResult> AssignUser([FromBody] string userId, int carId)
+        {
+            var car = _carService.Get(carId);
+            var user = await _userManager.FindByIdAsync(userId);
+            car.User = user;
+            //_db.SaveChanges();
+            return Ok(car);
+        }
+
+        [HttpPut("{carId}/dissociateUser")]
+        public ActionResult DissociateUser([FromBody] string userId, int carId)
+        {
+            var car = _carService.Get(carId);
+
+            if (car.User.Id == userId)
+            {
+                car.User = null;
+                _db.SaveChanges();
+            }
+
+            return Ok();
         }
     }
 }

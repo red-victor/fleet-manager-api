@@ -26,7 +26,7 @@ namespace EmployeeManager.Services
 
         public Car Get(int id)
         {
-            return _db.Cars.Find(id);
+            return _db.Cars.Where(c => c.Id == id).Include(c => c.User).FirstOrDefault();
         }
 
         public IEnumerable<Car> GetAll()
