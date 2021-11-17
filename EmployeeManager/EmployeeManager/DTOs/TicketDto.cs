@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeManager.DTOs
 {
-    public class ServiceToProcessDto
+    public class TicketDto
     {
         [Key]
         public int Id { get; set; }
@@ -27,5 +27,11 @@ namespace EmployeeManager.DTOs
 
         [Required]
         public DateTime Date { get; set; }
+
+        [Required]
+        public int Type { get; set; }
+
+        [Required]
+        public string Status { get; set; }
     }
 }

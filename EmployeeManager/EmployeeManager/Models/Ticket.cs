@@ -29,6 +29,9 @@ namespace EmployeeManager.Models
         public DateTime Date { get; set; }
 
         [Required]
+        public TicketType Type { get; set; }
+
+        [Required]
         public string Status { get; set; }
     }
 }

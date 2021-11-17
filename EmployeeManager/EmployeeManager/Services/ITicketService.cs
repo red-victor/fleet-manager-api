@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace EmployeeManager.Services
 {
-    public interface IServiceService : IService<ServiceToProcess>
+    public interface ITicketService : IService<Ticket>
     {
-        ServiceToProcess TransposeFromDto(ServiceToProcessDto dto);
-        ServiceToProcessDto TransposeToDto(ServiceToProcess service);
+        Task<Ticket> TransposeFromDtoAsync(TicketDto dto);
+        TicketDto TransposeToDto(Ticket service);
     }
 }
