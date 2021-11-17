@@ -4,14 +4,16 @@ using EmployeeManager.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EmployeeManager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211117130836_RemoveCarListFromUserEntity")]
+    partial class RemoveCarListFromUserEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,10 +30,10 @@ namespace EmployeeManager.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Adress")
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CNP")
-                        .HasColumnType("char(13)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -45,10 +47,10 @@ namespace EmployeeManager.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("varchar(30)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("varchar(30)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -105,15 +107,15 @@ namespace EmployeeManager.Migrations
 
                     b.Property<string>("Brand")
                         .IsRequired()
-                        .HasColumnType("varchar(30)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ChassisSeries")
                         .IsRequired()
-                        .HasColumnType("char(17)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Color")
                         .IsRequired()
-                        .HasColumnType("varchar(30)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("FirstRegistrationDate")
                         .HasColumnType("datetime2");
@@ -123,7 +125,7 @@ namespace EmployeeManager.Migrations
 
                     b.Property<string>("Model")
                         .IsRequired()
-                        .HasColumnType("varchar(30)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -163,9 +165,6 @@ namespace EmployeeManager.Migrations
                     b.Property<DateTime>("RenewDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ServiceType")
-                        .HasColumnType("int");
-
                     b.Property<int>("ServiceTypeId")
                         .HasColumnType("int");
 
@@ -173,7 +172,60 @@ namespace EmployeeManager.Migrations
 
                     b.HasIndex("CarId");
 
+                    b.HasIndex("ServiceTypeId");
+
                     b.ToTable("CarServices");
+                });
+
+            modelBuilder.Entity("EmployeeManager.Models.ServiceToProcess", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("CarId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Details")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImagePath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ServicesToProcess");
+                });
+
+            modelBuilder.Entity("EmployeeManager.Models.ServiceType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ServiceTypes");
                 });
 
             modelBuilder.Entity("EmployeeManager.Models.Ticket", b =>
@@ -202,9 +254,6 @@ namespace EmployeeManager.Migrations
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -247,15 +296,15 @@ namespace EmployeeManager.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c6da6484-5498-4f13-b7dd-12c969b23255",
-                            ConcurrencyStamp = "865091c4-67d1-4c6a-aa4a-9c36a126888a",
+                            Id = "368f3e37-982f-4613-834f-50ad981da8fd",
+                            ConcurrencyStamp = "574f6220-64bb-4be9-abb2-c325f27e9bbe",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "96e1135d-d7a9-4c1b-8b4b-fe5dc135761e",
-                            ConcurrencyStamp = "f914abab-40b3-43e8-bc81-cd395778e62f",
+                            Id = "348df5df-72e2-4214-9f11-df27b99c48bf",
+                            ConcurrencyStamp = "1b93fa84-24da-4a23-a5b1-06e2aa881f46",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });
@@ -368,7 +417,7 @@ namespace EmployeeManager.Migrations
             modelBuilder.Entity("EmployeeManager.Models.Car", b =>
                 {
                     b.HasOne("EmployeeManager.Models.ApplicationUser", "User")
-                        .WithMany("Cars")
+                        .WithMany()
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
@@ -380,7 +429,30 @@ namespace EmployeeManager.Migrations
                         .WithMany()
                         .HasForeignKey("CarId");
 
+                    b.HasOne("EmployeeManager.Models.ServiceType", "ServiceType")
+                        .WithMany()
+                        .HasForeignKey("ServiceTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Car");
+
+                    b.Navigation("ServiceType");
+                });
+
+            modelBuilder.Entity("EmployeeManager.Models.ServiceToProcess", b =>
+                {
+                    b.HasOne("EmployeeManager.Models.Car", "Car")
+                        .WithMany()
+                        .HasForeignKey("CarId");
+
+                    b.HasOne("EmployeeManager.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Car");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("EmployeeManager.Models.Ticket", b =>
@@ -447,11 +519,6 @@ namespace EmployeeManager.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("EmployeeManager.Models.ApplicationUser", b =>
-                {
-                    b.Navigation("Cars");
                 });
 #pragma warning restore 612, 618
         }
