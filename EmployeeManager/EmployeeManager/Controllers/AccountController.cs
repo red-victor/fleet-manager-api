@@ -1,4 +1,5 @@
-﻿using EmployeeManager.DTOs;
+﻿using AutoMapper;
+using EmployeeManager.DTOs;
 using EmployeeManager.Models;
 using EmployeeManager.Services;
 using Microsoft.AspNetCore.Authorization;

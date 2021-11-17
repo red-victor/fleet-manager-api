@@ -80,6 +80,7 @@ namespace EmployeeManager
             
             services.AddScoped<ICarService, Services.CarService>();
             services.AddScoped<ITicketService, TicketService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddScoped<TokenService>();
         }
 
