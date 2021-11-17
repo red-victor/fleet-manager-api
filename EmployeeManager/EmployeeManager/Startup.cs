@@ -36,6 +36,7 @@ namespace EmployeeManager
         {
 
             services.AddControllers();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "EmployeeManager", Version = "v1" });
@@ -44,6 +45,8 @@ namespace EmployeeManager
             {
                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
             });
+
+            services.AddCors();
 
             services.AddIdentityCore<ApplicationUser>(options =>
             {
@@ -91,6 +94,11 @@ namespace EmployeeManager
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(options => 
+            {
+                options.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
+            });
 
             app.UseAuthentication();
             app.UseAuthorization();
