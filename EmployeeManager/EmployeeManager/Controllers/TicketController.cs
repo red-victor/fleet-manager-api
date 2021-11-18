@@ -38,5 +38,37 @@ namespace EmployeeManager.Controllers
             var dto = _ticketService.TransposeToDto(ticket);
             return Ok(dto);
         }
+
+        [HttpGet]
+        public async Task<ActionResult> GetAllTickets()
+        {
+            var tickets = await _ticketService.GetAllAsync();
+            var dto = _ticketService.TransposeToDto(tickets);
+            return Ok(dto);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateTicket(TicketDto dto)
+        {
+            var ticket = await _ticketService.TransposeFromDtoAsync(dto);
+
+            if (ticket == null)
+                return NotFound();
+
+            await _ticketService.UpdateAsync(ticket);
+            return Ok(ticket);
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult> DeleteTicket([FromBody] int id)
+        {
+            var ticket = await _ticketService.GetAsync(id);
+
+            if (ticket == null)
+                return NotFound();
+
+            await _ticketService.RemoveAsync(id);
+                return Ok();
+        }
     }
 }

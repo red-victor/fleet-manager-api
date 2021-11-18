@@ -71,5 +71,15 @@ namespace EmployeeManager.Services
             var mapper = new Mapper(config);
             return mapper.Map<TicketDto>(ticket);
         }
+
+        public IEnumerable<TicketDto> TransposeToDto(IEnumerable<Ticket> tickets)
+        {
+            var list = new List<TicketDto>();
+
+            foreach (var ticket in tickets)
+                list.Add(TransposeToDto(ticket));
+
+            return list;
+        }
     }
 }

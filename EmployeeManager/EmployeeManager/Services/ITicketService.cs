@@ -10,6 +10,7 @@ namespace EmployeeManager.Services
     public interface ITicketService : IService<Ticket>
     {
         Task<Ticket> TransposeFromDtoAsync(TicketDto dto);
-        TicketDto TransposeToDto(Ticket service);
+        TicketDto TransposeToDto(Ticket ticket);
+        IEnumerable<TicketDto> TransposeToDto(IEnumerable<Ticket> tickets);
     }
 }
