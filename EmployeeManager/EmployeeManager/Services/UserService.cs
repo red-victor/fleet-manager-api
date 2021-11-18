@@ -26,12 +26,13 @@ namespace EmployeeManager.Services
 
         public async Task UpdateAsync(ApplicationUser user)
         {
-            throw new NotImplementedException();
-
-            //var userToUpdate = await GetAsync(user.Id);
-            //userToUpdate.Adress = user.Adress;
-            //userToUpdate.Email = user.Email;
-            //await _db.SaveChangesAsync();
+            var userToUpdate = await GetAsync(user.Id);
+            userToUpdate.FirstName = user.FirstName;
+            userToUpdate.LastName = user.LastName;
+            userToUpdate.Adress = user.Adress;
+            userToUpdate.Email = user.Email;
+            userToUpdate.PhoneNumber = user.PhoneNumber;
+            await _db.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<ApplicationUser>> GetAllAsync()
@@ -49,12 +50,24 @@ namespace EmployeeManager.Services
             return await _db.Users.Where(c => c.Id == id).FirstOrDefaultAsync();
         }
 
-        public Task RemoveAsync(int id)
+        public async Task RemoveAsync(int id)
         {
-            throw new NotImplementedException();
+            var user = await GetAsync(id);
+            _db.Users.Remove(user);
+            await _db.SaveChangesAsync();
         }
 
-        public UserDto GetUserDto(ApplicationUser user)
+        public async Task<ApplicationUser> TransposeFromDtoAsync(UserDto dto)
+        {
+            var config = new MapperConfiguration(cfg =>
+                    cfg.CreateMap<UserDto, ApplicationUser>()
+                );
+
+            var mapper = new Mapper(config);
+            return mapper.Map<ApplicationUser>(dto);
+        }
+
+        public UserDto TransposeToDtoAsync(ApplicationUser user)
         {
             var config = new MapperConfiguration(cfg =>
                     cfg.CreateMap<ApplicationUser, UserDto>()
@@ -64,12 +77,12 @@ namespace EmployeeManager.Services
             return mapper.Map<UserDto>(user);
         }
 
-        public IEnumerable<UserDto> GetUsersDto(IEnumerable<ApplicationUser> users)
+        public IEnumerable<UserDto> TransposeToDtoAsync(IEnumerable<ApplicationUser> users)
         {
             var usersDtos = new List<UserDto>();
 
             foreach (var user in users)
-                usersDtos.Add(GetUserDto(user));
+                usersDtos.Add(TransposeToDtoAsync(user));
 
             return usersDtos;
         }

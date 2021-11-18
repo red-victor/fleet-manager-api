@@ -31,7 +31,7 @@ namespace EmployeeManager.Controllers
         {
             var users = await _userService.GetAllAsync();
 
-            return Ok(_userService.GetUsersDto(users));
+            return Ok(_userService.TransposeToDtoAsync(users));
         }
 
         /// <summary>
@@ -47,7 +47,41 @@ namespace EmployeeManager.Controllers
             if (user == null)
                 return NotFound($"User {id} does not exist");
 
-            return Ok(_userService.GetUserDto(user));
+            return Ok(_userService.TransposeToDtoAsync(user));
+        }
+
+        /// <summary>
+        /// Update Specific User Properties
+        /// </summary>
+        /// <param name="dto">User DTO</param>
+        /// <returns>Status Message</returns>
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateUser(UserDto dto)
+        {
+            var user = await _userService.TransposeFromDtoAsync(dto);
+
+            if (user == null)
+                return NotFound();
+
+            await _userService.UpdateAsync(user);
+            return Ok(_userService.TransposeToDtoAsync(user));
+        }
+
+        /// <summary>
+        /// Delete User from Db
+        /// </summary>
+        /// <param name="id">User Id</param>
+        /// <returns>Status Message</returns>
+        [HttpDelete]
+        public async Task<ActionResult> DeleteTicket([FromBody] int id)
+        {
+            var ticket = await _userService.GetAsync(id);
+
+            if (ticket == null)
+                return NotFound();
+
+            await _userService.RemoveAsync(id);
+            return Ok();
         }
     }
 }
