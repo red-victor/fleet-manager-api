@@ -75,7 +75,7 @@ namespace EmployeeManager.Controllers
                 return NotFound();
 
             await _ticketService.UpdateAsync(ticket);
-            return Ok(ticket);
+            return Ok(_ticketService.TransposeToDto(ticket));
         }
 
         /// <summary>
