@@ -1,4 +1,5 @@
-﻿using EmployeeManager.Data;
+﻿using AutoMapper;
+using EmployeeManager.Data;
 using EmployeeManager.DTOs;
 using EmployeeManager.Models;
 using Microsoft.EntityFrameworkCore;
@@ -41,18 +42,12 @@ namespace EmployeeManager.Services
 
         public async Task<Car> TransposeFromDtoAsync(CarDto dto)
         {
-            return new Car
-            {
-                Id = dto.Id,
-                LicencePlate = dto.LicencePlate,
-                ChassisSeries = dto.ChassisSeries,
-                Brand = dto.Brand,
-                Model = dto.Model,
-                FirstRegistrationDate = dto.FirstRegistrationDate,
-                Color = dto.Color,
-                Mileage = dto.Mileage,
-                User = await _db.Users.FindAsync(dto.UserId),
-            };
+            var config = new MapperConfiguration(cfg =>
+                    cfg.CreateMap<CarDto, Car>()
+                );
+
+            var mapper = new Mapper(config);
+            return mapper.Map<Car>(dto);
         }
 
         public async Task<List<Car>> TransposeFromDtoAsync(List<CarDto> dtos)
@@ -65,24 +60,12 @@ namespace EmployeeManager.Services
 
         public CarDto TransposeToDto(Car car)
         {
-            var dto = new CarDto
-            {
-                Id = car.Id,
-                LicencePlate = car.LicencePlate,
-                ChassisSeries = car.ChassisSeries,
-                Brand = car.Brand,
-                Model = car.Model,
-                FirstRegistrationDate = car.FirstRegistrationDate,
-                Color = car.Color,
-                Mileage = car.Mileage,
-            };
+            var config = new MapperConfiguration(cfg =>
+                    cfg.CreateMap<Car, CarDto>()
+                );
 
-            if (car.User != null)
-                dto.UserId = car.User.Id;
-            else
-                dto.UserId = null;
-
-            return dto;
+            var mapper = new Mapper(config);
+            return mapper.Map<CarDto>(car);
         }
 
         public List<CarDto> TransposeToDto(IEnumerable<Car> cars)
