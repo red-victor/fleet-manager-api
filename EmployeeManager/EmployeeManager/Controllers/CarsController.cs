@@ -52,7 +52,19 @@ namespace EmployeeManager.Controllers
 
             if (car != null)
                 return Ok(_carService.TransposeToDto(car));
-            return BadRequest();
+            return NotFound();
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult> Remove([FromBody] int id)
+        {
+            var car = await _carService.GetAsync(id);
+
+            if (car == null)
+                return NotFound();
+
+            await _carService.RemoveAsync(id);
+            return Ok();
         }
 
         [HttpPut("{carId}/assignUser")]
@@ -62,13 +74,13 @@ namespace EmployeeManager.Controllers
             var user = await _userManager.FindByIdAsync(userId);
 
             if (car.User != null)
-            {
                 return BadRequest();
-            }
 
             car.User = user;
+
             if (user.Cars == null)
                 user.Cars = new List<Car>();
+
             user.Cars.Add(car);
             await _db.SaveChangesAsync();
             return Ok(_carService.TransposeToDto(car));
