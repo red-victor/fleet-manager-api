@@ -1,4 +1,5 @@
-﻿using EmployeeManager.Models;
+﻿using AutoMapper.Configuration.Conventions;
+using EmployeeManager.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,9 +14,11 @@ namespace EmployeeManager.DTOs
         public int Id { get; set; }
 
         [Required]
+        //[MapTo("User")]
         public string UserId { get; set; }
 
         [Required]
+        //[MapTo("Car")]
         public int CarId { get; set; }
 
         [Required]

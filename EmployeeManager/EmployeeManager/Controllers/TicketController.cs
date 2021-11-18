@@ -27,10 +27,14 @@ namespace EmployeeManager.Controllers
             return Ok();
         }
 
-        [HttpGet("{serviceId}")]
+        [HttpGet("{ticketId}")]
         public async Task<ActionResult> GetTicket(int ticketId)
         {
             var ticket = await _ticketService.GetAsync(ticketId);
+
+            if (ticket == null)
+                return NotFound();
+
             var dto = _ticketService.TransposeToDto(ticket);
             return Ok(dto);
         }

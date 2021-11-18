@@ -12,9 +12,12 @@ namespace EmployeeManager.Models
         [Key]
         public int Id { get; set; }
 
+        public string UserId { get; set; }
+
         [Required]
         public ApplicationUser User { get; set; }
 
+        public int CarId { get; set; }
         [Required]
         public Car Car { get; set; }
 

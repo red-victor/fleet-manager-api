@@ -1,4 +1,5 @@
-﻿using EmployeeManager.Data;
+﻿using AutoMapper;
+using EmployeeManager.Data;
 using EmployeeManager.DTOs;
 using EmployeeManager.Models;
 using Microsoft.EntityFrameworkCore;
@@ -53,36 +54,22 @@ namespace EmployeeManager.Services
 
         public async Task<Ticket> TransposeFromDtoAsync(TicketDto dto)
         {
-            return new Ticket
-            {
-                Id = dto.Id,
-                User = await _db.Users.FindAsync(dto.UserId),
-                Car = await _db.Cars.FindAsync(dto.CarId),
-                Title = dto.Title,
-                ImagePath = dto.ImagePath,
-                Details = dto.Details,
-                Date = dto.Date,
-                Type = (TicketType)dto.Type,
-                Status = dto.Status
-            };
+            var config = new MapperConfiguration(cfg =>
+                    cfg.CreateMap<TicketDto, Ticket>()
+                );
+
+            var mapper = new Mapper(config);
+            return mapper.Map<Ticket>(dto);
         }
 
         public TicketDto TransposeToDto(Ticket ticket)
         {
-            var dto =  new TicketDto
-            {
-                Id = ticket.Id,
-                UserId = ticket.User.Id,
-                CarId = ticket.Car.Id,
-                Title = ticket.Title,
-                ImagePath = ticket.ImagePath,
-                Details = ticket.Details,
-                Date = ticket.Date,
-                Type = (int)ticket.Type,
-                Status = ticket.Status
-            };
+            var config = new MapperConfiguration(cfg =>
+                    cfg.CreateMap<Ticket, TicketDto>()
+                );
 
-            return dto;
+            var mapper = new Mapper(config);
+            return mapper.Map<TicketDto>(ticket);
         }
     }
 }
