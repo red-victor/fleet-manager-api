@@ -44,6 +44,16 @@ namespace EmployeeManager.Services
             return await _db.Cars.Include(c => c.User).ToListAsync();
         }
 
+        public async Task<IEnumerable<Car>> GetAllAssignedAsync()
+        {
+            return await _db.Cars.Where(c => c.User != null).Include(c => c.User).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Car>> GetAllUnassignedAsync()
+        {
+            return await _db.Cars.Where(c => c.User == null).Include(c => c.User).ToListAsync();
+        }
+
         public async Task RemoveAsync(int id)
         {
             _db.Cars.Remove(await GetAsync(id));

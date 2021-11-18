@@ -35,9 +35,24 @@ namespace EmployeeManager.Controllers
             return Json(new { success = true, responseText = $"Car {car.ChassisSeries} saved" });
         }
 
-        ///<summary>
+        [HttpGet("assigned")]
+        public async Task<ActionResult> GetAllAssigned()
+        {
+            var cars = await _carService.GetAllAssignedAsync();
+            return Ok(_carService.TransposeToDto(cars));
+        }
+
+        [HttpGet("unassigned")]
+        public async Task<ActionResult> GetAllUnassigned()
+        {
+            var cars = await _carService.GetAllUnassignedAsync();
+            return Ok(_carService.TransposeToDto(cars));
+        }
+
+        /// <summary>
         /// Aici le aduc si eu pe toate
-        ///</summary>
+        /// </summary>
+        /// <returns>All Cars in Db</returns>
         [HttpGet]
         public async Task<ActionResult> GetAll()
         {

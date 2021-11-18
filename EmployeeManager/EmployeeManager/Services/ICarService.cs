@@ -11,5 +11,7 @@ namespace EmployeeManager.Services
         Task<List<Car>> TransposeFromDtoAsync(List<CarDto> dtos);
         CarDto TransposeToDto(Car car);
         List<CarDto> TransposeToDto(IEnumerable<Car> cars);
+        Task<IEnumerable<Car>> GetAllAssignedAsync();
+        Task<IEnumerable<Car>> GetAllUnassignedAsync();
     }
 }
