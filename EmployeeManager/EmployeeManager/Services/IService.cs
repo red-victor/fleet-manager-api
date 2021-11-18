@@ -8,7 +8,7 @@ namespace EmployeeManager.Services
     public interface IService<T>
     {
         Task AddAsync(T item);
-        void RemoveAsync(int id);
+        Task RemoveAsync(int id);
         Task<T> GetAsync(int id);
         Task<IEnumerable<T>> GetAllAsync();
     }

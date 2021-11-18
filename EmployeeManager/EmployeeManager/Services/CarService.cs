@@ -34,7 +34,7 @@ namespace EmployeeManager.Services
             return await _db.Cars.Include(c => c.User).ToListAsync();
         }
 
-        public async void RemoveAsync(int id)
+        public async Task RemoveAsync(int id)
         {
             _db.Cars.Remove(await GetAsync(id));
             await _db.SaveChangesAsync();

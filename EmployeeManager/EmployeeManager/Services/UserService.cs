@@ -34,7 +34,7 @@ namespace EmployeeManager.Services
             throw new NotImplementedException();
         }
 
-        public void RemoveAsync(int id)
+        public Task RemoveAsync(int id)
         {
             throw new NotImplementedException();
         }
