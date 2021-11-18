@@ -19,6 +19,11 @@ namespace EmployeeManager.Controllers
             _ticketService = ticketService;
         }
 
+        /// <summary>
+        /// Submit new Ticket for Admin Processing
+        /// </summary>
+        /// <param name="dto">Ticket DTO</param>
+        /// <returns>Status Message</returns>
         [HttpPost]
         public async Task<ActionResult> ProcessTicket(TicketDto dto)
         {
@@ -27,6 +32,11 @@ namespace EmployeeManager.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Get ONE Specific Ticket by corresponding Id
+        /// </summary>
+        /// <param name="ticketId">Ticket Id</param>
+        /// <returns>Ticket DTO</returns>
         [HttpGet("{ticketId}")]
         public async Task<ActionResult> GetTicket(int ticketId)
         {
@@ -39,6 +49,10 @@ namespace EmployeeManager.Controllers
             return Ok(dto);
         }
 
+        /// <summary>
+        /// Get a List of All Tickets in Db
+        /// </summary>
+        /// <returns>List of Ticket DTOs</returns>
         [HttpGet]
         public async Task<ActionResult> GetAllTickets()
         {
@@ -47,6 +61,11 @@ namespace EmployeeManager.Controllers
             return Ok(dto);
         }
 
+        /// <summary>
+        /// Update Specific Ticket Properties
+        /// </summary>
+        /// <param name="dto">Ticket DTO</param>
+        /// <returns>Status Message</returns>
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateTicket(TicketDto dto)
         {
@@ -59,6 +78,11 @@ namespace EmployeeManager.Controllers
             return Ok(ticket);
         }
 
+        /// <summary>
+        /// Delete Ticket from Db
+        /// </summary>
+        /// <param name="id">Ticket Id</param>
+        /// <returns>Status Message</returns>
         [HttpDelete]
         public async Task<ActionResult> DeleteTicket([FromBody] int id)
         {

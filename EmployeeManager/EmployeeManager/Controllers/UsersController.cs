@@ -22,6 +22,10 @@ namespace EmployeeManager.Controllers
             _userService = userService;
         }
 
+        /// <summary>
+        /// Get a List of ALL Users
+        /// </summary>
+        /// <returns>List of User DTOs</returns>
         [HttpGet]
         public async Task<ActionResult<List<UserDto>>> GetUsers()
         {
@@ -30,6 +34,11 @@ namespace EmployeeManager.Controllers
             return Ok(_userService.GetUsersDto(users));
         }
 
+        /// <summary>
+        /// Get User by Id
+        /// </summary>
+        /// <param name="id">User Id</param>
+        /// <returns>User DTO</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<UserDto>> GetUser(string id)
         {

@@ -23,6 +23,11 @@ namespace EmployeeManager.Controllers
             _tokenService = tokenService;
         }
 
+        /// <summary>
+        /// Login User
+        /// </summary>
+        /// <param name="credentialDto">User Credentials</param>
+        /// <returns>Session Token</returns>
         [HttpPost("login")]
         public async Task<ActionResult<UserTokenDto>> Login(CredentialDto credentialDto)
         {
@@ -40,6 +45,11 @@ namespace EmployeeManager.Controllers
             };
         }
 
+        /// <summary>
+        /// Register new User
+        /// </summary>
+        /// <param name="credentialDto">User Credentials</param>
+        /// <returns>Status Message</returns>
         [HttpPost("register")]
         public async Task<ActionResult> Register(CredentialDto credentialDto)
         {
@@ -61,6 +71,10 @@ namespace EmployeeManager.Controllers
             return StatusCode(201);
         }
 
+        /// <summary>
+        /// Get Current User Session Token
+        /// </summary>
+        /// <returns>Session Token</returns>
         [Authorize]
         [HttpGet("currentUser")]
         public async Task<ActionResult<UserTokenDto>> GetCurrentUser()
