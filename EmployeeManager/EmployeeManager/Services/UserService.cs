@@ -24,6 +24,16 @@ namespace EmployeeManager.Services
             throw new NotImplementedException();
         }
 
+        public async Task UpdateAsync(ApplicationUser user)
+        {
+            throw new NotImplementedException();
+
+            //var userToUpdate = await GetAsync(user.Id);
+            //userToUpdate.Adress = user.Adress;
+            //userToUpdate.Email = user.Email;
+            //await _db.SaveChangesAsync();
+        }
+
         public async Task<IEnumerable<ApplicationUser>> GetAllAsync()
         {
             return await _db.Users.ToListAsync();
@@ -32,6 +42,11 @@ namespace EmployeeManager.Services
         public async Task<ApplicationUser> GetAsync(int id)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<ApplicationUser> GetAsync(string id)
+        {
+            return await _db.Users.Where(c => c.Id == id).FirstOrDefaultAsync();
         }
 
         public Task RemoveAsync(int id)

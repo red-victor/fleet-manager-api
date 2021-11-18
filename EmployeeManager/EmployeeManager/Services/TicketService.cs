@@ -23,6 +23,13 @@ namespace EmployeeManager.Services
             await _db.Tickets.AddAsync(ticket); 
             await _db.SaveChangesAsync();
         }
+        public async Task UpdateAsync(Ticket ticket)
+        {
+            var ticketToUpdate = await GetAsync(ticket.Id);
+            ticketToUpdate.Status = ticket.Status;
+            ticketToUpdate.Type = ticket.Type;
+            await _db.SaveChangesAsync();
+        }
 
         public async Task<Ticket> GetAsync(int id)
         {
@@ -37,7 +44,7 @@ namespace EmployeeManager.Services
             return await _db.Tickets.ToListAsync();
         }
 
-        public async void RemoveAsync(int id)
+        public async Task RemoveAsync(int id)
         {
             var ticket = await GetAsync(id);
             _db.Tickets.Remove(ticket);

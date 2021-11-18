@@ -9,6 +9,7 @@ namespace EmployeeManager.Services
     {
         Task AddAsync(T item);
         Task RemoveAsync(int id);
+        Task UpdateAsync(T item);
         Task<T> GetAsync(int id);
         Task<IEnumerable<T>> GetAllAsync();
     }
