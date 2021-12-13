@@ -19,12 +19,12 @@ namespace EmployeeManager.Services
             _db = db;
         }
 
-        public async Task AddAsync(ApplicationUser item)
+        public async Task<ApplicationUser> AddAsync(ApplicationUser item)
         {
             throw new NotImplementedException();
         }
 
-        public async Task UpdateAsync(ApplicationUser user)
+        public async Task<ApplicationUser> UpdateAsync(ApplicationUser user)
         {
             var userToUpdate = await GetAsync(user.Id);
             userToUpdate.FirstName = user.FirstName;
@@ -33,6 +33,7 @@ namespace EmployeeManager.Services
             userToUpdate.Email = user.Email;
             userToUpdate.PhoneNumber = user.PhoneNumber;
             await _db.SaveChangesAsync();
+            return user;
         }
 
         public async Task<IEnumerable<ApplicationUser>> GetAllAsync()

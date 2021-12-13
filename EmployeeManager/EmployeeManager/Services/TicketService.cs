@@ -19,17 +19,20 @@ namespace EmployeeManager.Services
             _db = db;
         }
 
-        public async Task AddAsync(Ticket ticket)
+        public async Task<Ticket> AddAsync(Ticket ticket)
         {
             await _db.Tickets.AddAsync(ticket); 
             await _db.SaveChangesAsync();
+            return ticket;
         }
-        public async Task UpdateAsync(Ticket ticket)
+        public async Task<Ticket> UpdateAsync(Ticket ticket)
         {
             var ticketToUpdate = await GetAsync(ticket.Id);
             ticketToUpdate.Status = ticket.Status;
             ticketToUpdate.Type = ticket.Type;
             await _db.SaveChangesAsync();
+
+            return ticket;
         }
 
         public async Task<Ticket> GetAsync(int id)

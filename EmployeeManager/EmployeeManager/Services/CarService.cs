@@ -19,19 +19,23 @@ namespace EmployeeManager.Services
             _db = db;
         }
 
-        public async Task AddAsync(Car car)
+        public async Task<Car> AddAsync(Car car)
         {
             await _db.Cars.AddAsync(car);
             await _db.SaveChangesAsync();
+
+            return car;
         }
 
-        public async Task UpdateAsync(Car car)
+        public async Task<Car> UpdateAsync(Car car)
         {
             var carToUpdate = await GetAsync(car.Id);
             carToUpdate.Color = car.Color;
             carToUpdate.Mileage = car.Mileage;
             carToUpdate.LicencePlate = carToUpdate.LicencePlate;
             await _db.SaveChangesAsync();
+
+            return car;
         }
 
         public async Task<Car> GetAsync(int id)
