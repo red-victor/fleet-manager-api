@@ -12,7 +12,9 @@ using System.Threading.Tasks;
 
 namespace EmployeeManager.Controllers
 {
-    public class AccountController : BaseApiController
+    [ApiController]
+    [Route("api/[controller]")]
+    public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly TokenService _tokenService;

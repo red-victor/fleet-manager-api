@@ -13,7 +13,9 @@ using System.Threading.Tasks;
 
 namespace EmployeeManager.Controllers
 {
-    public class CarsController : BaseApiController
+    [ApiController]
+    [Route("api/[controller]")]
+    public class CarsController : Controller
     {
         private readonly ApplicationDbContext _db;
 
@@ -126,7 +128,6 @@ namespace EmployeeManager.Controllers
         /// <summary>
         /// Dissociate a Car from a User
         /// </summary>
-        /// <param name="userId">User Id</param>
         /// <param name="carId">Car Id</param>
         /// <returns>Status Message</returns>
         [HttpPut("{carId}/dissociateUser")]

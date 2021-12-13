@@ -9,7 +9,9 @@ using System.Threading.Tasks;
 
 namespace EmployeeManager.Controllers
 {
-    public class TicketController : BaseApiController
+    [ApiController]
+    [Route("api/[controller]")]
+    public class TicketController : Controller
     {
         private readonly ApplicationDbContext _db;
         private readonly ITicketService _ticketService;
@@ -23,7 +25,7 @@ namespace EmployeeManager.Controllers
         /// <summary>
         /// Submit new Ticket for Admin Processing
         /// </summary>
-        /// <param name="dto">Ticket DTO</param>
+        /// <param name="ticket"></param>
         /// <returns>Status Message</returns>
         [HttpPost]
         public async Task<Ticket> ProcessTicket(Ticket ticket)
@@ -55,7 +57,7 @@ namespace EmployeeManager.Controllers
         /// <summary>
         /// Update Specific Ticket Properties
         /// </summary>
-        /// <param name="dto">Ticket DTO</param>
+        /// <param name="ticket"></param>
         /// <returns>Status Message</returns>
         [HttpPut("{id}")]
         public async Task<Ticket> UpdateTicket(Ticket ticket)

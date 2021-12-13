@@ -19,7 +19,7 @@ namespace EmployeeManager.Services
             _db = db;
         }
 
-        public async Task<ApplicationUser> AddAsync(ApplicationUser item)
+        public Task<ApplicationUser> AddAsync(ApplicationUser item)
         {
             throw new NotImplementedException();
         }
@@ -43,7 +43,7 @@ namespace EmployeeManager.Services
                 .ToListAsync();
         }
 
-        public async Task<ApplicationUser> GetAsync(int id)
+        public Task<ApplicationUser> GetAsync(int id)
         {
             throw new NotImplementedException();
         }
@@ -63,7 +63,7 @@ namespace EmployeeManager.Services
             await _db.SaveChangesAsync();
         }
 
-        public async Task<ApplicationUser> TransposeFromDtoAsync(UserDto dto)
+        public ApplicationUser TransposeFromDto(UserDto dto)
         {
             var config = new MapperConfiguration(cfg =>
                     cfg.CreateMap<UserDto, ApplicationUser>()

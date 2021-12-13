@@ -11,7 +11,9 @@ using System.Threading.Tasks;
 
 namespace EmployeeManager.Controllers
 {
-    public class UsersController : BaseApiController
+    [ApiController]
+    [Route("api/[controller]")]
+    public class UsersController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserService _userService;
@@ -53,7 +55,7 @@ namespace EmployeeManager.Controllers
         [HttpPut("{id}")]
         public async Task<ApplicationUser> UpdateUser(UserDto dto)
         {
-            var user = await _userService.TransposeFromDtoAsync(dto);
+            var user = _userService.TransposeFromDto(dto);
             return await _userService.UpdateAsync(user);
         }
 
