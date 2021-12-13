@@ -9,7 +9,7 @@ namespace EmployeeManager.Models
 {
     public class Ticket
     {
-        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         public string UserId { get; set; }
@@ -38,7 +38,6 @@ namespace EmployeeManager.Models
         public TicketType Type { get; set; }
 
         [Required]
-        [Column(TypeName = "varchar(20)")]
-        public string Status { get; set; }
+        public StatusType Status { get; set; }
     }
 }

@@ -9,7 +9,7 @@ namespace EmployeeManager.Models
 {
     public class Car
     {
-        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required]
@@ -37,6 +37,8 @@ namespace EmployeeManager.Models
 
         [Required]
         public int Mileage { get; set; }
+
+        public string UserId { get; set; }
 
         public ApplicationUser User { get; set; }
     }
