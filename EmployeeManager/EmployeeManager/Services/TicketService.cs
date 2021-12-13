@@ -32,7 +32,7 @@ namespace EmployeeManager.Services
             ticketToUpdate.Type = ticket.Type;
             await _db.SaveChangesAsync();
 
-            return ticket;
+            return ticketToUpdate;
         }
 
         public async Task<Ticket> GetAsync(int id)

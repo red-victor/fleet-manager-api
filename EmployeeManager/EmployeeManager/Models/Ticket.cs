@@ -12,13 +12,13 @@ namespace EmployeeManager.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
+        [Required]
         public string UserId { get; set; }
 
-        [Required]
         public ApplicationUser User { get; set; }
 
-        public int CarId { get; set; }
         [Required]
+        public int CarId { get; set; }
         public Car Car { get; set; }
 
         [Required]

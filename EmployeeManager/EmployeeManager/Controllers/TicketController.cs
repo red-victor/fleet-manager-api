@@ -4,6 +4,7 @@ using EmployeeManager.Models;
 using EmployeeManager.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace EmployeeManager.Controllers
@@ -25,11 +26,9 @@ namespace EmployeeManager.Controllers
         /// <param name="dto">Ticket DTO</param>
         /// <returns>Status Message</returns>
         [HttpPost]
-        public async Task<ActionResult> ProcessTicket(TicketDto dto)
+        public async Task<Ticket> ProcessTicket(Ticket ticket)
         {
-            var ticket = await _ticketService.TransposeFromDtoAsync(dto);
-            await _ticketService.AddAsync(ticket);
-            return Ok();
+            return await _ticketService.AddAsync(ticket);
         }
 
         /// <summary>
@@ -38,15 +37,9 @@ namespace EmployeeManager.Controllers
         /// <param name="ticketId">Ticket Id</param>
         /// <returns>Ticket DTO</returns>
         [HttpGet("{ticketId}")]
-        public async Task<ActionResult> GetTicket(int ticketId)
+        public async Task<Ticket> GetTicket(int ticketId)
         {
-            var ticket = await _ticketService.GetAsync(ticketId);
-
-            if (ticket == null)
-                return NotFound();
-
-            var dto = _ticketService.TransposeToDto(ticket);
-            return Ok(dto);
+            return await _ticketService.GetAsync(ticketId);
         }
 
         /// <summary>
@@ -54,11 +47,9 @@ namespace EmployeeManager.Controllers
         /// </summary>
         /// <returns>List of Ticket DTOs</returns>
         [HttpGet]
-        public async Task<ActionResult> GetAllTickets()
+        public async Task<IEnumerable<Ticket>> GetAllTickets()
         {
-            var tickets = await _ticketService.GetAllAsync();
-            var dto = _ticketService.TransposeToDto(tickets);
-            return Ok(dto);
+            return await _ticketService.GetAllAsync();
         }
 
         /// <summary>
@@ -67,15 +58,9 @@ namespace EmployeeManager.Controllers
         /// <param name="dto">Ticket DTO</param>
         /// <returns>Status Message</returns>
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateTicket(TicketDto dto)
+        public async Task<Ticket> UpdateTicket(Ticket ticket)
         {
-            var ticket = await _ticketService.TransposeFromDtoAsync(dto);
-
-            if (ticket == null)
-                return NotFound();
-
-            await _ticketService.UpdateAsync(ticket);
-            return Ok(_ticketService.TransposeToDto(ticket));
+            return await _ticketService.UpdateAsync(ticket);
         }
 
         /// <summary>
@@ -86,13 +71,11 @@ namespace EmployeeManager.Controllers
         [HttpDelete]
         public async Task<ActionResult> DeleteTicket([FromBody] int id)
         {
-            var ticket = await _ticketService.GetAsync(id);
-
-            if (ticket == null)
+            if (await _ticketService.GetAsync(id) == null)
                 return NotFound();
 
             await _ticketService.RemoveAsync(id);
-                return Ok();
+            return Ok();
         }
     }
 }
