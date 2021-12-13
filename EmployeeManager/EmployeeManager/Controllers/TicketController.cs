@@ -1,8 +1,6 @@
 ﻿using EmployeeManager.Data;
-using EmployeeManager.DTOs;
 using EmployeeManager.Models;
 using EmployeeManager.Services;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;

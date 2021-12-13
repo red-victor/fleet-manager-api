@@ -1,14 +1,9 @@
 ﻿using EmployeeManager.Data;
-using EmployeeManager.DTOs;
 using EmployeeManager.Models;
 using EmployeeManager.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace EmployeeManager.Controllers
