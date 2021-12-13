@@ -82,6 +82,7 @@ namespace EmployeeManager
             services.AddAuthorization();
             
             services.AddScoped<ICarService, Services.CarService>();
+            services.AddScoped<ICarHistoryService, CarHistoryService>();
             services.AddScoped<ITicketService, TicketService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<TokenService>();
