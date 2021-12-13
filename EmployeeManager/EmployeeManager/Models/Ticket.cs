@@ -1,24 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EmployeeManager.Models
 {
     public class Ticket
     {
-        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
+        [Required]
         public string UserId { get; set; }
 
-        [Required]
         public ApplicationUser User { get; set; }
 
-        public int CarId { get; set; }
         [Required]
+        public int CarId { get; set; }
         public Car Car { get; set; }
 
         [Required]
@@ -38,7 +35,6 @@ namespace EmployeeManager.Models
         public TicketType Type { get; set; }
 
         [Required]
-        [Column(TypeName = "varchar(20)")]
-        public string Status { get; set; }
+        public StatusType Status { get; set; }
     }
 }

@@ -1,19 +1,16 @@
 ﻿using EmployeeManager.Data;
-using EmployeeManager.DTOs;
 using EmployeeManager.Models;
 using EmployeeManager.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace EmployeeManager.Controllers
 {
-    public class CarsController : BaseApiController
+    [ApiController]
+    [Route("api/[controller]")]
+    public class CarsController : Controller
     {
         private readonly ApplicationDbContext _db;
 
@@ -33,11 +30,9 @@ namespace EmployeeManager.Controllers
         /// <param name="car">Car object</param>
         /// <returns>Success Message</returns>
         [HttpPost]
-        public async Task<JsonResult> AddNewCar(CarDto car)
+        public async Task<Car> AddNewCar(Car car)
         {
-            await _carService.AddAsync(await _carService.TransposeFromDtoAsync(car));
-            await _db.SaveChangesAsync();
-            return Json(new { success = true, responseText = $"Car {car.ChassisSeries} saved" });
+            return await _carService.AddAsync(car);
         }
 
         /// <summary>
@@ -45,10 +40,9 @@ namespace EmployeeManager.Controllers
         /// </summary>
         /// <returns>List of Cars</returns>
         [HttpGet("assigned")]
-        public async Task<ActionResult> GetAllAssigned()
+        public async Task<IEnumerable<Car>> GetAllAssigned()
         {
-            var cars = await _carService.GetAllAssignedAsync();
-            return Ok(_carService.TransposeToDto(cars));
+            return await _carService.GetAllAssignedAsync();
         }
 
         /// <summary>
@@ -56,10 +50,9 @@ namespace EmployeeManager.Controllers
         /// </summary>
         /// <returns>List of Cars</returns>
         [HttpGet("unassigned")]
-        public async Task<ActionResult> GetAllUnassigned()
+        public async Task<IEnumerable<Car>> GetAllUnassigned()
         {
-            var cars = await _carService.GetAllUnassignedAsync();
-            return Ok(_carService.TransposeToDto(cars));
+            return await _carService.GetAllUnassignedAsync();
         }
 
         /// <summary>
@@ -67,10 +60,9 @@ namespace EmployeeManager.Controllers
         /// </summary>
         /// <returns>List of Cars</returns>
         [HttpGet]
-        public async Task<ActionResult> GetAll()
+        public async Task<IEnumerable<Car>> GetAll()
         {
-            var cars = await _carService.GetAllAsync();
-            return Ok(_carService.TransposeToDto(cars));
+            return await _carService.GetAllAsync();
         }
 
         /// <summary>
@@ -79,13 +71,9 @@ namespace EmployeeManager.Controllers
         /// <param name="id">Car ID</param>
         /// <returns>Car Object</returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult> Get(int id)
+        public async Task<Car> Get(int id)
         {
-            var car = await _carService.GetAsync(id);
-
-            if (car != null)
-                return Ok(_carService.TransposeToDto(car));
-            return NotFound();
+            return await _carService.GetAsync(id);
         }
 
         /// <summary>
@@ -115,42 +103,42 @@ namespace EmployeeManager.Controllers
         public async Task<ActionResult> AssignUser([FromBody] string userId, int carId)
         {
             var car = await _carService.GetAsync(carId);
-            var user = await _userManager.FindByIdAsync(userId);
 
             if (car.User != null)
-                return BadRequest();
+                return BadRequest("Car already assigned");
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user.Car == null)
+                user.Car = car;
+            else
+                return BadRequest("User already has a Car");
 
             car.User = user;
 
-            if (user.Cars == null)
-                user.Cars = new List<Car>();
-
-            user.Cars.Add(car);
             await _db.SaveChangesAsync();
-            return Ok(_carService.TransposeToDto(car));
+            return Ok();
         }
 
         /// <summary>
         /// Dissociate a Car from a User
         /// </summary>
-        /// <param name="userId">User Id</param>
         /// <param name="carId">Car Id</param>
         /// <returns>Status Message</returns>
         [HttpPut("{carId}/dissociateUser")]
-        public async Task<ActionResult> DissociateUser([FromBody] string userId, int carId)
+        public async Task<ActionResult> DissociateUser(int carId)
         {
             var car = await _carService.GetAsync(carId);
-            var user = await _userManager.FindByIdAsync(userId);
 
-            if (car.User != null && car.User.Id == userId)
-            {
-                car.User = null;
-                user.Cars.Remove(car);
-                await _db.SaveChangesAsync();
-                return Ok(_carService.TransposeToDto(car));
-            }
-
-            return BadRequest();
+            if (car.User == null)
+                return BadRequest();
+            
+            var user = await _userManager.FindByIdAsync(car.UserId);
+            car.User = null;
+            car.UserId = null;
+            user.Car = null;
+            await _db.SaveChangesAsync();
+            return Ok();
         }
     }
 }

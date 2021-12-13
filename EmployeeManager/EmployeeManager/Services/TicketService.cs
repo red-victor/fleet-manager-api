@@ -1,9 +1,6 @@
-﻿using AutoMapper;
-using EmployeeManager.Data;
-using EmployeeManager.DTOs;
+﻿using EmployeeManager.Data;
 using EmployeeManager.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,7 +29,7 @@ namespace EmployeeManager.Services
             ticketToUpdate.Type = ticket.Type;
             await _db.SaveChangesAsync();
 
-            return ticket;
+            return ticketToUpdate;
         }
 
         public async Task<Ticket> GetAsync(int id)
@@ -53,36 +50,6 @@ namespace EmployeeManager.Services
             var ticket = await GetAsync(id);
             _db.Tickets.Remove(ticket);
             await _db.SaveChangesAsync();
-        }
-
-        public async Task<Ticket> TransposeFromDtoAsync(TicketDto dto)
-        {
-            var config = new MapperConfiguration(cfg =>
-                    cfg.CreateMap<TicketDto, Ticket>()
-                );
-
-            var mapper = new Mapper(config);
-            return mapper.Map<Ticket>(dto);
-        }
-
-        public TicketDto TransposeToDto(Ticket ticket)
-        {
-            var config = new MapperConfiguration(cfg =>
-                    cfg.CreateMap<Ticket, TicketDto>()
-                );
-
-            var mapper = new Mapper(config);
-            return mapper.Map<TicketDto>(ticket);
-        }
-
-        public IEnumerable<TicketDto> TransposeToDto(IEnumerable<Ticket> tickets)
-        {
-            var list = new List<TicketDto>();
-
-            foreach (var ticket in tickets)
-                list.Add(TransposeToDto(ticket));
-
-            return list;
         }
     }
 }

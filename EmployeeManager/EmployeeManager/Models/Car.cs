@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EmployeeManager.Models
 {
     public class Car
     {
-        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required]
@@ -37,6 +34,8 @@ namespace EmployeeManager.Models
 
         [Required]
         public int Mileage { get; set; }
+
+        public string UserId { get; set; }
 
         public ApplicationUser User { get; set; }
     }

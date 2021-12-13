@@ -1,17 +1,16 @@
-﻿using AutoMapper;
-using EmployeeManager.DTOs;
+﻿using EmployeeManager.DTOs;
 using EmployeeManager.Models;
 using EmployeeManager.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace EmployeeManager.Controllers
 {
-    public class UsersController : BaseApiController
+    [ApiController]
+    [Route("api/[controller]")]
+    public class UsersController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserService _userService;
@@ -27,11 +26,10 @@ namespace EmployeeManager.Controllers
         /// </summary>
         /// <returns>List of User DTOs</returns>
         [HttpGet]
-        public async Task<ActionResult<List<UserDto>>> GetUsers()
+        public async Task<IEnumerable<UserDto>> GetUsers()
         {
             var users = await _userService.GetAllAsync();
-
-            return Ok(_userService.TransposeToDtoAsync(users));
+            return _userService.TransposeToDtoAsync(users);
         }
 
         /// <summary>
@@ -40,14 +38,10 @@ namespace EmployeeManager.Controllers
         /// <param name="id">User Id</param>
         /// <returns>User DTO</returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserDto>> GetUser(string id)
+        public async Task<UserDto> GetUser(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
-
-            if (user == null)
-                return NotFound($"User {id} does not exist");
-
-            return Ok(_userService.TransposeToDtoAsync(user));
+            return _userService.TransposeToDtoAsync(user);
         }
 
         /// <summary>
@@ -56,15 +50,10 @@ namespace EmployeeManager.Controllers
         /// <param name="dto">User DTO</param>
         /// <returns>Status Message</returns>
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateUser(UserDto dto)
+        public async Task<ApplicationUser> UpdateUser(UserDto dto)
         {
-            var user = await _userService.TransposeFromDtoAsync(dto);
-
-            if (user == null)
-                return NotFound();
-
-            await _userService.UpdateAsync(user);
-            return Ok(_userService.TransposeToDtoAsync(user));
+            var user = _userService.TransposeFromDto(dto);
+            return await _userService.UpdateAsync(user);
         }
 
         /// <summary>
@@ -73,7 +62,7 @@ namespace EmployeeManager.Controllers
         /// <param name="id">User Id</param>
         /// <returns>Status Message</returns>
         [HttpDelete]
-        public async Task<ActionResult> DeleteTicket([FromBody] int id)
+        public async Task<ActionResult> DeleteUser([FromBody] int id)
         {
             var ticket = await _userService.GetAsync(id);
 

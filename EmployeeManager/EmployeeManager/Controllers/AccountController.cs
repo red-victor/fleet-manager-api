@@ -1,18 +1,16 @@
-﻿using AutoMapper;
-using EmployeeManager.DTOs;
+﻿using EmployeeManager.DTOs;
 using EmployeeManager.Models;
 using EmployeeManager.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace EmployeeManager.Controllers
 {
-    public class AccountController : BaseApiController
+    [ApiController]
+    [Route("api/[controller]")]
+    public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly TokenService _tokenService;

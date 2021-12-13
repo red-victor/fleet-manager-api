@@ -9,7 +9,7 @@ namespace EmployeeManager.Services
 {
     public interface IUserService : IService<ApplicationUser>
     {
-        Task<ApplicationUser> TransposeFromDtoAsync(UserDto user);
+        ApplicationUser TransposeFromDto(UserDto user);
         UserDto TransposeToDtoAsync(ApplicationUser user);
 
         IEnumerable<UserDto> TransposeToDtoAsync(IEnumerable<ApplicationUser> users);

@@ -1,9 +1,6 @@
-﻿using AutoMapper;
-using EmployeeManager.Data;
-using EmployeeManager.DTOs;
+﻿using EmployeeManager.Data;
 using EmployeeManager.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -62,42 +59,6 @@ namespace EmployeeManager.Services
         {
             _db.Cars.Remove(await GetAsync(id));
             await _db.SaveChangesAsync();
-        }
-
-        public async Task<Car> TransposeFromDtoAsync(CarDto dto)
-        {
-            var config = new MapperConfiguration(cfg =>
-                    cfg.CreateMap<CarDto, Car>()
-                );
-
-            var mapper = new Mapper(config);
-            return mapper.Map<Car>(dto);
-        }
-
-        public async Task<List<Car>> TransposeFromDtoAsync(List<CarDto> dtos)
-        {
-            var list = new List<Car>();
-            foreach (var dto in dtos)
-                list.Add(await TransposeFromDtoAsync(dto));
-            return list;
-        }
-
-        public CarDto TransposeToDto(Car car)
-        {
-            var config = new MapperConfiguration(cfg =>
-                    cfg.CreateMap<Car, CarDto>()
-                );
-
-            var mapper = new Mapper(config);
-            return mapper.Map<CarDto>(car);
-        }
-
-        public List<CarDto> TransposeToDto(IEnumerable<Car> cars)
-        {
-            var list = new List<CarDto>();
-            foreach (var car in cars)
-                list.Add(TransposeToDto(car));
-            return list;
         }
     }
 }

@@ -4,14 +4,16 @@ using EmployeeManager.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EmployeeManager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211213141139_AddIdsToNestedObjects")]
+    partial class AddIdsToNestedObjects
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -134,9 +136,7 @@ namespace EmployeeManager.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Cars");
                 });
@@ -250,15 +250,15 @@ namespace EmployeeManager.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "81cf58fb-8d12-48dc-b678-be020bcdd5eb",
-                            ConcurrencyStamp = "bb7c112c-7300-424b-8a52-6b9377d8fcc1",
+                            Id = "ff47d1a2-4c07-422d-9ee1-e95357837eb1",
+                            ConcurrencyStamp = "0f1d2bd4-d62c-499f-800c-8c2c7e4164a8",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "4af314f7-01ae-482e-a6e6-16887bb33147",
-                            ConcurrencyStamp = "70372fd7-2766-4373-991a-ce5a0e537125",
+                            Id = "692c33ee-bb30-47a2-9a36-7a44085590a6",
+                            ConcurrencyStamp = "e412d8b0-1b34-488f-9cb3-9c20a595aaf4",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });
@@ -371,8 +371,8 @@ namespace EmployeeManager.Migrations
             modelBuilder.Entity("EmployeeManager.Models.Car", b =>
                 {
                     b.HasOne("EmployeeManager.Models.ApplicationUser", "User")
-                        .WithOne("Car")
-                        .HasForeignKey("EmployeeManager.Models.Car", "UserId");
+                        .WithMany("Cars")
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -460,7 +460,7 @@ namespace EmployeeManager.Migrations
 
             modelBuilder.Entity("EmployeeManager.Models.ApplicationUser", b =>
                 {
-                    b.Navigation("Car");
+                    b.Navigation("Cars");
                 });
 #pragma warning restore 612, 618
         }

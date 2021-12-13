@@ -14,6 +14,6 @@ namespace EmployeeManager.Models
         public string CNP { get; set; }
         [Column(TypeName = "varchar(100)")]
         public string Adress { get; set; }
-        public List<Car> Cars { get; set; }
+        public Car Car { get; set; }
     }
 }
