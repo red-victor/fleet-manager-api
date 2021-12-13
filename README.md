@@ -1,4 +1,4 @@
-# El Proyecte Grande - Sprint 1
+# El Proyecte Grande - Sprint 2
 
 ## Story
 
@@ -33,13 +33,15 @@ This project is meant for 4 sprints at least, but it may keep you company until 
     - With every feature branch, a `Pull request` shall be opened and maintained. The `Pull request` shall contain the `Issue` linked with it. The `Pull request` shall contain the assignee, who is responsible for the given `Issue`. The `Pull request` shall contain at least one `Reviewer`, who is responsible for checking on their peers' work.
 
 3. You need to fulfill a couple of technical requirements defined below.
-    - The project backend is written in ASP.NET.
-    - The project has at least three pages which use the framework's templating system.
 
-4. Implement the features and tasks from the Sprint backlog.
+4. Implement the features and tasks from the sprint backlog.
+    - By the end of the sprint, at least 50% of the sprint plan is completed (measured in estimation points)
+    - By the end of the sprint, at least 60% of the sprint plan is completed (measured in estimation points)
     - By the end of the sprint, at least 70% of the sprint plan is completed (measured in estimation points)
+    - By the end of the sprint, at least 80% of the sprint plan is completed (measured in estimation points)
+    - By the end of the sprint, at least 90% of the sprint plan is completed (measured in estimation points)
+    - By the end of the sprint, 100% of the sprint plan is completed
 
-5. Use Scrum methodology with your team throughout your project
     - A Daily Scrum was organized by the Scrum Master (no longer than 15 minutes).
     - Any necessary corrections in the sprint plan have been introduced to the backlog and validated by a mentor.
     - After the demo, the Scrum Master organized a Sprint Review meeting, during which the team investigates how much of the planned Sprint Backlog was fulfilled - and whether it well thought out and balanced for the team to handle.
