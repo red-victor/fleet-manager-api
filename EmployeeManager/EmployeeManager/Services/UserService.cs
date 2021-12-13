@@ -38,7 +38,9 @@ namespace EmployeeManager.Services
 
         public async Task<IEnumerable<ApplicationUser>> GetAllAsync()
         {
-            return await _db.Users.ToListAsync();
+            return await _db.Users
+                //.Include(u => u.Car)
+                .ToListAsync();
         }
 
         public async Task<ApplicationUser> GetAsync(int id)
@@ -48,7 +50,10 @@ namespace EmployeeManager.Services
 
         public async Task<ApplicationUser> GetAsync(string id)
         {
-            return await _db.Users.Where(c => c.Id == id).FirstOrDefaultAsync();
+            return await _db.Users
+                .Where(u => u.Id == id)
+                //.Include(u => u.Car)
+                .FirstOrDefaultAsync();
         }
 
         public async Task RemoveAsync(int id)
