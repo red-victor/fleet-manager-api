@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 
 namespace EmployeeManager.Models
 {
-    public class CarService
+    public class CarHistory
     {
-        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-
         [Required]
+        public int CarId { get; set; }
+
         public Car Car { get; set; }
 
         [Required]
