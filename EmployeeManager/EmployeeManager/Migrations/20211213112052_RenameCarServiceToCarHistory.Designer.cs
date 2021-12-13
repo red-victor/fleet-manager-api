@@ -4,14 +4,16 @@ using EmployeeManager.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EmployeeManager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211213112052_RenameCarServiceToCarHistory")]
+    partial class RenameCarServiceToCarHistory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -146,7 +148,7 @@ namespace EmployeeManager.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CarId")
+                    b.Property<int?>("CarId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Cost")
@@ -249,15 +251,15 @@ namespace EmployeeManager.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "42f3a5e3-3388-4430-9a6b-8ce1057188d3",
-                            ConcurrencyStamp = "71f89499-d5ec-47e1-a363-3eb80570dada",
+                            Id = "a14dce5d-03c4-48a4-aa09-7e945369d253",
+                            ConcurrencyStamp = "82b15d90-a289-4764-9222-6c722cb96368",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "55a26f42-ddbe-4621-8915-72cd6a415b6e",
-                            ConcurrencyStamp = "472a99fe-26be-4b45-89b2-1acef3137a06",
+                            Id = "56cff68d-3cde-4767-9d76-cad53cf51ad6",
+                            ConcurrencyStamp = "d6268819-5726-4d0b-a8a6-a676fe0df488",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });
@@ -380,9 +382,7 @@ namespace EmployeeManager.Migrations
                 {
                     b.HasOne("EmployeeManager.Models.Car", "Car")
                         .WithMany()
-                        .HasForeignKey("CarId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CarId");
 
                     b.Navigation("Car");
                 });
