@@ -51,5 +51,14 @@ namespace EmployeeManager.Services
             _db.Tickets.Remove(ticket);
             await _db.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<Ticket>> GetAllForCarAsync(int id)
+        {
+            return await _db.Tickets
+                .Where(t => t.CarId == id)
+                .Include(t => t.Car)
+                .Include(t => t.User)
+                .ToListAsync();
+        }
     }
 }
