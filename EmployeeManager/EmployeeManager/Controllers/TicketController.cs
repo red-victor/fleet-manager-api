@@ -83,5 +83,17 @@ namespace EmployeeManager.Controllers
             await _ticketService.RemoveAsync(id);
             return Ok();
         }
+
+        [HttpGet("type")]
+        public string[] GetTicketTypes()
+        {
+            return Utils.GetTicketTypes();
+        }
+
+        [HttpGet("status")]
+        public string[] GetStatusTypes()
+        {
+            return Utils.GetStatusTypes();
+        }
     }
 }
