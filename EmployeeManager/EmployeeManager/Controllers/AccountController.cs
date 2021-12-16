@@ -82,7 +82,8 @@ namespace EmployeeManager.Controllers
             return new UserTokenDto
             {
                 Email = user.Email,
-                Token = await _tokenService.GenerateToken(user)
+                Token = await _tokenService.GenerateToken(user),
+                Name = user.FirstName + " " + user.LastName
             };
         }
     }
