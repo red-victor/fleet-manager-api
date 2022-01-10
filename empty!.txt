@@ -1,0 +1,111 @@
+Login Page (employee, admin)
+
+Landing Page
+
+Admin Page {
+
+	Create new Employee Account
+	Register new Car
+
+	Car Management {
+		
+		Assign or Remove from Employee
+		Manage Costs {
+			Insurance (RCA, CASCO)
+			Impozit
+		}
+
+	}
+	
+}
+
+Employee Page {
+
+	Car Management {
+		Service {
+			ITP
+			MISC (Planetare, Schimb Ulei, etc)
+		}
+
+		Upload Costs w/ receipt (Roviniete, Viniete, Taxe Drumuri/Poduri, Consumabile - lichid parbriz, antigel, Combustibil){
+			Form (Picture, Details, Date)
+		}
+
+		Report Problem ()
+	}
+
+
+}
+
+Overview Page
+
+
+
+Table Car {
+	id: int - PK,
+	serie_sasiu: string,
+	brand: string,
+	model: string,
+	first_registration_date: datetime,
+	color: string,
+	mileage: int,
+	employee_id: int - FK,
+}
+
+Table Services {
+	id: int,
+	serie_sasiu: string,
+	service_id: int - FK,
+	details: string,
+	executed_date: DateTime,
+	mileage_at_execution: int,
+	next_date: DateTime,
+	cost_in_cents: decimal,
+	status: string (pending, approved, payed)
+}
+
+Table Costs {
+	id: int,
+	employee_id: int - FK
+	serie_sasiu: string - FK
+	title: string,
+	image: string,
+	details: string,
+	date: DateTime
+}
+
+Table ServiceNames{
+	id: int
+	name: string
+}   (RCA, CASCO, impozit, ITP, Revision )
+
+
+
+
+Table Employee {
+	id: int,
+	email: string,
+	password: string,
+	first_name: string,
+	last_name: string,
+	CNP: int,
+	Adress: string,
+	cars: string,
+	admin: bool,
+}
+
+Table Tickets {
+	id: int,
+	car_id: int - FK
+	employee_id: int - FK
+	title: string,
+	image: string,
+	details: string,
+	date: DateTime
+	status: string (solved, pending)
+	response: string
+}
+
+
+twilio
+sendgrid

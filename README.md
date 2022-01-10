@@ -48,6 +48,7 @@ This project is meant for 4 sprints at least, but it may keep you company until 
     - By the end of the sprint, at least 90% of the sprint plan is completed (measured in estimation points)
     - By the end of the sprint, 100% of the sprint plan is completed
 
+6. Use Scrum with your team throughout your project
     - A Daily Scrum was organized by the Scrum Master (no longer than 15 minutes).
     - Any necessary corrections in the sprint plan have been introduced to the backlog and validated by a mentor.
     - After the demo, the Scrum Master organized a Sprint Review meeting, during which the team investigates how much of the planned Sprint Backlog was fulfilled - and whether it well thought out and balanced for the team to handle.
