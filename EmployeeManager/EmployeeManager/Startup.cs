@@ -16,6 +16,7 @@ using System.Text;
 using System.IO;
 using System.Reflection;
 using EmployeeManager.Middleware;
+using EmployeeManager.Extensions;
 
 namespace EmployeeManager
 {
@@ -31,22 +32,9 @@ namespace EmployeeManager
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-            services.AddControllers();
-
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "EmployeeManager", Version = "v1" });
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                c.IncludeXmlComments(xmlPath);
-            });
-            services.AddDbContext<ApplicationDbContext>(options => 
-            {
-                options.UseSqlServer(Configuration.GetConnectionString("Default"));
-            });
-
-            services.AddCors();
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                );
 
             services.AddIdentityCore<ApplicationUser>(options =>
             {
@@ -75,16 +63,8 @@ namespace EmployeeManager
                 });
 
             services.AddAuthorization();
-            
-            services.AddScoped<ICarService, Services.CarService>();
-            services.AddScoped<ICarHistoryService, CarHistoryService>();
-            services.AddScoped<ITicketService, TicketService>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<TokenService>();
 
-            services.AddControllers().AddNewtonsoftJson(options =>
-                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-                );
+            services.AddApplicationServices(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
