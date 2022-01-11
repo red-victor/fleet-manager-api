@@ -10,17 +10,22 @@ namespace EmployeeManager.Data
 {
     public class Seed
     {
+        public static string SEEDPATH = Path.GetFullPath(".\\Data\\Seed").ToString();
+
         public static async Task SeedData(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
-            if (!context.Cars.Any())
+            if (context.Cars.Any())
             {
                 var carList = new List<Car>();
+                var filePath = SEEDPATH + "EM_Cars_1000.xlsx";
 
                 using (var stream = new MemoryStream())
                 {
-                    var filePath = Path.GetPathRoot(@"\Seed\");
-                    //await file.CopyToAsync(stream);
-                    //carList = Utils.ParseCarsExcel(stream);
+                    using (FileStream file = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                    {
+                        file.CopyTo(stream);
+                        Console.WriteLine(file);
+                    }
                 }
             }
         }
