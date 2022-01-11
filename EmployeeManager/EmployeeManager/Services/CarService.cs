@@ -24,6 +24,14 @@ namespace EmployeeManager.Services
             return car;
         }
 
+        public async Task<List<Car>> AddAsync(List<Car> cars)
+        {
+            await _db.Cars.AddRangeAsync(cars);
+            await _db.SaveChangesAsync();
+
+            return cars;
+        }
+
         public async Task<Car> UpdateAsync(Car car)
         {
             var carToUpdate = await GetAsync(car.Id);
