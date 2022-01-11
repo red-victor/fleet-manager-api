@@ -12,7 +12,7 @@ namespace EmployeeManager.Data
     {
         public static string SEEDPATH = Path.GetFullPath(".\\Data\\Seed").ToString();
 
-        public static async Task SeedData(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public static void SeedData(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             if (context.Cars.Any())
             {
