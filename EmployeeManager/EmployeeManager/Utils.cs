@@ -54,9 +54,9 @@ namespace EmployeeManager
                         ChassisSeries = worksheet.Cells[row, 2].Value.ToString().Trim(),
                         Brand = worksheet.Cells[row, 3].Value.ToString().Trim(),
                         Model = worksheet.Cells[row, 4].Value.ToString().Trim(),
-                        //FirstRegistrationDate = worksheet.Cells[row, 5].Value.ToString().Trim(),
+                        FirstRegistrationDate = DateTime.Parse((worksheet.Cells[row, 5] as ExcelRange).Value.ToString()),
                         Color = worksheet.Cells[row, 6].Value.ToString().Trim(),
-                        //Mileage = int.TryParse(worksheet.Cells[row, 7].Value.ToString().Trim())
+                        Mileage = int.Parse(worksheet.Cells[row, 7].Value.ToString().Trim())
                     });
                 }
             }
