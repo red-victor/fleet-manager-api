@@ -29,7 +29,7 @@ namespace EmployeeManager
                 var context = services.GetRequiredService<ApplicationDbContext>();
                 var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
                 await context.Database.MigrateAsync();
-                //await Seed.SeedData(context, userManager);
+                await Seed.SeedData(context, userManager);
             }
             catch (Exception ex)
             {
