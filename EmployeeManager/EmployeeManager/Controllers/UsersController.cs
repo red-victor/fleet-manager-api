@@ -40,7 +40,7 @@ namespace EmployeeManager.Controllers
         [HttpGet("{id}")]
         public async Task<UserDto> GetUser(string id)
         {
-            var user = await _userManager.FindByIdAsync(id);
+            var user = await _userService.GetAsync(id);
             return _userService.TransposeToDtoAsync(user);
         }
 

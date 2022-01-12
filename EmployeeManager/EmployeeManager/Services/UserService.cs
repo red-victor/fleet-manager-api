@@ -39,7 +39,7 @@ namespace EmployeeManager.Services
         public async Task<IEnumerable<ApplicationUser>> GetAllAsync()
         {
             return await _db.Users
-                //.Include(u => u.Car)
+                .Include(u => u.Car)
                 .ToListAsync();
         }
 
@@ -52,7 +52,7 @@ namespace EmployeeManager.Services
         {
             return await _db.Users
                 .Where(u => u.Id == id)
-                //.Include(u => u.Car)
+                .Include(u => u.Car)
                 .FirstOrDefaultAsync();
         }
 
