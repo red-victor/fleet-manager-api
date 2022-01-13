@@ -20,12 +20,18 @@ namespace EmployeeManager.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly TokenService _tokenService;
         private readonly ILogger<AccountController> _logger;
+        private readonly IUserService _userService;
 
-        public AccountController(ILogger<AccountController> logger, UserManager<ApplicationUser> userManager, TokenService tokenService)
+        public AccountController(ILogger<AccountController> logger,
+            UserManager<ApplicationUser> userManager, 
+            TokenService tokenService,
+            IUserService userService
+            )
         {
             _userManager = userManager;
             _tokenService = tokenService;
             _logger = logger;
+            _userService = userService;
         }
 
         /// <summary>
@@ -34,7 +40,7 @@ namespace EmployeeManager.Controllers
         /// <param name="loginDto">User Credentials</param>
         /// <returns>Session Token</returns>
         [HttpPost("login")]
-        public async Task<ActionResult<UserTokenDto>> Login(LoginDto loginDto)
+        public async Task<ActionResult<LoggedUserDto>> Login(LoginDto loginDto)
         {
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
 
@@ -47,9 +53,16 @@ namespace EmployeeManager.Controllers
                 return Unauthorized();
             }
 
-            return new UserTokenDto 
-            { 
+            return new LoggedUserDto 
+            {
+                UserName = user.Email,
                 Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                CNP = user.LastName,
+                Adress = user.Adress,
+                PhoneNumber = user.PhoneNumber,
+                PhotoUrl = user.PhotoUrl,
                 Token = await _tokenService.GenerateToken(user)
             };
         }
@@ -96,15 +109,23 @@ namespace EmployeeManager.Controllers
         /// <returns>Session Token</returns>
         [Authorize]
         [HttpGet("currentUser")]
-        public async Task<ActionResult<UserTokenDto>> GetCurrentUser()
+        public async Task<ActionResult<LoggedUserDto>> GetCurrentUser()
         {
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var user = await _userService.GetByUsernameAsync(User.Identity.Name);
 
-            return new UserTokenDto
+            return new LoggedUserDto
             {
+                Id = user.Id,
+                UserName = user.Email,
                 Email = user.Email,
-                Token = await _tokenService.GenerateToken(user),
-                Name = user.FirstName + " " + user.LastName
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                CNP = user.LastName,
+                Adress = user.Adress,
+                PhoneNumber = user.PhoneNumber,
+                PhotoUrl = user.PhotoUrl,
+                Car = user.Car,
+                Token = await _tokenService.GenerateToken(user)
             };
         }
 

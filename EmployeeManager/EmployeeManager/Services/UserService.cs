@@ -92,5 +92,13 @@ namespace EmployeeManager.Services
 
             return usersDtos;
         }
+
+        public async Task<ApplicationUser> GetByUsernameAsync(string username)
+        {
+            return await _db.Users
+                .Where(u => u.UserName == username)
+                .Include(u => u.Car)
+                .FirstOrDefaultAsync();
+        }
     }
 }
