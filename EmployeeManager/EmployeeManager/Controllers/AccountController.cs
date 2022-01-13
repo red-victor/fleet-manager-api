@@ -89,7 +89,7 @@ namespace EmployeeManager.Controllers
                 return ValidationProblem();
             }
 
-            await _userManager.AddToRoleAsync(user, "Employee");
+            await _userManager.AddToRoleAsync(user, registerDto.Role);
             _logger.LogInformation("New account created with email {Email}", registerDto.Email);
             return StatusCode(201);
         }
