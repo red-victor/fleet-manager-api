@@ -18,5 +18,7 @@ namespace EmployeeManager.DTOs
         public string Password { get; set; }
         public string PhoneNumber { get; set; }
         public string PhotoUrl { get; set; }
+        [Required]
+        public string Role { get; set; }
     }
 }

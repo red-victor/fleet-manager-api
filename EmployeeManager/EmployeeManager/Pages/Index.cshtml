@@ -1,11 +1,17 @@
-﻿@page "/upload/cars"
+﻿@page "/upload"
 @model EmployeeManager.Pages.IndexModel
 @{
 }
 
 <div>
     <form method="post" action="/upload/carList" enctype="multipart/form-data">
-        <input type="file" name="file"/>
-        <button type="submit">Import</button>
+        <input type="file" name="file" />
+        <button type="submit">Import Cars</button>
+    </form>
+</div>
+<div>
+    <form method="post" action="/upload/userList" enctype="multipart/form-data">
+        <input type="file" name="file" />
+        <button type="submit">Import Users</button>
     </form>
 </div>

@@ -2,8 +2,11 @@
 using EmployeeManager.Models;
 using EmployeeManager.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace EmployeeManager.Controllers
@@ -95,6 +98,52 @@ namespace EmployeeManager.Controllers
                 Token = await _tokenService.GenerateToken(user),
                 Name = user.FirstName + " " + user.LastName
             };
+        }
+
+        [HttpPost]
+        [Route("/upload/userList")]
+        public async Task<IActionResult> UploadUsersExcel(IFormFile file)
+        {
+            List<RegisterDto> userList;
+
+            using (var stream = new MemoryStream())
+            {
+                await file.CopyToAsync(stream);
+                userList = Utils.ParseUsersExcel(stream);
+                
+                var successful = new List<string>();
+                var failed = new List<string>();
+                foreach (var toRegister in userList)
+                {
+                    var user = new ApplicationUser
+                    {
+                        UserName = toRegister.Email,
+                        Email = toRegister.Email,
+                        FirstName = toRegister.FirstName,
+                        LastName = toRegister.LastName,
+                        CNP = toRegister.CNP,
+                        Adress = toRegister.Adress,
+                        PhoneNumber = toRegister.PhoneNumber,
+                        PhotoUrl = toRegister.PhotoUrl
+                    };
+
+                    var result = await _userManager.CreateAsync(user, toRegister.Password);
+
+                    if (result.Succeeded)
+                    {
+                        successful.Add(toRegister.Email);
+                        await _userManager.AddToRoleAsync(user, toRegister.Role);
+                    }
+                    else
+                    {
+                        failed.Add(toRegister.Email);
+                    }
+                }
+
+                return Json(new { SuccessfullyRegistered = successful, FailedToRegister = failed });
+            }
+
+            //return Ok(userList);
         }
     }
 }
