@@ -70,7 +70,7 @@ namespace EmployeeManager.Controllers
                 FirstName = registerDto.FirstName,
                 LastName = registerDto.LastName,
                 CNP = registerDto.LastName,
-                Adress = registerDto.Adress,
+                Adress = registerDto.Address,
                 PhoneNumber = registerDto.PhoneNumber,
                 PhotoUrl = registerDto.PhotoUrl
             };
@@ -134,7 +134,7 @@ namespace EmployeeManager.Controllers
                         FirstName = toRegister.FirstName,
                         LastName = toRegister.LastName,
                         CNP = toRegister.Cnp,
-                        Adress = toRegister.Adress,
+                        Adress = toRegister.Address,
                         PhoneNumber = toRegister.PhoneNumber,
                         PhotoUrl = toRegister.PhotoUrl
                     };

@@ -11,7 +11,7 @@ namespace EmployeeManager.DTOs
         [Required]
         public string Cnp { get; set; }
         [Required]
-        public string Adress { get; set; }
+        public string Address { get; set; }
         [Required]
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
