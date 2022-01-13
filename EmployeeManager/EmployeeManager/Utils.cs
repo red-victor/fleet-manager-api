@@ -83,7 +83,6 @@ namespace EmployeeManager
                         Cnp = worksheet.Cells[row, 3].Value.ToString().Trim(),
                         Adress = worksheet.Cells[row, 4].Value.ToString().Trim(),
                         Email = worksheet.Cells[row, 5].Value.ToString(),
-                        Password = worksheet.Cells[row, 6].Value.ToString().Trim(),
                         PhoneNumber = worksheet.Cells[row, 7].Value.ToString().Trim(),
                         PhotoUrl = worksheet.Cells[row, 8].Value.ToString().Trim(),
                         Role = worksheet.Cells[row, 9].Value.ToString().Trim()
