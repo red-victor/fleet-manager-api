@@ -64,9 +64,9 @@ namespace EmployeeManager.Controllers
         [HttpDelete]
         public async Task<ActionResult> DeleteUser([FromBody] int id)
         {
-            var ticket = await _userService.GetAsync(id);
+            var user = await _userService.GetAsync(id);
 
-            if (ticket == null)
+            if (user == null)
                 return NotFound();
 
             await _userService.RemoveAsync(id);
