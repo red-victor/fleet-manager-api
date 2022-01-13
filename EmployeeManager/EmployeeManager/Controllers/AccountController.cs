@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace EmployeeManager.Controllers
 {
@@ -77,16 +78,19 @@ namespace EmployeeManager.Controllers
         {
             var user = new ApplicationUser 
             { 
-                UserName = registerDto.Email, 
+                UserName = registerDto.Email,
                 Email = registerDto.Email,
                 FirstName = registerDto.FirstName,
                 LastName = registerDto.LastName,
                 CNP = registerDto.LastName,
-                Adress = registerDto.Adress,
+                Adress = registerDto.Address,
                 PhoneNumber = registerDto.PhoneNumber,
                 PhotoUrl = registerDto.PhotoUrl
             };
-            var result = await _userManager.CreateAsync(user, registerDto.Password);
+            var password = Guid.NewGuid().ToString().Substring(0, 8);
+            var result = await _userManager.CreateAsync(user, password);
+
+            // #todo: Send email to user with generated password
 
             if (!result.Succeeded)
             {
@@ -150,13 +154,15 @@ namespace EmployeeManager.Controllers
                         Email = toRegister.Email,
                         FirstName = toRegister.FirstName,
                         LastName = toRegister.LastName,
-                        CNP = toRegister.CNP,
-                        Adress = toRegister.Adress,
+                        CNP = toRegister.Cnp,
+                        Adress = toRegister.Address,
                         PhoneNumber = toRegister.PhoneNumber,
                         PhotoUrl = toRegister.PhotoUrl
                     };
+                    var password = Guid.NewGuid().ToString().Substring(0, 8);
+                    var result = await _userManager.CreateAsync(user, password);
 
-                    var result = await _userManager.CreateAsync(user, toRegister.Password);
+                    // #todo: Send email to user with generated password
 
                     if (result.Succeeded)
                     {
