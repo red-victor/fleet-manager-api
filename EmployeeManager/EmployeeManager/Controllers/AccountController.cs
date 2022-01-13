@@ -28,14 +28,14 @@ namespace EmployeeManager.Controllers
         /// <summary>
         /// Login User
         /// </summary>
-        /// <param name="credentialDto">User Credentials</param>
+        /// <param name="loginDto">User Credentials</param>
         /// <returns>Session Token</returns>
         [HttpPost("login")]
-        public async Task<ActionResult<UserTokenDto>> Login(CredentialDto credentialDto)
+        public async Task<ActionResult<UserTokenDto>> Login(LoginDto loginDto)
         {
-            var user = await _userManager.FindByEmailAsync(credentialDto.Email);
+            var user = await _userManager.FindByEmailAsync(loginDto.Email);
 
-            if (user == null || !await _userManager.CheckPasswordAsync(user, credentialDto.Password))
+            if (user == null || !await _userManager.CheckPasswordAsync(user, loginDto.Password))
             {
                 if (user != null)
                 {
@@ -54,13 +54,23 @@ namespace EmployeeManager.Controllers
         /// <summary>
         /// Register new User
         /// </summary>
-        /// <param name="credentialDto">User Credentials</param>
+        /// <param name="registerDto">User Credentials</param>
         /// <returns>Status Message</returns>
         [HttpPost("register")]
-        public async Task<ActionResult> Register(CredentialDto credentialDto)
+        public async Task<ActionResult> Register(RegisterDto registerDto)
         {
-            var user = new ApplicationUser { UserName = credentialDto.Email, Email = credentialDto.Email };
-            var result = await _userManager.CreateAsync(user, credentialDto.Password);
+            var user = new ApplicationUser 
+            { 
+                UserName = registerDto.Email, 
+                Email = registerDto.Email,
+                FirstName = registerDto.FirstName,
+                LastName = registerDto.LastName,
+                CNP = registerDto.LastName,
+                Adress = registerDto.Adress,
+                PhoneNumber = registerDto.PhoneNumber,
+                PhotoUrl = registerDto.PhotoUrl
+            };
+            var result = await _userManager.CreateAsync(user, registerDto.Password);
 
             if (!result.Succeeded)
             {

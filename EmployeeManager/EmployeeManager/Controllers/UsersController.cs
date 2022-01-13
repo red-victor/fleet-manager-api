@@ -72,8 +72,9 @@ namespace EmployeeManager.Controllers
         {
             _logger.LogInformation("User with id deleted", id);
             var ticket = await _userService.GetAsync(id);
+            var user = await _userService.GetAsync(id);
 
-            if (ticket == null)
+            if (user == null)
                 return NotFound();
 
             await _userService.RemoveAsync(id);
