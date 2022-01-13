@@ -15,5 +15,6 @@ namespace EmployeeManager.Models
         [Column(TypeName = "varchar(100)")]
         public string Adress { get; set; }
         public Car Car { get; set; }
+        public string PhotoUrl { get; set; }
     }
 }
