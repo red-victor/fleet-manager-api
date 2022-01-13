@@ -27,6 +27,7 @@ namespace EmployeeManager
             services.AddApplicationServices(Configuration);
             services.AddIdentityServices(Configuration);
             services.AddRazorPages();
+            services.AddLogging();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
