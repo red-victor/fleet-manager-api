@@ -80,7 +80,7 @@ namespace EmployeeManager
                     {
                         FirstName = worksheet.Cells[row, 1].Value.ToString().Trim(),
                         LastName = worksheet.Cells[row, 2].Value.ToString().Trim(),
-                        CNP = worksheet.Cells[row, 3].Value.ToString().Trim(),
+                        Cnp = worksheet.Cells[row, 3].Value.ToString().Trim(),
                         Adress = worksheet.Cells[row, 4].Value.ToString().Trim(),
                         Email = worksheet.Cells[row, 5].Value.ToString(),
                         Password = worksheet.Cells[row, 6].Value.ToString().Trim(),
