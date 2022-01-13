@@ -1,10 +1,12 @@
-﻿using EmployeeManager.DTOs;
+﻿using System.ComponentModel.DataAnnotations;
+using EmployeeManager.DTOs;
 using EmployeeManager.Models;
 using EmployeeManager.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace EmployeeManager.Controllers
 {
@@ -14,11 +16,13 @@ namespace EmployeeManager.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly TokenService _tokenService;
+        private readonly ILogger<AccountController> _logger;
 
-        public AccountController(UserManager<ApplicationUser> userManager, TokenService tokenService)
+        public AccountController(ILogger<AccountController> logger, UserManager<ApplicationUser> userManager, TokenService tokenService)
         {
             _userManager = userManager;
             _tokenService = tokenService;
+            _logger = logger;
         }
 
         /// <summary>
@@ -33,6 +37,10 @@ namespace EmployeeManager.Controllers
 
             if (user == null || !await _userManager.CheckPasswordAsync(user, credentialDto.Password))
             {
+                if (user != null)
+                {
+                    _logger.LogInformation("Failed log in the user with email {Email}. [ Wrong password ]", credentialDto.Email);
+                }
                 return Unauthorized();
             }
 
@@ -65,7 +73,7 @@ namespace EmployeeManager.Controllers
             }
 
             await _userManager.AddToRoleAsync(user, "Employee");
-
+            _logger.LogInformation("New account created with email {Email}", credentialDto.Email);
             return StatusCode(201);
         }
 

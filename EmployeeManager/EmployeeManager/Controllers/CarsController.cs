@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace EmployeeManager.Controllers
 {
@@ -18,12 +19,14 @@ namespace EmployeeManager.Controllers
 
         private readonly ICarService _carService;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ILogger<CarsController> _logger;
 
-        public CarsController(ApplicationDbContext db, ICarService carService, UserManager<ApplicationUser> userManager)
+        public CarsController(ILogger<CarsController> logger, ApplicationDbContext db, ICarService carService, UserManager<ApplicationUser> userManager)
         {
             _db = db;
             _carService = carService;
             _userManager = userManager;
+            _logger = logger;
         }
 
         /// <summary>
@@ -34,6 +37,7 @@ namespace EmployeeManager.Controllers
         [HttpPost]
         public async Task<Car> AddNewCar(Car car)
         {
+            _logger.LogInformation("A new car added. Id: {id}", car.Id);
             return await _carService.AddAsync(car);
         }
 
@@ -44,6 +48,7 @@ namespace EmployeeManager.Controllers
         [HttpGet("assigned")]
         public async Task<IEnumerable<Car>> GetAllAssigned()
         {
+            _logger.LogInformation("All cars with assigned users retrieved");
             return await _carService.GetAllAssignedAsync();
         }
 
@@ -54,6 +59,7 @@ namespace EmployeeManager.Controllers
         [HttpGet("unassigned")]
         public async Task<IEnumerable<Car>> GetAllUnassigned()
         {
+            _logger.LogInformation("All cars with no assigned users retrieved");
             return await _carService.GetAllUnassignedAsync();
         }
 
@@ -64,6 +70,7 @@ namespace EmployeeManager.Controllers
         [HttpGet]
         public async Task<IEnumerable<Car>> GetAll()
         {
+            _logger.LogInformation("All cars retrieved");
             return await _carService.GetAllAsync();
         }
 
@@ -75,6 +82,7 @@ namespace EmployeeManager.Controllers
         [HttpGet("{id}")]
         public async Task<Car> Get(int id)
         {
+            _logger.LogInformation("Car with id {Id} retrieved", id);
             return await _carService.GetAsync(id);
         }
 
@@ -90,7 +98,7 @@ namespace EmployeeManager.Controllers
 
             if (car == null)
                 return NotFound();
-
+            _logger.LogInformation("Car with id {Id} deleted", id);
             await _carService.RemoveAsync(id);
             return Ok();
         }
@@ -117,7 +125,7 @@ namespace EmployeeManager.Controllers
                 return BadRequest("User already has a Car");
 
             car.User = user;
-
+            _logger.LogInformation("Car with id {IdCar} assigned to user with id {IdUser}", car.Id, user.Id);
             await _db.SaveChangesAsync();
             return Ok();
         }
@@ -139,6 +147,7 @@ namespace EmployeeManager.Controllers
             car.User = null;
             car.UserId = null;
             user.Car = null;
+            _logger.LogInformation("Car with id {IdCar} removed from user with id {IdUser}", car.Id, user.Id);
             await _db.SaveChangesAsync();
             return Ok();
         }
@@ -155,7 +164,7 @@ namespace EmployeeManager.Controllers
                 carList = Utils.ParseCarsExcel(stream);
                 await _carService.AddAsync(carList);
             }
-
+            _logger.LogInformation("Cars added from uploaded file");
             return Ok(carList);
         }
     }
