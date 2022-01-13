@@ -42,7 +42,7 @@ namespace EmployeeManager.Controllers
             {
                 if (user != null)
                 {
-                    _logger.LogInformation("Failed log in the user with email {Email}. [ Wrong password ]", credentialDto.Email);
+                    _logger.LogInformation("Failed log in the user with email {Email}. [ Wrong password ]", loginDto.Email);
                 }
                 return Unauthorized();
             }
@@ -86,7 +86,7 @@ namespace EmployeeManager.Controllers
             }
 
             await _userManager.AddToRoleAsync(user, "Employee");
-            _logger.LogInformation("New account created with email {Email}", credentialDto.Email);
+            _logger.LogInformation("New account created with email {Email}", registerDto.Email);
             return StatusCode(201);
         }
 
