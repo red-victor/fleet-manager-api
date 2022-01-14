@@ -13,6 +13,7 @@ namespace EmployeeManager.Services
         UserDto TransposeToDtoAsync(ApplicationUser user);
         Task<ApplicationUser> GetAsync(string id);
         Task<IEnumerable<ApplicationUser>> GetAllUsersWithoutCarAsync();
+        Task<ApplicationUser> GetByUsernameAsync(string username);
 
         IEnumerable<UserDto> TransposeToDtoAsync(IEnumerable<ApplicationUser> users);
     }
