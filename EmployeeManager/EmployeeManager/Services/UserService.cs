@@ -56,6 +56,11 @@ namespace EmployeeManager.Services
                 .FirstOrDefaultAsync();
         }
 
+        public async Task<IEnumerable<ApplicationUser>> GetAllUsersWithoutCarAsync()
+        {
+            return await _db.ApplicationUsers.Where(u => u.Car == null).ToListAsync();
+        }
+
         public async Task RemoveAsync(int id)
         {
             var user = await GetAsync(id);

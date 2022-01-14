@@ -37,6 +37,18 @@ namespace EmployeeManager.Controllers
         }
 
         /// <summary>
+        /// Get a List of Users that do not have a car assigned
+        /// </summary>
+        /// <returns>List of User DTOs</returns>
+        [HttpGet("with-no-car")]
+        public async Task<IEnumerable<UserDto>> GetUsersWithoutCar()
+        {
+            var users = await _userService.GetAllUsersWithoutCarAsync();
+            if (users != null) _logger.LogInformation("All users that do not have a car retrieved"); 
+            return _userService.TransposeToDtoAsync(users);
+        }
+
+        /// <summary>
         /// Get User by Id
         /// </summary>
         /// <param name="id">User Id</param>

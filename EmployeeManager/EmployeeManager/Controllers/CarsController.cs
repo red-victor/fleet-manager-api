@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using EmployeeManager.DTOs;
 
 namespace EmployeeManager.Controllers
 {
@@ -110,14 +111,14 @@ namespace EmployeeManager.Controllers
         /// <param name="carId">Car Id</param>
         /// <returns>Status Message</returns>
         [HttpPut("{carId}/assignUser")]
-        public async Task<ActionResult> AssignUser([FromBody] string userId, int carId)
+        public async Task<ActionResult> AssignUser([FromRoute] int carId, AssignUserDto assignUserDto)
         {
             var car = await _carService.GetAsync(carId);
 
             if (car.User != null)
                 return BadRequest("Car already assigned");
 
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await _userManager.FindByIdAsync(assignUserDto.UserId);
 
             if (user.Car == null)
                 user.Car = car;
