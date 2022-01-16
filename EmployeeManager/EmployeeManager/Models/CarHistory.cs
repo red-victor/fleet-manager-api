@@ -8,11 +8,15 @@ namespace EmployeeManager.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [Required]
-        public int TicketId { get; set; }
 
         [Required]
         public string AdminId { get; set; }
+
+        [Required]
+        public string UserId { get; set; }
+
+        [Required]
+        public int TicketId { get; set; }
 
         [Column(TypeName = "varchar(150)")]
         public string ImagePath { get; set; }
