@@ -24,46 +24,55 @@ namespace EmployeeManager.Controllers
         [HttpGet]
         public async Task<IEnumerable<UserDto>> GetUsers()
         {
-            _logger.LogInformation("All users retrieved");
             var users = await _userService.GetAllAsync();
-            return _userService.TransposeToDtoAsync(users);
+            var userDtos = _userService.TransposeToDtoAsync(users);
+            _logger.LogInformation("All users retrieved");
+            return userDtos;
         }
 
         [HttpGet("with-no-car")]
         public async Task<IEnumerable<UserDto>> GetUsersWithoutCar()
         {
             var users = await _userService.GetAllUsersWithoutCarAsync();
-            if (users != null) _logger.LogInformation("All users that do not have a car retrieved"); 
-            return _userService.TransposeToDtoAsync(users);
+            var userDtos = _userService.TransposeToDtoAsync(users);
+
+            if (users != null) 
+                _logger.LogInformation("All users that do not have a car retrieved");
+
+            return userDtos;
         }
 
         [HttpGet("{id}")]
         public async Task<UserDto> GetUser(string id)
         {
-            _logger.LogInformation("User with id {Id} retrieved", id);
             var user = await _userService.GetAsync(id);
-            return _userService.TransposeToDtoAsync(user);
+            var userDto = _userService.TransposeToDtoAsync(user);
+            _logger.LogInformation("User with id {Id} retrieved", id);
+            return userDto;
         }
 
         [HttpPut("{id}")]
-        public async Task<ApplicationUser> UpdateUser(UserDto dto)
+        public async Task<UserDto> UpdateUser(UserDto dto)
         {
-            _logger.LogInformation("User with id {Id} updated", dto.Id);
             var user = _userService.TransposeFromDto(dto);
-            return await _userService.UpdateAsync(user);
+            var updatedUser = await _userService.UpdateAsync(user);
+            var updatedUserDto = _userService.TransposeToDtoAsync(updatedUser);
+
+            _logger.LogInformation($"User with id {updatedUserDto.Id} updated");
+            return updatedUserDto;
         }
 
         [HttpDelete]
         public async Task<ActionResult> DeleteUser([FromBody] int id)
         {
-            _logger.LogInformation("User with id deleted", id);
-            var ticket = await _userService.GetAsync(id);
             var user = await _userService.GetAsync(id);
 
             if (user == null)
                 return NotFound();
 
             await _userService.RemoveAsync(id);
+
+            _logger.LogInformation($"User with id {id} deleted");
             return Ok();
         }
     }

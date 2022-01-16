@@ -43,12 +43,12 @@ namespace EmployeeManager.Controllers
             {
                 if (user != null)
                 {
-                    _logger.LogInformation("Failed log in the user with email {Email}. [ Wrong password ]", loginDto.Email);
+                    _logger.LogInformation($"Failed login the user with email {loginDto.Email}. [ Wrong password ]");
                 }
                 return Unauthorized();
             }
 
-            return new LoggedUserDto 
+            var loggedUserDto = new LoggedUserDto 
             {
                 UserName = user.Email,
                 Email = user.Email,
@@ -60,6 +60,10 @@ namespace EmployeeManager.Controllers
                 PhotoUrl = user.PhotoUrl,
                 Token = await _tokenService.GenerateToken(user)
             };
+
+            _logger.LogInformation($"Successful log in the user with email {loginDto.Email}. Token: {loggedUserDto.Token}");
+
+            return loggedUserDto;
         }
 
         [HttpPost("register")]
@@ -76,6 +80,7 @@ namespace EmployeeManager.Controllers
                 PhoneNumber = registerDto.PhoneNumber,
                 PhotoUrl = registerDto.PhotoUrl
             };
+
             var password = Guid.NewGuid().ToString().Substring(0, 8);
             var result = await _userManager.CreateAsync(user, password);
 
@@ -92,7 +97,8 @@ namespace EmployeeManager.Controllers
             }
 
             await _userManager.AddToRoleAsync(user, registerDto.Role);
-            _logger.LogInformation("New account created with email {Email}", registerDto.Email);
+
+            _logger.LogInformation($"New account created with email {registerDto.Email}");
             return StatusCode(201);
         }
 
@@ -153,10 +159,12 @@ namespace EmployeeManager.Controllers
                     {
                         successful.Add(toRegister.Email);
                         await _userManager.AddToRoleAsync(user, toRegister.Role);
+                        _logger.LogInformation($"New account created with email {toRegister.Email}");
                     }
                     else
                     {
                         failed.Add(toRegister.Email);
+                        _logger.LogInformation($"Failed to create new account created with email {toRegister.Email}. \n {result.Errors}");
                     }
                 }
 

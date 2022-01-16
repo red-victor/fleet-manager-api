@@ -30,43 +30,48 @@ namespace EmployeeManager.Controllers
         [HttpGet("history")]
         public async Task<IEnumerable<CarHistory>> GetAllHistoryAsync()
         {
-            _logger.LogInformation("All cars history retrieved");
-            return await _carHistoryService.GetAllAsync();
+            var histories = await _carHistoryService.GetAllAsync();
+            _logger.LogInformation("All cars histories retrieved");
+            return histories;
         }
 
         [HttpGet("{id}/history")]
         public async Task<IEnumerable<CarHistory>> GetAllForCarAsync(int id)
         {
-            _logger.LogInformation("Car with id {Id} history retrieved", id);
-            return await _carHistoryService.GetAllForCar(id);
+            var histories = await _carHistoryService.GetAllForCar(id);
+            _logger.LogInformation($"History for car with id {id} retrieved");
+            return histories;
         }
 
         [HttpGet("history/{id}")]
         public async Task<CarHistory> GetHistoryAsync(int id)
         {
-            _logger.LogInformation("History with id {Id} retrieved", id);
-            return await _carHistoryService.GetAsync(id);
+            var history = await _carHistoryService.GetAsync(id);
+            _logger.LogInformation($"History with id {id} retrieved");
+            return history;
         }
 
         [HttpPost("{id}/history")]
         public async Task<CarHistory> AddCarHistoryAsync(int id, [FromBody] CarHistory carHistory)
         {
-            _logger.LogInformation("Car with id {Id} history retrieved", id);
-            return await _carHistoryService.AddAsync(carHistory);
+            var history = await _carHistoryService.AddAsync(carHistory);
+            _logger.LogInformation($"Car with id {id} history retrieved");
+            return history;
         }
 
         [HttpPut("{id}/history")]
         public async Task<CarHistory> UpdateCarHistoryAsync(int id, [FromBody] CarHistory carHistory)
         {
-            _logger.LogInformation("History with id {Id} retrieved", id);
-            return await _carHistoryService.UpdateAsync(carHistory);
+            var history = await _carHistoryService.UpdateAsync(carHistory);
+            _logger.LogInformation($"History with id {id} retrieved");
+            return history;
         }
 
         [HttpDelete("{id}/history")]
         public async Task<ActionResult> DeleteCarHistoryAsync(int id)
         {
-            _logger.LogInformation("History with id {Id} retrieved", id);
             await _carHistoryService.RemoveAsync(id);
+            _logger.LogInformation($"History with id {id} retrieved");
             return Ok();
         }
     }

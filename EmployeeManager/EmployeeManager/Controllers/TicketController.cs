@@ -26,36 +26,41 @@ namespace EmployeeManager.Controllers
         [HttpPost]
         public async Task<Ticket> ProcessTicket(Ticket ticket)
         {
-            _logger.LogInformation("A new ticket added for car with id {Id}", ticket.CarId);
-            return await _ticketService.AddAsync(ticket);
+            var addedTicket = await _ticketService.AddAsync(ticket);
+            _logger.LogInformation($"A new ticket with id {addedTicket.Id} was added");
+            return addedTicket;
         }
 
         [HttpGet("{ticketId}")]
         public async Task<Ticket> GetTicket(int ticketId)
         {
-            _logger.LogInformation("Ticket with id {Id} retrieved", ticketId);
-            return await _ticketService.GetAsync(ticketId);
+            var ticket = await _ticketService.GetAsync(ticketId);
+            _logger.LogInformation($"Ticket with id {ticket.Id} retrieved");
+            return ticket;
         }
 
         [HttpGet]
         public async Task<IEnumerable<Ticket>> GetAllTickets()
         {
+            var tickets = await _ticketService.GetAllAsync();
             _logger.LogInformation("All tickets retrieved");
-            return await _ticketService.GetAllAsync();
+            return tickets;
         }
 
         [HttpGet("/api/cars/{carId}/tickets")]
         public async Task<IEnumerable<Ticket>> GetAllForCar(int carId)
         {
-            _logger.LogInformation("All tickets for car with id {Id} retrieved", carId);
-            return await _ticketService.GetAllForCarAsync(carId);
+            var tickets = await _ticketService.GetAllForCarAsync(carId);
+            _logger.LogInformation($"All tickets for car with id {carId} retrieved");
+            return tickets;
         }
 
         [HttpPut("{id}")]
         public async Task<Ticket> UpdateTicket(Ticket ticket)
         {
-            _logger.LogInformation("Ticket with id {Id} retrieved", ticket.Id);
-            return await _ticketService.UpdateAsync(ticket);
+            var updatedTicket = await _ticketService.UpdateAsync(ticket);
+            _logger.LogInformation($"Ticket with id {updatedTicket.Id} retrieved");
+            return updatedTicket;
         }
 
         [HttpDelete]
@@ -63,8 +68,9 @@ namespace EmployeeManager.Controllers
         {
             if (await _ticketService.GetAsync(id) == null)
                 return NotFound();
-            _logger.LogInformation("Ticket with id {Id} removed", id);
+
             await _ticketService.RemoveAsync(id);
+            _logger.LogInformation($"Ticket with id {id} removed");
             return Ok();
         }
 

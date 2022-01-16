@@ -33,22 +33,25 @@ namespace EmployeeManager.Controllers
         [HttpPost]
         public async Task<Car> AddNewCar(Car car)
         {
-            _logger.LogInformation("A new car added. Id: {id}", car.Id);
-            return await _carService.AddAsync(car);
+            var addedCar = await _carService.AddAsync(car);
+            _logger.LogInformation("A new car added. Id: {id}", addedCar.Id);
+            return addedCar;
         }
 
         [HttpGet("assigned")]
         public async Task<IEnumerable<Car>> GetAllAssigned()
         {
+            var cars = await _carService.GetAllAssignedAsync();
             _logger.LogInformation("All cars with assigned users retrieved");
-            return await _carService.GetAllAssignedAsync();
+            return cars;
         }
 
         [HttpGet("unassigned")]
         public async Task<IEnumerable<Car>> GetAllUnassigned()
         {
+            var cars = await _carService.GetAllUnassignedAsync();
             _logger.LogInformation("All cars with no assigned users retrieved");
-            return await _carService.GetAllUnassignedAsync();
+            return cars;
         }
 
         [HttpGet]
@@ -62,8 +65,9 @@ namespace EmployeeManager.Controllers
         [HttpGet("{id}")]
         public async Task<Car> Get(int id)
         {
+            var car = await _carService.GetAsync(id);
             _logger.LogInformation("Car with id {Id} retrieved", id);
-            return await _carService.GetAsync(id);
+            return car;
         }
 
         [HttpDelete]
@@ -73,8 +77,9 @@ namespace EmployeeManager.Controllers
 
             if (car == null)
                 return NotFound();
-            _logger.LogInformation("Car with id {Id} deleted", id);
+
             await _carService.RemoveAsync(id);
+            _logger.LogInformation("Car with id {Id} deleted", id);
             return Ok();
         }
 
@@ -94,8 +99,8 @@ namespace EmployeeManager.Controllers
                 return BadRequest("User already has a Car");
 
             car.User = user;
-            _logger.LogInformation("Car with id {IdCar} assigned to user with id {IdUser}", car.Id, user.Id);
             await _db.SaveChangesAsync();
+            _logger.LogInformation("Car with id {IdCar} assigned to user with id {IdUser}", car.Id, user.Id);
             return Ok();
         }
 
@@ -128,6 +133,7 @@ namespace EmployeeManager.Controllers
                 carList = Utils.ParseCarsExcel(stream);
                 await _carService.AddAsync(carList);
             }
+
             _logger.LogInformation("Cars added from uploaded file");
             return Ok(carList);
         }
