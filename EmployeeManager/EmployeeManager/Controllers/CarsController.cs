@@ -83,15 +83,15 @@ namespace EmployeeManager.Controllers
             return Ok();
         }
 
-        [HttpPut("{carId}/assignUser")]
-        public async Task<ActionResult> AssignUser([FromRoute] int carId, AssignUserDto assignUserDto)
+        [HttpPut("{carId}/assignUser/{userId}")]
+        public async Task<ActionResult> AssignUser([FromRoute] int carId, [FromRoute] string userId)
         {
             var car = await _carService.GetAsync(carId);
 
             if (car.User != null)
                 return BadRequest("Car already assigned");
 
-            var user = await _userManager.FindByIdAsync(assignUserDto.UserId);
+            var user = await _userManager.FindByIdAsync(userId);
 
             if (user.Car == null)
                 user.Car = car;
