@@ -10,5 +10,6 @@ namespace EmployeeManager.Services
     public interface ITicketService : IService<Ticket>
     {
         Task<IEnumerable<Ticket>> GetAllForCarAsync(int id);
+        Task<IEnumerable<Ticket>> GetAllForUserAsync(string id);
     }
 }

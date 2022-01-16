@@ -33,10 +33,19 @@ namespace EmployeeManager.Services
         public async Task<IEnumerable<CarHistory>> GetAllForCar(int id)
         {
             return await _db.CarHistory
-                .Where(h => h.Car.Id == id)
+                .Where(h => h.CarId == id)
                 .Include(h => h.Car)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<CarHistory>> GetAllForUser(string id)
+        {
+            return await _db.CarHistory
+                .Where(h => h.UserId == id)
+                .Include(h => h.Car)
+                .ToListAsync();
+        }
+
 
         public async Task<CarHistory> GetAsync(int id)
         {

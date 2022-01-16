@@ -63,5 +63,14 @@ namespace EmployeeManager.Services
                 .Include(t => t.User)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<Ticket>> GetAllForUserAsync(string id)
+        {
+            return await _db.Tickets
+                .Where(t => t.UserId == id)
+                .Include(t => t.Car)
+                .Include(t => t.User)
+                .ToListAsync();
+        }
     }
 }

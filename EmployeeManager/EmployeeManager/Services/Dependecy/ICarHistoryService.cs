@@ -9,5 +9,6 @@ namespace EmployeeManager.Services
     public interface ICarHistoryService : IService<CarHistory>
     {
         Task<IEnumerable<CarHistory>> GetAllForCar(int id);
+        Task<IEnumerable<CarHistory>> GetAllForUser(string id);
     }
 }

@@ -55,6 +55,14 @@ namespace EmployeeManager.Controllers
             return tickets;
         }
 
+        [HttpGet("/api/users/{userId}/tickets")]
+        public async Task<IEnumerable<Ticket>> GetAllForUser(string userId)
+        {
+            var tickets = await _ticketService.GetAllForUserAsync(userId);
+            _logger.LogInformation($"All tickets for user with id {userId} retrieved");
+            return tickets;
+        }
+
         [HttpPut("{id}")]
         public async Task<Ticket> UpdateTicket(Ticket ticket)
         {
