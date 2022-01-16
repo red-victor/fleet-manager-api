@@ -12,7 +12,7 @@ namespace EmployeeManager.Data
 {
     public class Seed
     {
-        public static string SEEDPATH = Path.GetFullPath(".\\Data\\Seed").ToString();
+        private static readonly string SEEDPATH = Path.GetFullPath(".\\Data\\Seed").ToString();
 
         public static async Task SeedData(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
@@ -23,11 +23,10 @@ namespace EmployeeManager.Data
 
                 var workbook = WorkBook.Load(filePath);
                 var worksheet = workbook.GetWorkSheet("data");
-                var rowCount = worksheet.RowCount;
 
                 using (context)
                 {
-                    for (int row = 2; row <= rowCount; row++)
+                    for (int row = 2; row <= worksheet.RowCount; row++)
                     {
                         carList.Add(new Car
                         {
@@ -51,14 +50,14 @@ namespace EmployeeManager.Data
 
                 var workbook = WorkBook.Load(filePath);
                 var worksheet = workbook.GetWorkSheet("data");
-                var rowCount = worksheet.RowCount;
 
                 using (context)
                 {
-                    var successful = new List<string>();
+                    //var successful = new List<string>();
+                    Dictionary<string, string> successful = new Dictionary<string, string>();
                     var failed = new List<string>();
 
-                    for (int row = 2; row <= rowCount; row++)
+                    for (int row = 2; row <= worksheet.RowCount; row++)
                     {
                         var user = new ApplicationUser
                         {
@@ -71,7 +70,7 @@ namespace EmployeeManager.Data
                             PhoneNumber = worksheet[$"G{row}:G{row}"].ToString(),
                             PhotoUrl = worksheet[$"H{row}:H{row}"].ToString(),
                         };
-                        var password = "Pa$$w0rd";
+                        var password = Guid.NewGuid().ToString().Substring(0, 8);
                         var result = await userManager.CreateAsync(user, password);
 
                         // #todo: Send email to user with generated password
@@ -79,14 +78,15 @@ namespace EmployeeManager.Data
                         if (result.Succeeded)
                         {
                             //successful.Add(user.Email);
+                            successful.Add(user.Email, password);
                             await userManager.AddToRoleAsync(user, worksheet[$"I{row}:I{row}"].ToString());
+                            userList.Add(user);
                         }
                         else
                         {
-                            //failed.Add(user.Email);
+                            failed.Add(user.Email);
                         }
                     }
-                    
                 }
             }
         }
