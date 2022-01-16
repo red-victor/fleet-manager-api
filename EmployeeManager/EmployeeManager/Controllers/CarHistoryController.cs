@@ -36,18 +36,18 @@ namespace EmployeeManager.Controllers
         }
 
         [HttpGet("/api/cars/{carId}/history")]
-        public async Task<IEnumerable<CarHistory>> GetAllForCarAsync(int id)
+        public async Task<IEnumerable<CarHistory>> GetAllForCarAsync(int carId)
         {
-            var histories = await _carHistoryService.GetAllForCar(id);
-            _logger.LogInformation($"History for car with id {id} retrieved");
+            var histories = await _carHistoryService.GetAllForCar(carId);
+            _logger.LogInformation($"History for car with id {carId} retrieved");
             return histories;
         }
 
         [HttpGet("/api/users/{userId}/history")]
-        public async Task<IEnumerable<CarHistory>> GetAllForUserAsync(string id)
+        public async Task<IEnumerable<CarHistory>> GetAllForUserAsync(string userId)
         {
-            var histories = await _carHistoryService.GetAllForUser(id);
-            _logger.LogInformation($"History for user with id {id} retrieved");
+            var histories = await _carHistoryService.GetAllForUser(userId);
+            _logger.LogInformation($"History for user with id {userId} retrieved");
             return histories;
         }
 
