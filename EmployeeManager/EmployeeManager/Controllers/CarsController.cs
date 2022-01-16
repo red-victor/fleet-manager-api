@@ -30,11 +30,6 @@ namespace EmployeeManager.Controllers
             _logger = logger;
         }
 
-        /// <summary>
-        /// Add newly stocked Cars To DB
-        /// </summary>
-        /// <param name="car">Car object</param>
-        /// <returns>Success Message</returns>
         [HttpPost]
         public async Task<Car> AddNewCar(Car car)
         {
@@ -42,10 +37,6 @@ namespace EmployeeManager.Controllers
             return await _carService.AddAsync(car);
         }
 
-        /// <summary>
-        /// Get a List of All Cars with Assigned User
-        /// </summary>
-        /// <returns>List of Cars</returns>
         [HttpGet("assigned")]
         public async Task<IEnumerable<Car>> GetAllAssigned()
         {
@@ -53,10 +44,6 @@ namespace EmployeeManager.Controllers
             return await _carService.GetAllAssignedAsync();
         }
 
-        /// <summary>
-        /// Get a List of All Cars with NO Assigned User
-        /// </summary>
-        /// <returns>List of Cars</returns>
         [HttpGet("unassigned")]
         public async Task<IEnumerable<Car>> GetAllUnassigned()
         {
@@ -64,10 +51,6 @@ namespace EmployeeManager.Controllers
             return await _carService.GetAllUnassignedAsync();
         }
 
-        /// <summary>
-        /// Get a List of All Cars in Db
-        /// </summary>
-        /// <returns>List of Cars</returns>
         [HttpGet]
         public async Task<IEnumerable<Car>> GetAll()
         {
@@ -76,11 +59,6 @@ namespace EmployeeManager.Controllers
             return cars; 
         }
 
-        /// <summary>
-        /// Get ONE Specific Car by corresponding ID
-        /// </summary>
-        /// <param name="id">Car ID</param>
-        /// <returns>Car Object</returns>
         [HttpGet("{id}")]
         public async Task<Car> Get(int id)
         {
@@ -88,11 +66,6 @@ namespace EmployeeManager.Controllers
             return await _carService.GetAsync(id);
         }
 
-        /// <summary>
-        /// Delete Car from DB
-        /// </summary>
-        /// <param name="id">Car Id</param>
-        /// <returns>Status Message</returns>
         [HttpDelete]
         public async Task<ActionResult> Remove([FromBody] int id)
         {
@@ -105,12 +78,6 @@ namespace EmployeeManager.Controllers
             return Ok();
         }
 
-        /// <summary>
-        /// Assign Car to a User
-        /// </summary>
-        /// <param name="userId">User Id</param>
-        /// <param name="carId">Car Id</param>
-        /// <returns>Status Message</returns>
         [HttpPut("{carId}/assignUser")]
         public async Task<ActionResult> AssignUser([FromRoute] int carId, AssignUserDto assignUserDto)
         {
@@ -132,11 +99,6 @@ namespace EmployeeManager.Controllers
             return Ok();
         }
 
-        /// <summary>
-        /// Dissociate a Car from a User
-        /// </summary>
-        /// <param name="carId">Car Id</param>
-        /// <returns>Status Message</returns>
         [HttpPut("{carId}/dissociateUser")]
         public async Task<ActionResult> DissociateUser(int carId)
         {

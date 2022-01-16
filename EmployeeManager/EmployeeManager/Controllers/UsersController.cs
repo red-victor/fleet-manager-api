@@ -1,7 +1,6 @@
 ﻿using EmployeeManager.DTOs;
 using EmployeeManager.Models;
 using EmployeeManager.Services;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -13,21 +12,15 @@ namespace EmployeeManager.Controllers
     [Route("api/[controller]")]
     public class UsersController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserService _userService;
         private readonly ILogger<UsersController> _logger;
 
-        public UsersController(ILogger<UsersController> logger, UserManager<ApplicationUser> userManager, IUserService userService)
+        public UsersController(ILogger<UsersController> logger, IUserService userService)
         {
-            _userManager = userManager;
             _userService = userService;
             _logger = logger;
         }
 
-        /// <summary>
-        /// Get a List of ALL Users
-        /// </summary>
-        /// <returns>List of User DTOs</returns>
         [HttpGet]
         public async Task<IEnumerable<UserDto>> GetUsers()
         {
@@ -36,10 +29,6 @@ namespace EmployeeManager.Controllers
             return _userService.TransposeToDtoAsync(users);
         }
 
-        /// <summary>
-        /// Get a List of Users that do not have a car assigned
-        /// </summary>
-        /// <returns>List of User DTOs</returns>
         [HttpGet("with-no-car")]
         public async Task<IEnumerable<UserDto>> GetUsersWithoutCar()
         {
@@ -48,11 +37,6 @@ namespace EmployeeManager.Controllers
             return _userService.TransposeToDtoAsync(users);
         }
 
-        /// <summary>
-        /// Get User by Id
-        /// </summary>
-        /// <param name="id">User Id</param>
-        /// <returns>User DTO</returns>
         [HttpGet("{id}")]
         public async Task<UserDto> GetUser(string id)
         {
@@ -61,11 +45,6 @@ namespace EmployeeManager.Controllers
             return _userService.TransposeToDtoAsync(user);
         }
 
-        /// <summary>
-        /// Update Specific User Properties
-        /// </summary>
-        /// <param name="dto">User DTO</param>
-        /// <returns>Status Message</returns>
         [HttpPut("{id}")]
         public async Task<ApplicationUser> UpdateUser(UserDto dto)
         {
@@ -74,11 +53,6 @@ namespace EmployeeManager.Controllers
             return await _userService.UpdateAsync(user);
         }
 
-        /// <summary>
-        /// Delete User from Db
-        /// </summary>
-        /// <param name="id">User Id</param>
-        /// <returns>Status Message</returns>
         [HttpDelete]
         public async Task<ActionResult> DeleteUser([FromBody] int id)
         {

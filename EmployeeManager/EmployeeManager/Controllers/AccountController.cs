@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using EmployeeManager.DTOs;
+﻿using EmployeeManager.DTOs;
 using EmployeeManager.Models;
 using EmployeeManager.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -35,11 +34,6 @@ namespace EmployeeManager.Controllers
             _userService = userService;
         }
 
-        /// <summary>
-        /// Login User
-        /// </summary>
-        /// <param name="loginDto">User Credentials</param>
-        /// <returns>Session Token</returns>
         [HttpPost("login")]
         public async Task<ActionResult<LoggedUserDto>> Login(LoginDto loginDto)
         {
@@ -68,11 +62,6 @@ namespace EmployeeManager.Controllers
             };
         }
 
-        /// <summary>
-        /// Register new User
-        /// </summary>
-        /// <param name="registerDto">User Credentials</param>
-        /// <returns>Status Message</returns>
         [HttpPost("register")]
         public async Task<ActionResult> Register(RegisterDto registerDto)
         {
@@ -107,10 +96,6 @@ namespace EmployeeManager.Controllers
             return StatusCode(201);
         }
 
-        /// <summary>
-        /// Get Current User Session Token
-        /// </summary>
-        /// <returns>Session Token</returns>
         [Authorize]
         [HttpGet("currentUser")]
         public async Task<ActionResult<LoggedUserDto>> GetCurrentUser()
@@ -177,8 +162,6 @@ namespace EmployeeManager.Controllers
 
                 return Json(new { SuccessfullyRegistered = successful, FailedToRegister = failed });
             }
-
-            //return Ok(userList);
         }
     }
 }
