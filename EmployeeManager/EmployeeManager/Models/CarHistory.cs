@@ -9,12 +9,25 @@ namespace EmployeeManager.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [Required]
+        public int TicketId { get; set; }
+
+        [Required]
+        public string AdminId { get; set; }
+
+        [Column(TypeName = "varchar(150)")]
+        public string ImagePath { get; set; }
+
+        [Required]
         public int CarId { get; set; }
 
         public Car Car { get; set; }
 
         [Required]
         public TicketType ServiceType { get; set; }
+
+        [Required]
+        [Column(TypeName = "varchar(100)")]
+        public string Title { get; set; }
 
         [Column(TypeName = "varchar(max)")]
         public string Details { get; set; }

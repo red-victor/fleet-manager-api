@@ -29,6 +29,9 @@ namespace EmployeeManager.Models
         public string Details { get; set; }
 
         [Required]
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal Cost { get; set; }
+        [Required]
         public DateTime Date { get; set; }
 
         [Required]
