@@ -42,7 +42,10 @@ namespace EmployeeManager.Services
 
         public async Task<IEnumerable<Ticket>> GetAllAsync()
         {
-            return await _db.Tickets.ToListAsync();
+            return await _db.Tickets
+                .Include(t => t.Car)
+                .Include(t => t.User)
+                .ToListAsync();
         }
 
         public async Task RemoveAsync(int id)

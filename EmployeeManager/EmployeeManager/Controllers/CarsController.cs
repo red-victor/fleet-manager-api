@@ -71,8 +71,9 @@ namespace EmployeeManager.Controllers
         [HttpGet]
         public async Task<IEnumerable<Car>> GetAll()
         {
+            var cars = await _carService.GetAllAsync();
             _logger.LogInformation("All cars retrieved");
-            return await _carService.GetAllAsync();
+            return cars; 
         }
 
         /// <summary>
@@ -148,8 +149,8 @@ namespace EmployeeManager.Controllers
             car.User = null;
             car.UserId = null;
             user.Car = null;
-            _logger.LogInformation("Car with id {IdCar} removed from user with id {IdUser}", car.Id, user.Id);
             await _db.SaveChangesAsync();
+            _logger.LogInformation("Car with id {IdCar} removed from user with id {IdUser}", car.Id, user.Id);
             return Ok();
         }
 

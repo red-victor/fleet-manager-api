@@ -31,7 +31,7 @@ namespace EmployeeManager.Controllers
         [HttpPost]
         public async Task<Ticket> ProcessTicket(Ticket ticket)
         {
-            _logger.LogInformation("A new ticket added for car with id {Id}", ticket.Car.Id);
+            _logger.LogInformation("A new ticket added for car with id {Id}", ticket.CarId);
             return await _ticketService.AddAsync(ticket);
         }
 

@@ -26,6 +26,7 @@ namespace EmployeeManager.Services
         public async Task<IEnumerable<CarHistory>> GetAllAsync()
         {
             return await _db.CarHistory
+                .Include(h => h.Car)
                 .ToListAsync();
         }
 
