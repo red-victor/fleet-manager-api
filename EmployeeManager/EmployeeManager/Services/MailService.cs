@@ -21,6 +21,12 @@ namespace EmployeeManager.Services
 
         public async Task SendEmailAsync(MailRequest mailRequest)
         {
+            string FilePath = Directory.GetCurrentDirectory() + "\\Templates\\RegisterEmail.html";
+            StreamReader str = new StreamReader(FilePath);
+            string MailText = str.ReadToEnd();
+            str.Close();
+            // MailText = MailText.Replace("[username]", request.UserName).Replace("[email]", request.ToEmail);
+            MailText = MailText.Replace("[password]", mailRequest.Body);
             var email = new MimeMessage();
             email.Sender = MailboxAddress.Parse(_mailSettings.Mail);
             email.To.Add(MailboxAddress.Parse(mailRequest.ToEmail));
@@ -42,7 +48,7 @@ namespace EmployeeManager.Services
                     }
                 }
             }
-            builder.HtmlBody = mailRequest.Body;
+            builder.HtmlBody = MailText;
             email.Body = builder.ToMessageBody();
             using var smtp = new SmtpClient();
             smtp.Connect(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);

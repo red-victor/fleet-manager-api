@@ -10,6 +10,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using System;
+using EmployeeManager.Services.Dependecy;
 
 namespace EmployeeManager.Controllers
 {
@@ -21,17 +22,21 @@ namespace EmployeeManager.Controllers
         private readonly TokenService _tokenService;
         private readonly ILogger<AccountController> _logger;
         private readonly IUserService _userService;
+        private readonly IMailService _mailService;
 
         public AccountController(ILogger<AccountController> logger,
             UserManager<ApplicationUser> userManager, 
             TokenService tokenService,
-            IUserService userService
+            IUserService userService,
+            IMailService mailService
             )
         {
             _userManager = userManager;
             _tokenService = tokenService;
             _logger = logger;
             _userService = userService;
+            _mailService = mailService;
+
         }
 
         [HttpPost("login")]
@@ -84,7 +89,21 @@ namespace EmployeeManager.Controllers
             var password = Guid.NewGuid().ToString().Substring(0, 8);
             var result = await _userManager.CreateAsync(user, password);
 
-            // #todo: Send email to user with generated password
+            try
+            {
+                var mailRequest = new MailRequest
+                {
+                    ToEmail = user.Email,
+                    Subject = "Ava fleet managemet password",
+                    Body = password
+                };
+
+                await _mailService.SendEmailAsync(mailRequest);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
 
             if (!result.Succeeded)
             {
