@@ -1,15 +1,13 @@
 ﻿using EmployeeManager.Data;
 using EmployeeManager.Services;
+using EmployeeManager.Services.Dependecy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace EmployeeManager.Extensions
 {
@@ -38,6 +36,7 @@ namespace EmployeeManager.Extensions
             services.AddScoped<ITicketService, TicketService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<TokenService>();
+            services.AddTransient<IMailService, MailService>();
 
             return services;
         }

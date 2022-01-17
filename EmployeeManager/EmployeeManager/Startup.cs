@@ -24,12 +24,11 @@ namespace EmployeeManager
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                 );
-
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
             services.AddApplicationServices(Configuration);
             services.AddIdentityServices(Configuration);
             services.AddRazorPages();
             services.AddLogging();
-            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
