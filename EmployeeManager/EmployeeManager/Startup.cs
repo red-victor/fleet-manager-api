@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using EmployeeManager.Middleware;
 using EmployeeManager.Extensions;
+using EmployeeManager.Settings;
 
 namespace EmployeeManager
 {
@@ -28,6 +29,7 @@ namespace EmployeeManager
             services.AddIdentityServices(Configuration);
             services.AddRazorPages();
             services.AddLogging();
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
