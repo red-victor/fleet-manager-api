@@ -26,6 +26,7 @@
 
 	<PropertyGroup>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<UserSecretsId>94e15b5f-b1d1-48be-94ca-d5614199794f</UserSecretsId>
 
 	</PropertyGroup>
 
