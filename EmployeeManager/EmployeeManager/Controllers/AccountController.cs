@@ -203,11 +203,13 @@ namespace EmployeeManager.Controllers
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(error.Code, error.Description);
+                    
                 }
-
+                _logger.LogInformation($"User {user.Id} failed to change his password. Errors: \n {result.Errors}");
                 return ValidationProblem();
             }
 
+            _logger.LogInformation($"User {user.Id} changed his password");
             return Ok();
         }
 
@@ -229,7 +231,7 @@ namespace EmployeeManager.Controllers
 
                 return ValidationProblem();
             }
-
+            _logger.LogInformation($"User {user.Id} has had his password changed by an admin");
             return Ok();
         }
     }
