@@ -30,6 +30,13 @@ namespace EmployeeManager.Extensions
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+
+            // THIS MAKES ALL DATA PROTECTION TOKENS EXPIRE IN 5 HOURS (INCLUDING THE EMAIL CONFIRMATION TOKEN)  
+            services.Configure<DataProtectionTokenProviderOptions>(options =>
+            {
+                options.TokenLifespan = TimeSpan.FromHours(5);
+            });
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
