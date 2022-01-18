@@ -7,6 +7,9 @@ namespace EmployeeManager.DTOs
 {
     public class ResetPasswordDto
     {
-        public string Email { get; set; }
+        public string UserId { get; set; }
+        public string Ticks { get; set; }
+        public string Password { get; set; }
+        public string ConfirmPassword { get; set; }
     }
 }

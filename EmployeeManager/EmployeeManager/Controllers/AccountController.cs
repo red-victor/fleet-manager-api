@@ -213,18 +213,18 @@ namespace EmployeeManager.Controllers
             return Ok();
         }
 
-        [HttpPost("reset-password")]
-        public async Task<ActionResult> ResetPasswordRequest(ResetPasswordDto resetPasswordDto)
+        [HttpPost("request-reset-password")]
+        public async Task<ActionResult> ResetPasswordRequest(RequestResetPasswordDto requestResetPasswordDto)
         {
-            var user = await _userManager.FindByEmailAsync(resetPasswordDto.Email);
+            var user = await _userManager.FindByEmailAsync(requestResetPasswordDto.Email);
             if (user == null) return Ok(); // no point to letting the user know the email does not exist, it would only leak information, since it is an unauthorized route.
-            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            
             try
             {
                 var resetPasswordMailRequest = new ResetPasswordMailRequest
                 {
                     ToEmail = user.Email,
-                    Link = $"{user.Id}/{token}"
+                    Link = $"{user.Id}/{DateTime.Now.Ticks}"
                 };
 
                 await _mailService.SendResetPassEmailAsync(resetPasswordMailRequest);
@@ -255,6 +255,28 @@ namespace EmployeeManager.Controllers
                 return ValidationProblem();
             }
             _logger.LogInformation($"User {user.Id} has had his password changed by an admin");
+            return Ok();
+        }
+
+        [HttpPost("reset-password")]    
+        public async Task<ActionResult> ResetPassword(ResetPasswordDto resetPasswordDto)
+        {
+            var user = await _userManager.FindByIdAsync(resetPasswordDto.UserId);
+            if (user == null) return NotFound();
+            if (resetPasswordDto.Password != resetPasswordDto.ConfirmPassword) return BadRequest();
+            var linkIssueDate = new DateTime(Convert.ToInt64(resetPasswordDto.Ticks));
+            if (DateTime.Compare(DateTime.Now, linkIssueDate.AddHours(5)) > 0) return BadRequest();
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var result = await _userManager.ResetPasswordAsync(user, token, resetPasswordDto.Password);
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("error", error.Description);
+
+                }
+                return ValidationProblem();
+            }
             return Ok();
         }
     }
