@@ -1,6 +1,7 @@
 ﻿using EmployeeManager.Data;
 using EmployeeManager.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,6 +19,7 @@ namespace EmployeeManager.Services
 
         public async Task<Ticket> AddAsync(Ticket ticket)
         {
+            ticket.Date = DateTime.Now;
             await _db.Tickets.AddAsync(ticket); 
             await _db.SaveChangesAsync();
             return ticket;
