@@ -190,5 +190,47 @@ namespace EmployeeManager.Controllers
                 return Json(new { SuccessfullyRegistered = successful, FailedToRegister = failed });
             }
         }
+
+        [HttpPost("change-my-password")]
+        public async Task<ActionResult>ChangePasswordByOwner(ChangePasswordDto changePasswordDto)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null || (changePasswordDto.NewPassword != changePasswordDto.ConfirmPassword)) return BadRequest();
+            var result = await _userManager.ChangePasswordAsync(user, changePasswordDto.CurrentPassword, changePasswordDto.NewPassword);
+
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(error.Code, error.Description);
+                }
+
+                return ValidationProblem();
+            }
+
+            return Ok();
+        }
+
+        // Add authorization for addmin role
+        [HttpPost("change-password")]
+        public async Task<ActionResult> ChangePasswordByAdmin(string userId, string newPassword)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return BadRequest();
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
+
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(error.Code, error.Description);
+                }
+
+                return ValidationProblem();
+            }
+
+            return Ok();
+        }
     }
 }
