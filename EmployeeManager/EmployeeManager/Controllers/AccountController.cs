@@ -191,7 +191,7 @@ namespace EmployeeManager.Controllers
             }
         }
 
-        [HttpPost("change-my-password")]
+        [HttpPut("change-my-password")]
         public async Task<ActionResult>ChangePasswordByOwner(ChangePasswordDto changePasswordDto)
         {
             var user = await _userManager.GetUserAsync(User);
@@ -214,7 +214,7 @@ namespace EmployeeManager.Controllers
         }
 
         // Add authorization for addmin role
-        [HttpPost("change-password")]
+        [HttpPut("change-password")]
         public async Task<ActionResult> ChangePasswordByAdmin(string userId, string newPassword)
         {
             var user = await _userManager.FindByIdAsync(userId);
