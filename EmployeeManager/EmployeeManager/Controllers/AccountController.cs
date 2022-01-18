@@ -213,6 +213,29 @@ namespace EmployeeManager.Controllers
             return Ok();
         }
 
+        [HttpPost("reset-password")]
+        public async Task<ActionResult> ResetPasswordRequest(ResetPasswordDto resetPasswordDto)
+        {
+            var user = await _userManager.FindByEmailAsync(resetPasswordDto.Email);
+            if (user == null) return Ok(); // no point to letting the user know the email does not exist, it would only leak information, since it is an unauthorized route.
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            try
+            {
+                var resetPasswordMailRequest = new ResetPasswordMailRequest
+                {
+                    ToEmail = user.Email,
+                    Link = $"{user.Id}/{token}"
+                };
+
+                await _mailService.SendResetPassEmailAsync(resetPasswordMailRequest);
+            }
+            catch (Exception)
+            {
+                return Ok();
+            }
+            return Ok();
+        }
+
         // Add authorization for addmin role
         [HttpPut("change-password")]
         public async Task<ActionResult> ChangePasswordByAdmin(string userId, string newPassword)
