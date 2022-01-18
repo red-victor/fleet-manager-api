@@ -210,5 +210,27 @@ namespace EmployeeManager.Controllers
 
             return Ok();
         }
+
+        // Add authorization for addmin role
+        [HttpPost("change-password")]
+        public async Task<ActionResult> ChangePasswordByAdmin(string userId, string newPassword)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return BadRequest();
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
+
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(error.Code, error.Description);
+                }
+
+                return ValidationProblem();
+            }
+
+            return Ok();
+        }
     }
 }
