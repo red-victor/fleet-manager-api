@@ -195,14 +195,14 @@ namespace EmployeeManager.Controllers
         public async Task<ActionResult>ChangePasswordByOwner(ChangePasswordDto changePasswordDto)
         {
             var user = await _userManager.GetUserAsync(User);
-            if (user == null || (changePasswordDto.NewPassword != changePasswordDto.ConfirmPassword)) return BadRequest();
+            if (user == null) return BadRequest();
             var result = await _userManager.ChangePasswordAsync(user, changePasswordDto.CurrentPassword, changePasswordDto.NewPassword);
 
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
                 {
-                    ModelState.AddModelError(error.Code, error.Description);
+                    ModelState.AddModelError("error", error.Description);
                     
                 }
                 _logger.LogInformation($"User {user.Id} failed to change his password. Errors: \n {result.Errors}");
