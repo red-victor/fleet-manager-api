@@ -9,6 +9,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using EmployeeManager.DTOs;
+using AutoMapper;
 
 namespace EmployeeManager.Controllers
 {
@@ -31,8 +32,14 @@ namespace EmployeeManager.Controllers
         }
 
         [HttpPost]
-        public async Task<Car> AddNewCar(Car car)
+        public async Task<Car> AddNewCar(CarDto carDto)
         {
+            var config = new MapperConfiguration(cfg =>
+                       cfg.CreateMap<CarDto, Car>()
+                   );
+            var mapper = new Mapper(config);
+            var car = mapper.Map<Car>(carDto);
+
             var addedCar = await _carService.AddAsync(car);
             _logger.LogInformation("A new car added. Id: {id}", addedCar.Id);
             return addedCar;
