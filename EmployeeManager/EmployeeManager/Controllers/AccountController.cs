@@ -83,7 +83,9 @@ namespace EmployeeManager.Controllers
                 CNP = registerDto.LastName,
                 Adress = registerDto.Address,
                 PhoneNumber = registerDto.PhoneNumber,
-                PhotoUrl = registerDto.PhotoUrl
+                PhoneNumberConfirmed = false,
+                PhotoUrl = registerDto.PhotoUrl,
+                JoinDate = DateTime.Now
             };
 
             var password = Guid.NewGuid().ToString().Substring(0, 8);
@@ -137,6 +139,7 @@ namespace EmployeeManager.Controllers
                 CNP = user.LastName,
                 Adress = user.Adress,
                 PhoneNumber = user.PhoneNumber,
+                PhoneNumberConfirmed = user.PhoneNumberConfirmed,
                 PhotoUrl = user.PhotoUrl,
                 Car = user.Car,
                 Token = await _tokenService.GenerateToken(user)
@@ -167,6 +170,7 @@ namespace EmployeeManager.Controllers
                         CNP = toRegister.Cnp,
                         Adress = toRegister.Address,
                         PhoneNumber = toRegister.PhoneNumber,
+                        PhoneNumberConfirmed = false,
                         PhotoUrl = toRegister.PhotoUrl
                     };
                     var password = Guid.NewGuid().ToString().Substring(0, 8);

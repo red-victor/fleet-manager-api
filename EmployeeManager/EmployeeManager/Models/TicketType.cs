@@ -12,6 +12,8 @@ namespace EmployeeManager.Models
         ITP,
         [Display(Name = "Revision")]
         Revision,
+        [Display(Name = "Revision")]
+        Consumable,
         [Display(Name = "Other")]
         Other
     }

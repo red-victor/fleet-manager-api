@@ -7,7 +7,7 @@ namespace EmployeeManager.Models
 {
     public enum StatusType
     {
-        Pending,
+        Unresolved,
         InProgress,
         Solved,
     }

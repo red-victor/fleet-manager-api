@@ -38,6 +38,9 @@ namespace EmployeeManager.Models
         public TicketType Type { get; set; }
 
         [Required]
+        public int MileageAtSubmit { get; set; }
+
+        [Required]
         public StatusType Status { get; set; }
     }
 }

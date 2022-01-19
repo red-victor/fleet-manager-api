@@ -32,6 +32,7 @@ namespace EmployeeManager.Services
             userToUpdate.Adress = user.Adress;
             userToUpdate.Email = user.Email;
             userToUpdate.PhoneNumber = user.PhoneNumber;
+            userToUpdate.PhoneNumberConfirmed = user.PhoneNumberConfirmed;
             await _db.SaveChangesAsync();
             return user;
         }
