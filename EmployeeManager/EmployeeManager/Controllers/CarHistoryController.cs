@@ -63,33 +63,40 @@ namespace EmployeeManager.Controllers
         }
 
         [HttpPost("{id}/history")]
-        public async Task<CarHistory> AddCarHistoryAsync(int id, [FromBody] HistoryDto historyDto)
+        public async Task<IActionResult> AddCarHistoryAsync(int id, [FromBody] HistoryDto historyDto)
         {
-            var carHistory = new CarHistory()
-            {
-                Title = historyDto.Title,
-                Details = historyDto.Details,
-                AdminId = historyDto.AdminId,
-                UserId = historyDto.UserId,
-                TicketId = historyDto.TicketId,
-                ImagePath = historyDto.ImagePath,
-                CarId = historyDto.CarId,
-                MileageAtExecution = historyDto.MileageAtExecution,
-                ExecutionDate = historyDto.ExecutionDate,
-                RenewDate = historyDto.RenewDate,
-                Cost = historyDto.Cost,
-                IsPayed = historyDto.IsPayed,
-                ServiceType = (TicketType) historyDto.ServiceType
-            };
-
-            var addedHistory = await _carHistoryService.AddAsync(carHistory);
-            _logger.LogInformation($"Car with id {id} history retrieved");
-
             var ticket = await _ticketService.GetAsync(historyDto.TicketId);
             ticket.Status = (StatusType)historyDto.Status;
             await _ticketService.UpdateAsync(ticket);
 
-            return addedHistory;
+            if (ticket.Status == StatusType.Solved)
+            {
+                var carHistory = new CarHistory()
+                {
+                    Title = historyDto.Title,
+                    Details = historyDto.Details,
+                    AdminId = historyDto.AdminId,
+                    UserId = historyDto.UserId,
+                    TicketId = historyDto.TicketId,
+                    ImagePath = historyDto.ImagePath,
+                    CarId = historyDto.CarId,
+                    MileageAtExecution = historyDto.MileageAtExecution,
+                    ExecutionDate = historyDto.ExecutionDate,
+                    RenewDate = historyDto.RenewDate,
+                    Cost = historyDto.Cost,
+                    IsPayed = historyDto.IsPayed,
+                    ServiceType = (TicketType)historyDto.ServiceType
+                };
+
+                await _carHistoryService.AddAsync(carHistory);
+                _logger.LogInformation($"History added for car with id {id}");
+                return Ok();
+            }
+            else
+            {
+                _logger.LogInformation($"Ticket {ticket.Id} status modified, history not added");
+                return Ok();
+            }
         }
 
         [HttpPut("{id}/history")]
