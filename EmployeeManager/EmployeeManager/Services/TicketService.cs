@@ -45,6 +45,7 @@ namespace EmployeeManager.Services
         public async Task<IEnumerable<Ticket>> GetAllAsync()
         {
             return await _db.Tickets
+                .Where(t => t.Status != StatusType.Solved)
                 .Include(t => t.Car)
                 .Include(t => t.User)
                 .ToListAsync();
@@ -60,6 +61,7 @@ namespace EmployeeManager.Services
         public async Task<IEnumerable<Ticket>> GetAllForCarAsync(int id)
         {
             return await _db.Tickets
+                .Where(t => t.Status != StatusType.Solved)
                 .Where(t => t.CarId == id)
                 .Include(t => t.Car)
                 .Include(t => t.User)
