@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using EmployeeManager.DTOs;
 
 namespace EmployeeManager.Controllers
 {
@@ -24,9 +25,22 @@ namespace EmployeeManager.Controllers
         }
 
         [HttpPost]
-        public async Task<Ticket> ProcessTicket(Ticket ticket)
+        public async Task<Ticket> ProcessTicket(TicketDto ticketDto)
         {
-            var addedTicket = await _ticketService.AddAsync(ticket);
+            var ticketToAdd = new Ticket
+            {
+                UserId = ticketDto.UserId,
+                CarId = ticketDto.CarId,
+                Title = ticketDto.Title,
+                ImagePath = ticketDto.ImagePath,
+                Details = ticketDto.Details,
+                Cost = ticketDto.Cost,
+                Date = ticketDto.Date,
+                MileageAtSubmit = ticketDto.MileageAtSubmit,
+                Type = (TicketType) ticketDto.TicketType,
+                Status = (StatusType) ticketDto.Status
+            };
+            var addedTicket = await _ticketService.AddAsync(ticketToAdd);
             _logger.LogInformation($"A new ticket with id {addedTicket.Id} was added");
             return addedTicket;
         }
