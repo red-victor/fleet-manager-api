@@ -217,14 +217,18 @@ namespace EmployeeManager.Controllers
         public async Task<ActionResult> ResetPasswordRequest(RequestResetPasswordDto requestResetPasswordDto)
         {
             var user = await _userManager.FindByEmailAsync(requestResetPasswordDto.Email);
+
             if (user == null) return Ok(); // no point to letting the user know the email does not exist, it would only leak information, since it is an unauthorized route.
-            
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
             try
             {
                 var resetPasswordMailRequest = new ResetPasswordMailRequest
                 {
                     ToEmail = user.Email,
-                    Link = $"{user.Id}/{DateTime.Now.Ticks}"
+                    UserId = user.Id,
+                    Token = token
                 };
 
                 await _mailService.SendResetPassEmailAsync(resetPasswordMailRequest);
@@ -236,37 +240,16 @@ namespace EmployeeManager.Controllers
             return Ok();
         }
 
-        // Add authorization for addmin role
-        [HttpPut("change-password")]
-        public async Task<ActionResult> ChangePasswordByAdmin(string userId, string newPassword)
-        {
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null) return BadRequest();
-            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            var result = await _userManager.ResetPasswordAsync(user, token, newPassword);
-
-            if (!result.Succeeded)
-            {
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(error.Code, error.Description);
-                }
-
-                return ValidationProblem();
-            }
-            _logger.LogInformation($"User {user.Id} has had his password changed by an admin");
-            return Ok();
-        }
-
         [HttpPost("reset-password")]    
         public async Task<ActionResult> ResetPassword(ResetPasswordDto resetPasswordDto)
         {
             var user = await _userManager.FindByIdAsync(resetPasswordDto.UserId);
             if (user == null) return NotFound();
+
             if (resetPasswordDto.Password != resetPasswordDto.ConfirmPassword) return BadRequest();
-            var linkIssueDate = new DateTime(Convert.ToInt64(resetPasswordDto.Ticks));
-            if (DateTime.Compare(DateTime.Now, linkIssueDate.AddHours(5)) > 0) return BadRequest();
-            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            var token = resetPasswordDto.Token.Replace(' ', '+');
+
             var result = await _userManager.ResetPasswordAsync(user, token, resetPasswordDto.Password);
             if (!result.Succeeded)
             {
