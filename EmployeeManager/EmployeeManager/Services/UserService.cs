@@ -27,14 +27,19 @@ namespace EmployeeManager.Services
         public async Task<ApplicationUser> UpdateAsync(ApplicationUser user)
         {
             var userToUpdate = await GetAsync(user.Id);
-            userToUpdate.FirstName = user.FirstName;
-            userToUpdate.LastName = user.LastName;
-            userToUpdate.Adress = user.Adress;
-            userToUpdate.Email = user.Email;
-            userToUpdate.PhoneNumber = user.PhoneNumber;
-            userToUpdate.PhoneNumberConfirmed = user.PhoneNumberConfirmed;
-            await _db.SaveChangesAsync();
-            return user;
+            if (userToUpdate != null)
+            {
+                userToUpdate.FirstName = user.FirstName;
+                userToUpdate.LastName = user.LastName;
+                userToUpdate.Adress = user.Adress;
+                userToUpdate.Email = user.Email;
+                userToUpdate.PhoneNumber = user.PhoneNumber;
+                userToUpdate.PhoneNumberConfirmed = user.PhoneNumberConfirmed;
+                userToUpdate.CNP = user.CNP;
+                if (await _db.SaveChangesAsync() > 0) return user;
+            }
+
+            return null;
         }
 
         public async Task<IEnumerable<ApplicationUser>> GetAllAsync()

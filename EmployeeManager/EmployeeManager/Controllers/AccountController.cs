@@ -136,7 +136,7 @@ namespace EmployeeManager.Controllers
                 Email = user.Email,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                CNP = user.LastName,
+                CNP = user.CNP,
                 Adress = user.Adress,
                 PhoneNumber = user.PhoneNumber,
                 PhoneNumberConfirmed = user.PhoneNumberConfirmed,
