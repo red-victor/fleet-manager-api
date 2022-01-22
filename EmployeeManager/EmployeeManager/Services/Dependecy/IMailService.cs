@@ -7,5 +7,6 @@ namespace EmployeeManager.Services.Dependecy
     {
         Task SendEmailAsync(MailRequest mailRequest);
         Task SendResetPassEmailAsync(ResetMailRequest resetPasswordMailRequest);
+        Task SendConfirmEmailEmailAsync(ResetMailRequest resetMailRequest);
     }
 }
