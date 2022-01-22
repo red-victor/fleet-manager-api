@@ -8,7 +8,7 @@ namespace EmployeeManager.DTOs
     public class RequestEmailChangeDto
     {
         public string UserId { get; set; }
-        public string newEmail { get; set; }
-        public string password { get; set; }
+        public string NewEmail { get; set; }
+        public string Password { get; set; }
     }
 }
