@@ -266,5 +266,37 @@ namespace EmployeeManager.Controllers
             }
             return Ok();
         }
+
+        [HttpPost("request-email-change")]
+        public async Task<ActionResult> RequestEmailChange(RequestEmailChangeDto requestEmailChangeDto)
+        {
+            var user = await _userManager.FindByIdAsync(requestEmailChangeDto.UserId);
+
+            if (user == null) return BadRequest();
+            if (await _userManager.CheckPasswordAsync(user, requestEmailChangeDto.Password) == false) return BadRequest(new ProblemDetails { Title = "Invalid Password" });
+
+            var token = await _userManager.GenerateChangeEmailTokenAsync(user, requestEmailChangeDto.NewEmail);
+
+            try
+            {
+                var resetMailRequest = new ResetMailRequest
+                {
+                    ToEmail = user.Email,
+                    UserId = user.Id,
+                    Token = token
+                };
+
+                await _mailService.SendConfirmEmailEmailAsync(resetMailRequest);
+                user.UnConfirmedEmail = requestEmailChangeDto.NewEmail;
+                await _userManager.UpdateAsync(user);
+                await _userService.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                return BadRequest(new ProblemDetails { Title = "Something went wrong" });
+            }
+
+            return Ok();
+        }
     }
 }
