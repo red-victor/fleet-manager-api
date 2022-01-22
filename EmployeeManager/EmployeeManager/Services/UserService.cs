@@ -19,6 +19,11 @@ namespace EmployeeManager.Services
             _db = db;
         }
 
+        public async Task<int> SaveChangesAsync()
+        {
+            return await _db.SaveChangesAsync();
+        }
+
         public Task<ApplicationUser> AddAsync(ApplicationUser item)
         {
             throw new NotImplementedException();
