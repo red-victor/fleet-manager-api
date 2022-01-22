@@ -228,14 +228,14 @@ namespace EmployeeManager.Controllers
 
             try
             {
-                var resetPasswordMailRequest = new ResetPasswordMailRequest
+                var resetMailRequest = new ResetMailRequest
                 {
                     ToEmail = user.Email,
                     UserId = user.Id,
                     Token = token
                 };
 
-                await _mailService.SendResetPassEmailAsync(resetPasswordMailRequest);
+                await _mailService.SendResetPassEmailAsync(resetMailRequest);
             }
             catch (Exception)
             {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeManager.Models
 {
-    public class ResetPasswordMailRequest
+    public class ResetMailRequest
     {
         public string ToEmail { get; set; }
         public string UserId { get; set; }

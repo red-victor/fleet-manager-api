@@ -57,17 +57,17 @@ namespace EmployeeManager.Services
             smtp.Disconnect(true);
         }
 
-        public async Task SendResetPassEmailAsync(ResetPasswordMailRequest resetPasswordMailRequest)
+        public async Task SendResetPassEmailAsync(ResetMailRequest resetMailRequest)
         {
             string FilePath = Directory.GetCurrentDirectory() + "\\Templates\\ResetPasswordEmail.html";
             StreamReader str = new StreamReader(FilePath);
             string MailText = str.ReadToEnd();
             str.Close();
             // MailText = MailText.Replace("[username]", request.UserName).Replace("[email]", request.ToEmail);
-            MailText = MailText.Replace("[uid]", resetPasswordMailRequest.UserId).Replace("[token]", resetPasswordMailRequest.Token);
+            MailText = MailText.Replace("[uid]", resetMailRequest.UserId).Replace("[token]", resetMailRequest.Token);
             var email = new MimeMessage();
             email.Sender = MailboxAddress.Parse(_mailSettings.Mail);
-            email.To.Add(MailboxAddress.Parse(resetPasswordMailRequest.ToEmail));
+            email.To.Add(MailboxAddress.Parse(resetMailRequest.ToEmail));
             email.Subject = "Reset your password";
             var builder = new BodyBuilder();
             builder.HtmlBody = MailText;
