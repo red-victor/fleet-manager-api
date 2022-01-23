@@ -281,7 +281,7 @@ namespace EmployeeManager.Controllers
             {
                 var resetMailRequest = new ResetMailRequest
                 {
-                    ToEmail = user.Email,
+                    ToEmail = requestEmailChangeDto.NewEmail,
                     UserId = user.Id,
                     Token = token
                 };
