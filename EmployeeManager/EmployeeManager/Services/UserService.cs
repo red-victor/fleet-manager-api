@@ -24,6 +24,20 @@ namespace EmployeeManager.Services
             return await _db.SaveChangesAsync();
         }
 
+        public async Task<ApplicationUser> ChangeEmail(ApplicationUser userToChange, string newEmail)
+        {
+            var user = await GetAsync(userToChange.Id);
+            user.Email = newEmail;
+            user.UserName = newEmail;
+            user.NormalizedEmail = newEmail.ToUpper();
+            user.NormalizedUserName = newEmail.ToUpper();
+            user.UnConfirmedEmail = null;
+
+            if (await _db.SaveChangesAsync() > 0) return user;
+
+            return null;
+        }
+
         public Task<ApplicationUser> AddAsync(ApplicationUser item)
         {
             throw new NotImplementedException();

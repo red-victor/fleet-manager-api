@@ -10,6 +10,7 @@ namespace EmployeeManager.Services
     public interface IUserService : IService<ApplicationUser>
     {
         Task<int> SaveChangesAsync();
+        Task<ApplicationUser> ChangeEmail(ApplicationUser userToChange, string newEmail);
         ApplicationUser TransposeFromDto(UserDto user);
         UserDto TransposeToDtoAsync(ApplicationUser user);
         Task<ApplicationUser> GetAsync(string id);

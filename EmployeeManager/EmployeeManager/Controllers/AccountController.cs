@@ -298,5 +298,28 @@ namespace EmployeeManager.Controllers
 
             return Ok();
         }
+
+        [HttpPut("change-email")]
+        public async Task<ActionResult> ChangeEmail(ChangeEmailDto changeEmailDto)
+        {
+            var user = await _userManager.FindByIdAsync(changeEmailDto.UserId);
+            if (user == null || user.UnConfirmedEmail == null) return BadRequest();
+
+            var updatedUser = await _userService.ChangeEmail(user, user.UnConfirmedEmail);
+
+            if (updatedUser == null) return BadRequest(new ProblemDetails { Title = "Something went wrong" });
+            return Ok(new LoggedUserDto
+            {
+                UserName = updatedUser.Email,
+                Email = updatedUser.Email,
+                FirstName = updatedUser.FirstName,
+                LastName = updatedUser.LastName,
+                CNP = updatedUser.CNP,
+                Adress = updatedUser.Adress,
+                PhoneNumber = updatedUser.PhoneNumber,
+                PhotoUrl = updatedUser.PhotoUrl,
+                Token = await _tokenService.GenerateToken(updatedUser)
+            });
+        }
     }
 }
