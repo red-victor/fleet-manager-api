@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using EmployeeManager.DTOs;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EmployeeManager.Controllers
 {
@@ -61,6 +62,7 @@ namespace EmployeeManager.Controllers
             return cars;
         }
 
+        [Authorize(Roles="Admin")]
         [HttpGet]
         public async Task<IEnumerable<Car>> GetAll()
         {

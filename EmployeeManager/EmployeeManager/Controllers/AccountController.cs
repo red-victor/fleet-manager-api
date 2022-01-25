@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using System;
 using EmployeeManager.Services.Dependecy;
+using System.Security.Claims;
+using System.Linq;
 
 namespace EmployeeManager.Controllers
 {
@@ -53,8 +55,9 @@ namespace EmployeeManager.Controllers
                 return Unauthorized();
             }
 
-            var loggedUserDto = new LoggedUserDto 
+            var loggedUserDto = new LoggedUserDto
             {
+                Id = user.Id,
                 UserName = user.Email,
                 Email = user.Email,
                 FirstName = user.FirstName,
@@ -63,8 +66,12 @@ namespace EmployeeManager.Controllers
                 Adress = user.Adress,
                 PhoneNumber = user.PhoneNumber,
                 PhotoUrl = user.PhotoUrl,
-                Token = await _tokenService.GenerateToken(user)
-            };
+                Token = await _tokenService.GenerateToken(user),
+                Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault()
+        };
+
+            var role = await _userManager.GetRolesAsync(user);
+
 
             _logger.LogInformation($"Successful log in the user with email {loginDto.Email}. Token: {loggedUserDto.Token}");
 
@@ -96,7 +103,7 @@ namespace EmployeeManager.Controllers
                 var mailRequest = new MailRequest
                 {
                     ToEmail = user.Email,
-                    Subject = "Ava fleet managemet password",
+                    Subject = "AVA Fleet Management Password",
                     Body = password
                 };
 
@@ -142,7 +149,8 @@ namespace EmployeeManager.Controllers
                 PhoneNumberConfirmed = user.PhoneNumberConfirmed,
                 PhotoUrl = user.PhotoUrl,
                 Car = user.Car,
-                Token = await _tokenService.GenerateToken(user)
+                Token = await _tokenService.GenerateToken(user),
+                Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault()
             };
         }
 
