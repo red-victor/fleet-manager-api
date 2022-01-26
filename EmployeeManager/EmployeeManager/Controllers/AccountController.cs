@@ -16,6 +16,7 @@ using System.Linq;
 
 namespace EmployeeManager.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class AccountController : Controller
@@ -26,21 +27,17 @@ namespace EmployeeManager.Controllers
         private readonly IUserService _userService;
         private readonly IMailService _mailService;
 
-        public AccountController(ILogger<AccountController> logger,
-            UserManager<ApplicationUser> userManager, 
-            TokenService tokenService,
-            IUserService userService,
-            IMailService mailService
-            )
+        public AccountController(ILogger<AccountController> logger, UserManager<ApplicationUser> userManager, 
+            TokenService tokenService, IUserService userService, IMailService mailService )
         {
             _userManager = userManager;
             _tokenService = tokenService;
             _logger = logger;
             _userService = userService;
             _mailService = mailService;
-
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<ActionResult<LoggedUserDto>> Login(LoginDto loginDto)
         {
@@ -68,10 +65,7 @@ namespace EmployeeManager.Controllers
                 PhotoUrl = user.PhotoUrl,
                 Token = await _tokenService.GenerateToken(user),
                 Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault()
-        };
-
-            var role = await _userManager.GetRolesAsync(user);
-
+            };
 
             _logger.LogInformation($"Successful log in the user with email {loginDto.Email}. Token: {loggedUserDto.Token}");
 

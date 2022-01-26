@@ -5,10 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EmployeeManager.Controllers
 {
     [ApiController]
+    [Authorize(Roles = "Employee,Admin")]
     [Route("api/[controller]")]
     public class UsersController : Controller
     {
@@ -21,6 +23,7 @@ namespace EmployeeManager.Controllers
             _logger = logger;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IEnumerable<UserDto>> GetUsers()
         {
@@ -30,6 +33,7 @@ namespace EmployeeManager.Controllers
             return userDtos;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("with-no-car")]
         public async Task<IEnumerable<UserDto>> GetUsersWithoutCar()
         {
@@ -62,6 +66,7 @@ namespace EmployeeManager.Controllers
             return updatedUserDto;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete]
         public async Task<ActionResult> DeleteUser([FromBody] int id)
         {
