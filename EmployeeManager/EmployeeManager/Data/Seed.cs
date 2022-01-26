@@ -47,6 +47,8 @@ namespace EmployeeManager.Data
 
             if (!context.Users.Any())
             {
+                await AddTestingAccounts(context, userManager);
+
                 var userList = new List<ApplicationUser>();
                 var filePath = SEEDPATH + "\\EM_Users_100_1.xlsx";
 
@@ -93,6 +95,41 @@ namespace EmployeeManager.Data
                     }
                 }
             }
+        }
+
+        public static async Task AddTestingAccounts(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        {
+            var admin = new ApplicationUser
+            {
+                FirstName = "John",
+                LastName = "Doe",
+                CNP = "1900825479925",
+                Adress = "Sunset Boulevard nr. 18",
+                Email = "john.doe@testing.com",
+                PhoneNumber = "(555) 555-1234",
+                PhotoUrl = "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+                UserName = "john.doe@testing.com"
+            };
+
+            var employee = new ApplicationUser
+            {
+                FirstName = "Jane",
+                LastName = "Smith",
+                CNP = "1961105479925",
+                Adress = "Sunrise Avenue nr. 42",
+                Email = "jane.smith@testing.com",
+                PhoneNumber = "(555) 555-4321",
+                PhotoUrl = "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg",
+                UserName = "john.doe@testing.com"
+            };
+
+            var password = "Pa$$w0rd";
+
+            await userManager.CreateAsync(admin, password);
+            await userManager.AddToRoleAsync(admin, "Admin");
+            await userManager.CreateAsync(employee, password);
+            await userManager.AddToRoleAsync(employee, "Employee");
+            await context.SaveChangesAsync();
         }
     }
 }

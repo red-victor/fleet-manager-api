@@ -129,6 +129,11 @@ namespace EmployeeManager.Controllers
         public async Task<ActionResult<LoggedUserDto>> GetCurrentUser()
         {
             var user = await _userService.GetByUsernameAsync(User.Identity.Name);
+            
+            if(user == null)
+            {
+                // return redirect
+            }    
 
             return new LoggedUserDto
             {
