@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using System.Linq;
 
 namespace EmployeeManager.Controllers
 {
@@ -15,11 +17,13 @@ namespace EmployeeManager.Controllers
     public class UsersController : Controller
     {
         private readonly IUserService _userService;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<UsersController> _logger;
 
-        public UsersController(ILogger<UsersController> logger, IUserService userService)
+        public UsersController(ILogger<UsersController> logger, IUserService userService, UserManager<ApplicationUser> userManager)
         {
             _userService = userService;
+            _userManager = userManager;
             _logger = logger;
         }
 
@@ -51,6 +55,7 @@ namespace EmployeeManager.Controllers
         {
             var user = await _userService.GetAsync(id);
             var userDto = _userService.TransposeToDtoAsync(user);
+            userDto.Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
             _logger.LogInformation("User with id {Id} retrieved", id);
             return userDto;
         }
@@ -61,6 +66,7 @@ namespace EmployeeManager.Controllers
             var user = _userService.TransposeFromDto(dto);
             var updatedUser = await _userService.UpdateAsync(user);
             var updatedUserDto = _userService.TransposeToDtoAsync(updatedUser);
+            updatedUserDto.Role = (await _userManager.GetRolesAsync(user))[0];
 
             _logger.LogInformation($"User with id {updatedUserDto.Id} updated");
             return updatedUserDto;
