@@ -139,7 +139,7 @@ namespace EmployeeManager.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        [Route("/upload/carList")]
+        [Route("upload/carList")]
         public async Task<IActionResult> UploadCarsExcel(IFormFile file)
         {
             var carList = new List<Car>();

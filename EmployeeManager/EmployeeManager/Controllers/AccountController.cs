@@ -149,7 +149,7 @@ namespace EmployeeManager.Controllers
         }
 
         [HttpPost]
-        [Route("/upload/userList")]
+        [Route("upload/userList")]
         public async Task<IActionResult> UploadUsersExcel(IFormFile file)
         {
             List<RegisterDto> userList;
