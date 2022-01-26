@@ -7,9 +7,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using EmployeeManager.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EmployeeManager.Controllers
 {
+    [Authorize(Roles = "Employee,Admin")]
     [ApiController]
     [Route("api/Cars/")]
     public class CarHistoryController : Controller
@@ -30,6 +32,7 @@ namespace EmployeeManager.Controllers
             _logger = logger;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("history")]
         public async Task<IEnumerable<CarHistory>> GetAllHistoryAsync()
         {
@@ -62,6 +65,7 @@ namespace EmployeeManager.Controllers
             return history;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("{id}/history")]
         public async Task<IActionResult> AddCarHistoryAsync(int id, [FromBody] HistoryDto historyDto)
         {
@@ -99,6 +103,7 @@ namespace EmployeeManager.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}/history")]
         public async Task<CarHistory> UpdateCarHistoryAsync(int id, [FromBody] CarHistory carHistory)
         {
@@ -107,6 +112,7 @@ namespace EmployeeManager.Controllers
             return history;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}/history")]
         public async Task<ActionResult> DeleteCarHistoryAsync(int id)
         {

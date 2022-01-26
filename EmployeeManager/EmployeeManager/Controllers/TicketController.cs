@@ -6,10 +6,12 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using EmployeeManager.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EmployeeManager.Controllers
 {
     [ApiController]
+    [Authorize(Roles = "Employee,Admin")]
     [Route("api/[controller]")]
     public class TicketController : Controller
     {
@@ -24,6 +26,7 @@ namespace EmployeeManager.Controllers
             _logger = logger;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<Ticket> ProcessTicket(TicketDto ticketDto)
         {
@@ -53,6 +56,7 @@ namespace EmployeeManager.Controllers
             return ticket;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IEnumerable<Ticket>> GetAllTickets()
         {
@@ -77,6 +81,7 @@ namespace EmployeeManager.Controllers
             return tickets;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<Ticket> UpdateTicket(Ticket ticket)
         {
@@ -85,6 +90,7 @@ namespace EmployeeManager.Controllers
             return updatedTicket;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete]
         public async Task<ActionResult> DeleteTicket([FromBody] int id)
         {
