@@ -75,5 +75,11 @@ namespace EmployeeManager.Controllers
             _logger.LogInformation($"User with id {id} deleted");
             return Ok();
         }
+
+        [HttpGet("search/{name}")]
+        public async Task<List<ApplicationUser>> SearchUsers(string name)
+        {
+            return await _userService.SearchUsers(name);
+        }
     }
 }
