@@ -8,6 +8,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using System.Linq;
+using System;
+using System.IO;
 
 namespace EmployeeManager.Controllers
 {
@@ -85,6 +87,23 @@ namespace EmployeeManager.Controllers
 
             _logger.LogInformation($"User with id {id} deleted");
             return Ok();
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("download/userList")]
+        public async Task<IActionResult> ExportUsers()
+        {
+            var users = await _userService.GetAllAsync();
+            var excel = Utils.ExportUsersExcel(users);
+            string excelName = $"CarList-{DateTime.Now:yyyyMMddHHmmssfff}.xlsx";
+
+            using (var memoryStream = new MemoryStream())
+            {
+                excel.SaveAs(memoryStream);
+                var content = memoryStream.ToArray();
+                return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+            }
         }
 
         [Authorize(Roles = "Admin")]
