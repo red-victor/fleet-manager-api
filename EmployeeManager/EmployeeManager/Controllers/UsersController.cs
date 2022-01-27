@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using System.Linq;
+using System;
 
 namespace EmployeeManager.Controllers
 {
@@ -35,6 +36,12 @@ namespace EmployeeManager.Controllers
             var userDtos = _userService.TransposeToDtoAsync(users);
             _logger.LogInformation("All users retrieved");
             return userDtos;
+        }
+
+        [HttpGet("get-by-page")]
+        public async Task<ActionResult<PaginationDto<ApplicationUser>>> GetUsersByPage([FromQuery]int page, [FromQuery]int size)
+        {
+            return Ok(await _userService.GetUsersByPageAsync(page, size));
         }
 
         [Authorize(Roles = "Admin")]
@@ -88,10 +95,10 @@ namespace EmployeeManager.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpGet("search/{name}")]
-        public async Task<List<ApplicationUser>> SearchUsers(string name)
+        [HttpGet("search")]
+        public async Task<PaginationDto<ApplicationUser>> SearchUsers([FromQuery]string name, [FromQuery] int page, [FromQuery] int pageSize)
         {
-            return await _userService.SearchUsers(name);
+            return await _userService.SearchUsers(name, page, pageSize);
         }
 
         [Authorize(Roles = "Admin")]

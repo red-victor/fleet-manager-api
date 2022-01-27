@@ -132,7 +132,7 @@ namespace EmployeeManager.Controllers
             
             if(user == null)
             {
-                // return redirect
+                return Unauthorized();
             }    
 
             return new LoggedUserDto

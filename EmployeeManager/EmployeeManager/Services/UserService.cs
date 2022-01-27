@@ -131,7 +131,7 @@ namespace EmployeeManager.Services
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<List<ApplicationUser>> SearchUsers(string str)
+        public async Task<PaginationDto<ApplicationUser>> SearchUsers(string str, int page, int pageSize)
         {
             var allUsers = await _db.Users.ToListAsync();
             var usersToReturn = new List<ApplicationUser>();
@@ -158,7 +158,14 @@ namespace EmployeeManager.Services
                 }
             }
 
-            return usersToReturn;
+            var count = usersToReturn.Count;
+
+            return new PaginationDto<ApplicationUser>
+            {
+                Items = usersToReturn.Skip((page - 1) * pageSize).Take(pageSize).ToList(),
+                TotalPages = (int)Math.Ceiling(count / (double)pageSize),
+                CurrentPage = page
+            };
         }
 
         public async Task<List<ApplicationUser>> SearchUsersWithNoCar(string str)
@@ -189,6 +196,18 @@ namespace EmployeeManager.Services
             }
 
             return usersToReturn;
+        }
+
+        public async Task<PaginationDto<ApplicationUser>> GetUsersByPageAsync(int page, int pageSize)
+        {
+            var query = _db.Users.AsQueryable();
+            var count = await query.CountAsync();
+            return new PaginationDto<ApplicationUser>
+            {
+                Items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(),
+                TotalPages = (int)Math.Ceiling(count / (double)pageSize),
+                CurrentPage = page
+            };
         }
     }
 }
