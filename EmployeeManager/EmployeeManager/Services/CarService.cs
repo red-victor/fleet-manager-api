@@ -68,5 +68,26 @@ namespace EmployeeManager.Services
             _db.Cars.Remove(await GetAsync(id));
             await _db.SaveChangesAsync();
         }
+
+        public async Task<List<Car>> SearchCars(string str)
+        {
+            var allCars = await _db.Cars.ToListAsync();
+            var cars = new List<Car>();
+            var searchTerms = str.ToLower().Split(' ');
+
+            foreach (var car in allCars)
+            {
+                var isEligible = true;
+               
+                foreach (var term in searchTerms)
+                {
+                    if (!isEligible) break;
+                    if (!car.Brand.ToLower().Contains(term) && !car.Model.ToLower().Contains(term)) isEligible = false;
+                }
+                if (isEligible) cars.Add(car); 
+            }
+
+            return cars;
+        }
     }
 }

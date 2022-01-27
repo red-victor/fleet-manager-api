@@ -10,5 +10,6 @@ namespace EmployeeManager.Services
         Task<IEnumerable<Car>> GetAllAssignedAsync();
         Task<IEnumerable<Car>> GetAllUnassignedAsync();
         Task<List<Car>> AddAsync(List<Car> cars);
+        Task<List<Car>> SearchCars(string str);
     }
 }

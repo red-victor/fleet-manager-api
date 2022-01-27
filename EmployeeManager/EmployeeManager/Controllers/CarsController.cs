@@ -144,5 +144,12 @@ namespace EmployeeManager.Controllers
             _logger.LogInformation("Cars added from uploaded file");
             return Ok(carList);
         }
+
+        [HttpGet]
+        [Route("search/{name}")]
+        public async Task<List<Car>> SearchCars(string name)
+        {
+            return await _carService.SearchCars(name);
+        }
     }
 }
