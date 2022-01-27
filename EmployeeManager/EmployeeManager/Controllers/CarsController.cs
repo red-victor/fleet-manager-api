@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using EmployeeManager.DTOs;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using System;
 
 namespace EmployeeManager.Controllers
 {
@@ -153,6 +154,23 @@ namespace EmployeeManager.Controllers
 
             _logger.LogInformation("Cars added from uploaded file");
             return Ok(carList);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("download/carList")]
+        public async Task<IActionResult> ExportCars()
+        {
+            var cars = await _carService.GetAllAsync();
+            var excel = Utils.ExportCarsExcel(cars);
+            string excelName = $"CarList-{DateTime.Now:yyyyMMddHHmmssfff}.xlsx";
+
+            using (var memoryStream = new MemoryStream())
+            {
+                excel.SaveAs(memoryStream);
+                var content = memoryStream.ToArray();
+                return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+            }
         }
 
         [HttpGet]

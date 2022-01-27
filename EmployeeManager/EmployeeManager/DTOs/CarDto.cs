@@ -11,6 +11,7 @@ namespace EmployeeManager.DTOs
         public string LicencePlate { get; set; }
 
         [Required]
+        [StringLength(17)]
         public string ChassisSeries { get; set; }
 
         [Required]
