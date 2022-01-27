@@ -10,11 +10,13 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using EmployeeManager.DTOs;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EmployeeManager.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(Roles = "Employee,Admin")]
     public class CarsController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -31,6 +33,7 @@ namespace EmployeeManager.Controllers
             _logger = logger;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<Car> AddNewCar(CarDto carDto)
         {
@@ -45,6 +48,7 @@ namespace EmployeeManager.Controllers
             return addedCar;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("assigned")]
         public async Task<IEnumerable<Car>> GetAllAssigned()
         {
@@ -53,6 +57,7 @@ namespace EmployeeManager.Controllers
             return cars;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("unassigned")]
         public async Task<IEnumerable<Car>> GetAllUnassigned()
         {
@@ -61,6 +66,7 @@ namespace EmployeeManager.Controllers
             return cars;
         }
 
+        [Authorize(Roles="Admin")]
         [HttpGet]
         public async Task<IEnumerable<Car>> GetAll()
         {
@@ -77,6 +83,7 @@ namespace EmployeeManager.Controllers
             return car;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete]
         public async Task<ActionResult> Remove([FromBody] int id)
         {
@@ -90,6 +97,7 @@ namespace EmployeeManager.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{carId}/assignUser/{userId}")]
         public async Task<ActionResult> AssignUser([FromRoute] int carId, [FromRoute] string userId)
         {
@@ -111,6 +119,7 @@ namespace EmployeeManager.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{carId}/dissociateUser")]
         public async Task<ActionResult> DissociateUser(int carId)
         {
@@ -129,7 +138,8 @@ namespace EmployeeManager.Controllers
         }
 
         [HttpPost]
-        [Route("/upload/carList")]
+        [Authorize(Roles = "Admin")]
+        [Route("upload/carList")]
         public async Task<IActionResult> UploadCarsExcel(IFormFile file)
         {
             var carList = new List<Car>();

@@ -11,9 +11,12 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using System;
 using EmployeeManager.Services.Dependecy;
+using System.Security.Claims;
+using System.Linq;
 
 namespace EmployeeManager.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class AccountController : Controller
@@ -24,21 +27,17 @@ namespace EmployeeManager.Controllers
         private readonly IUserService _userService;
         private readonly IMailService _mailService;
 
-        public AccountController(ILogger<AccountController> logger,
-            UserManager<ApplicationUser> userManager, 
-            TokenService tokenService,
-            IUserService userService,
-            IMailService mailService
-            )
+        public AccountController(ILogger<AccountController> logger, UserManager<ApplicationUser> userManager, 
+            TokenService tokenService, IUserService userService, IMailService mailService )
         {
             _userManager = userManager;
             _tokenService = tokenService;
             _logger = logger;
             _userService = userService;
             _mailService = mailService;
-
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<ActionResult<LoggedUserDto>> Login(LoginDto loginDto)
         {
@@ -53,8 +52,9 @@ namespace EmployeeManager.Controllers
                 return Unauthorized();
             }
 
-            var loggedUserDto = new LoggedUserDto 
+            var loggedUserDto = new LoggedUserDto
             {
+                Id = user.Id,
                 UserName = user.Email,
                 Email = user.Email,
                 FirstName = user.FirstName,
@@ -63,7 +63,8 @@ namespace EmployeeManager.Controllers
                 Adress = user.Adress,
                 PhoneNumber = user.PhoneNumber,
                 PhotoUrl = user.PhotoUrl,
-                Token = await _tokenService.GenerateToken(user)
+                Token = await _tokenService.GenerateToken(user),
+                Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault()
             };
 
             _logger.LogInformation($"Successful log in the user with email {loginDto.Email}. Token: {loggedUserDto.Token}");
@@ -96,7 +97,7 @@ namespace EmployeeManager.Controllers
                 var mailRequest = new MailRequest
                 {
                     ToEmail = user.Email,
-                    Subject = "Ava fleet managemet password",
+                    Subject = "AVA Fleet Management Password",
                     Body = password
                 };
 
@@ -128,6 +129,11 @@ namespace EmployeeManager.Controllers
         public async Task<ActionResult<LoggedUserDto>> GetCurrentUser()
         {
             var user = await _userService.GetByUsernameAsync(User.Identity.Name);
+            
+            if(user == null)
+            {
+                // return redirect
+            }    
 
             return new LoggedUserDto
             {
@@ -142,12 +148,13 @@ namespace EmployeeManager.Controllers
                 PhoneNumberConfirmed = user.PhoneNumberConfirmed,
                 PhotoUrl = user.PhotoUrl,
                 Car = user.Car,
-                Token = await _tokenService.GenerateToken(user)
+                Token = await _tokenService.GenerateToken(user),
+                Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault()
             };
         }
 
         [HttpPost]
-        [Route("/upload/userList")]
+        [Route("upload/userList")]
         public async Task<IActionResult> UploadUsersExcel(IFormFile file)
         {
             List<RegisterDto> userList;
