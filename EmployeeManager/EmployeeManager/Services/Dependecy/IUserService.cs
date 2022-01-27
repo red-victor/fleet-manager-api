@@ -18,5 +18,6 @@ namespace EmployeeManager.Services
         Task<ApplicationUser> GetByUsernameAsync(string username);
         Task<List<ApplicationUser>> SearchUsers(string str);
         IEnumerable<UserDto> TransposeToDtoAsync(IEnumerable<ApplicationUser> users);
+        Task<List<ApplicationUser>> SearchUsersWithNoCar(string str);
     }
 }

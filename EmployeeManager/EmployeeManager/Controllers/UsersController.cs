@@ -87,10 +87,18 @@ namespace EmployeeManager.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("search/{name}")]
         public async Task<List<ApplicationUser>> SearchUsers(string name)
         {
             return await _userService.SearchUsers(name);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("search-users-with-no-car/{name}")]
+        public async Task<List<ApplicationUser>> SearchUsersWithNoCar(string name)
+        {
+            return await _userService.SearchUsersWithNoCar(name);
         }
     }
 }

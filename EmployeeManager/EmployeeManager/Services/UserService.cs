@@ -158,6 +158,35 @@ namespace EmployeeManager.Services
                 }
             }
 
+            return usersToReturn;
+        }
+
+        public async Task<List<ApplicationUser>> SearchUsersWithNoCar(string str)
+        {
+            var allUsers = await _db.Users.Where(u => u.Car == null).ToListAsync();
+            var usersToReturn = new List<ApplicationUser>();
+            var searchTerms = str.ToLower().Split(' ');
+
+            foreach (var user in allUsers)
+            {
+                var isEligible = true;
+
+                if (user.Email.ToLower().Contains(str.ToLower()))
+                {
+                    usersToReturn.Add(user);
+                    isEligible = false;
+                }
+
+                if (isEligible)
+                {
+                    foreach (var term in searchTerms)
+                    {
+                        if (!isEligible) break;
+                        if (!user.FirstName.ToLower().Contains(term) && !user.LastName.ToLower().Contains(term)) isEligible = false;
+                    }
+                    if (isEligible) usersToReturn.Add(user);
+                }
+            }
 
             return usersToReturn;
         }
