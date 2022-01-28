@@ -1,6 +1,8 @@
 ﻿using EmployeeManager.Data;
+using EmployeeManager.DTOs;
 using EmployeeManager.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -69,7 +71,7 @@ namespace EmployeeManager.Services
             await _db.SaveChangesAsync();
         }
 
-        public async Task<List<Car>> SearchCars(string str)
+        public async Task<PaginationDto<Car>> SearchCars(string str, int page, int pageSize)
         {
             var allCars = await _db.Cars.ToListAsync();
             var cars = new List<Car>();
@@ -87,7 +89,26 @@ namespace EmployeeManager.Services
                 if (isEligible) cars.Add(car); 
             }
 
-            return cars;
+            var count = cars.Count;
+
+            return new PaginationDto<Car>
+            {
+                Items = cars.Skip((page - 1) * pageSize).Take(pageSize).ToList(),
+                TotalPages = (int)Math.Ceiling(count / (double)pageSize),
+                CurrentPage = page
+            };
+        }
+
+        public async Task<PaginationDto<Car>> GetCarsByPageAsync(int page, int pageSize)
+        {
+            var query = _db.Cars.AsQueryable();
+            var count = await query.CountAsync();
+            return new PaginationDto<Car>
+            {
+                Items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(),
+                TotalPages = (int)Math.Ceiling(count / (double)pageSize),
+                CurrentPage = page
+            };
         }
     }
 }

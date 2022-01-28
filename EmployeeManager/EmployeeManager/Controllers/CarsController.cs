@@ -76,6 +76,12 @@ namespace EmployeeManager.Controllers
             return cars; 
         }
 
+        [HttpGet("get-by-page")]
+        public async Task<ActionResult<PaginationDto<Car>>> GetCarsByPage([FromQuery] int page, [FromQuery] int size)
+        {
+            return Ok(await _carService.GetCarsByPageAsync(page, size));
+        }
+
         [HttpGet("{id}")]
         public async Task<Car> Get(int id)
         {
@@ -173,11 +179,10 @@ namespace EmployeeManager.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("search/{name}")]
-        public async Task<List<Car>> SearchCars(string name)
+        [HttpGet("search")]
+        public async Task<PaginationDto<Car>> SearchCars([FromQuery] string name, [FromQuery] int page, [FromQuery] int pageSize)
         {
-            return await _carService.SearchCars(name);
+            return await _carService.SearchCars(name, page, pageSize);
         }
     }
 }
