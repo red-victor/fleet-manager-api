@@ -73,7 +73,7 @@ namespace EmployeeManager.Services
 
         public async Task<PaginationDto<Car>> SearchCars(string str, int page, int pageSize)
         {
-            var allCars = await _db.Cars.ToListAsync();
+            var allCars = await _db.Cars.Include(c => c.User).ToListAsync();
             var cars = new List<Car>();
             var searchTerms = str.ToLower().Split(' ');
 
@@ -101,7 +101,7 @@ namespace EmployeeManager.Services
 
         public async Task<PaginationDto<Car>> GetCarsByPageAsync(int page, int pageSize)
         {
-            var query = _db.Cars.AsQueryable();
+            var query = _db.Cars.Include(c => c.User).AsQueryable();
             var count = await query.CountAsync();
             return new PaginationDto<Car>
             {
