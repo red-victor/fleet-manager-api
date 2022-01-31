@@ -26,7 +26,7 @@ namespace EmployeeManager.Extensions
             });
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseSqlServer(Environment.GetEnvironmentVariable("ConnString"));
+                options.UseSqlServer(config.GetConnectionString("Default"));
             });
 
             services.AddCors();

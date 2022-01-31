@@ -1,7 +1,7 @@
 ﻿using EmployeeManager.DTOs;
 using EmployeeManager.Models;
-using IronXL;
 using Microsoft.AspNetCore.Identity;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,67 +21,73 @@ namespace EmployeeManager.Data
                 var carList = new List<Car>();
                 var filePath = SEEDPATH + "\\EM_Cars_100_1.xlsx";
 
-                var workbook = WorkBook.Load(filePath);
-                var worksheet = workbook.GetWorkSheet("data");
-
-
-                for (int row = 2; row <= worksheet.RowCount; row++)
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                FileInfo existingFile = new FileInfo(filePath);
+                using (ExcelPackage package = new ExcelPackage(existingFile))
                 {
-                    carList.Add(new Car
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
+                    var rowCount = worksheet.Dimension.Rows;
+                    for (int row = 2; row <= rowCount; row++)
                     {
-                        ImagePath = worksheet[$"A{row}:A{row}"].ToString(),
-                        LicencePlate = worksheet[$"B{row}:B{row}"].ToString(),
-                        ChassisSeries = worksheet[$"C{row}:C{row}"].ToString(),
-                        Brand = worksheet[$"D{row}:D{row}"].ToString(),
-                        Model = worksheet[$"E{row}:E{row}"].ToString(),
-                        FirstRegistrationDate = DateTime.Parse(worksheet[$"F{row}:F{row}"].ToString()),
-                        Color = worksheet[$"G{row}:G{row}"].ToString(),
-                        Mileage = int.Parse(worksheet[$"H{row}:H{row}"].ToString())
-                    });
+                        carList.Add(new Car
+                        {
+                            ImagePath = worksheet.Cells[row, 1].Value?.ToString().Trim(),
+                            LicencePlate = worksheet.Cells[row, 2].Value?.ToString().Trim(),
+                            ChassisSeries = worksheet.Cells[row, 3].Value?.ToString().Trim(),
+                            Brand = worksheet.Cells[row, 4].Value?.ToString().Trim(),
+                            Model = worksheet.Cells[row, 5].Value?.ToString().Trim(),
+                            FirstRegistrationDate = DateTime.Parse(worksheet.Cells[row, 6].Value?.ToString()),
+                            Color = worksheet.Cells[row, 7].Value?.ToString().Trim(),
+                            Mileage = int.Parse(worksheet.Cells[row, 8].Value?.ToString())
+                        });
+                    }
                 }
+
                 await context.Cars.AddRangeAsync(carList);
                 await context.SaveChangesAsync();
-
             }
 
             if (!context.Users.Any())
             {
                 var userList = new List<ApplicationUser>();
-                var filePath = SEEDPATH + "\\EM_Users_100_1.xlsx";
-
-                var workbook = WorkBook.Load(filePath);
-                var worksheet = workbook.GetWorkSheet("data");
-
                 Dictionary<string, string> successful = new Dictionary<string, string>();
                 var failed = new List<string>();
 
-                for (int row = 2; row <= worksheet.RowCount; row++)
+                var filePath = SEEDPATH + "\\EM_Users_100_1.xlsx";
+
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                FileInfo existingFile = new FileInfo(filePath);
+                using (ExcelPackage package = new ExcelPackage(existingFile))
                 {
-                    var user = new ApplicationUser
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
+                    var rowCount = worksheet.Dimension.Rows;
+                    for (int row = 2; row <= rowCount; row++)
                     {
-                        FirstName = worksheet[$"A{row}:A{row}"].ToString(),
-                        LastName = worksheet[$"B{row}:B{row}"].ToString(),
-                        CNP = worksheet[$"C{row}:C{row}"].ToString(),
-                        Adress = worksheet[$"D{row}:D{row}"].ToString(),
-                        Email = worksheet[$"E{row}:E{row}"].ToString(),
-                        PhoneNumber = worksheet[$"G{row}:G{row}"].ToString(),
-                        PhotoUrl = worksheet[$"H{row}:H{row}"].ToString(),
-                        UserName = worksheet[$"E{row}:E{row}"].ToString()
-                    };
-                    var password = worksheet[$"F{row}:F{row}"].ToString();
-                    var result = await userManager.CreateAsync(user, password);
+                        var user = new ApplicationUser
+                        {
+                            FirstName = worksheet.Cells[row, 1].Value.ToString().Trim(),
+                            LastName = worksheet.Cells[row, 2].Value.ToString().Trim(),
+                            CNP = worksheet.Cells[row, 3].Value.ToString().Trim(),
+                            Adress = worksheet.Cells[row, 4].Value.ToString().Trim(),
+                            Email = worksheet.Cells[row, 5].Value.ToString(),
+                            UserName = worksheet.Cells[row, 5].Value.ToString(),
+                            PhoneNumber = worksheet.Cells[row, 7].Value.ToString().Trim(),
+                            PhotoUrl = worksheet.Cells[row, 8].Value.ToString().Trim()
+                        };
 
-                    // #todo: Send email to user with generated password
+                        var password = worksheet.Cells[row, 6].Value.ToString();
+                        var result = await userManager.CreateAsync(user, password);
 
-                    if (result.Succeeded)
-                    {
-                        successful.Add(user.Email, password);
-                        await userManager.AddToRoleAsync(user, worksheet[$"I{row}:I{row}"].ToString());
-                        userList.Add(user);
-                    }
-                    else
-                    {
-                        failed.Add(user.Email);
+                        if (result.Succeeded)
+                        {
+                            successful.Add(user.Email, password);
+                            await userManager.AddToRoleAsync(user, worksheet.Cells[row, 9].Value.ToString().Trim());
+                            userList.Add(user);
+                        }
+                        else
+                        {
+                            failed.Add(user.Email);
+                        }
                     }
                 }
             }
