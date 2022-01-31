@@ -7,10 +7,9 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["EmployeeManager/EmployeeManager.csproj", "EmployeeManager/"]
-RUN dotnet restore "EmployeeManager/EmployeeManager.csproj"
+COPY ["EmployeeManager.csproj", "."]
+RUN dotnet restore "EmployeeManager.csproj"
 COPY . .
-WORKDIR "/src/EmployeeManager"
 RUN dotnet build "EmployeeManager.csproj" -c Release -o /app/build
 
 FROM build AS publish
