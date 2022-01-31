@@ -49,7 +49,7 @@ namespace EmployeeManager
 
             app.UseCors(options => 
             {
-                options.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
+                options.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000", "https://fleetmanager.brolake.ro");
             });
 
             app.UseAuthentication();
