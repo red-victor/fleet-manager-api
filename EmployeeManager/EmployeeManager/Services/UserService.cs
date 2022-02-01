@@ -62,7 +62,8 @@ namespace EmployeeManager.Services
                 userToUpdate.CNP = user.CNP;
                 userToUpdate.ImgName = user.ImgName;
                 userToUpdate.ImgSrc = user.ImgSrc;
-                if (await _db.SaveChangesAsync() > 0) return user;
+                await _db.SaveChangesAsync(); 
+                return user;
             }
 
             return null;
@@ -108,12 +109,22 @@ namespace EmployeeManager.Services
 
             var mapper = new Mapper(config);
             var mappedObj = mapper.Map<ApplicationUser>(dto);
-            DeleteImage(mappedObj.ImgName);
-            mappedObj.ImgName = null;
+
+            // If user simply deleted actual photo
+            if (dto.ImgSrc == null && dto.ImgFile == null)
+            {
+                DeleteImage(mappedObj.ImgName);
+                mappedObj.ImgName = null;
+                return mappedObj;
+            }
+
+            // If user changed photo
             if (dto.ImgFile != null)
             {
+                DeleteImage(mappedObj.ImgName);
                 mappedObj.ImgName = await SaveProfileImageAsync(dto.ImgFile);
             }
+
             return mappedObj;
         }
 
