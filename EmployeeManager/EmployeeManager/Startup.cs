@@ -6,6 +6,8 @@ using Microsoft.Extensions.Hosting;
 using EmployeeManager.Middleware;
 using EmployeeManager.Extensions;
 using EmployeeManager.Settings;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace EmployeeManager
 {
@@ -42,6 +44,12 @@ namespace EmployeeManager
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "EmployeeManager v1"));
             }
+
+            app.UseStaticFiles(new StaticFileOptions 
+            { 
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "Images")),
+                RequestPath = "/Images"
+            });
 
             app.UseHttpsRedirection();
 

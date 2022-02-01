@@ -4,14 +4,16 @@ using EmployeeManager.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EmployeeManager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220131121601_CangePhotoUrlToImgName")]
+    partial class CangePhotoUrlToImgName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,9 +50,6 @@ namespace EmployeeManager.Migrations
                         .HasColumnType("varchar(30)");
 
                     b.Property<string>("ImgName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImgSrc")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("JoinDate")
@@ -290,15 +289,15 @@ namespace EmployeeManager.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "81b90640-5e86-4616-86aa-3485c613179f",
-                            ConcurrencyStamp = "8ef26121-d22c-4c87-897f-efe3a4a35c68",
+                            Id = "1452b23f-1bf3-4b1d-9f93-6c4ff46974b8",
+                            ConcurrencyStamp = "50c5719b-ee41-49b3-9790-1b03eb515360",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "1bde998f-979f-4c57-8dd4-e05a8784d86e",
-                            ConcurrencyStamp = "188e5cf5-93a7-4ffe-9db9-d412b901500f",
+                            Id = "05326501-45e2-446f-96a3-644fb8749dc6",
+                            ConcurrencyStamp = "bfa27f34-0513-41d6-947c-a563c4751233",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });

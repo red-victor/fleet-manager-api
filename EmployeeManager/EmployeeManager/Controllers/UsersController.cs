@@ -69,9 +69,10 @@ namespace EmployeeManager.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<UserDto> UpdateUser(UserDto dto)
+        public async Task<UserDto> UpdateUser([FromForm]UserDto dto)
         {
-            var user = _userService.TransposeFromDto(dto);
+            var user = await _userService.TransposeFromDtoAsync(dto);
+            user.ImgSrc = ((user.ImgName == null || user.ImgName == "") ? null : String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, user.ImgName));
             var updatedUser = await _userService.UpdateAsync(user);
             var updatedUserDto = _userService.TransposeToDtoAsync(updatedUser);
             updatedUserDto.Role = (await _userManager.GetRolesAsync(user))[0];

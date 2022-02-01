@@ -16,7 +16,8 @@ namespace EmployeeManager.Models
         [Column(TypeName = "varchar(100)")]
         public string Adress { get; set; }
         public Car Car { get; set; }
-        public string PhotoUrl { get; set; }
+        public string ImgName { get; set; }
+        public string ImgSrc { get; set; }
         public DateTime JoinDate { get; set; }
         [MaxLength(256)]
         public string UnConfirmedEmail { get; set; }

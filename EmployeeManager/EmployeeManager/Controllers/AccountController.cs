@@ -62,7 +62,8 @@ namespace EmployeeManager.Controllers
                 CNP = user.CNP,
                 Adress = user.Adress,
                 PhoneNumber = user.PhoneNumber,
-                PhotoUrl = user.PhotoUrl,
+                ImgName = user.ImgName,
+                ImgSrc = user.ImgSrc,
                 Token = await _tokenService.GenerateToken(user),
                 Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault()
             };
@@ -75,8 +76,8 @@ namespace EmployeeManager.Controllers
         [HttpPost("register")]
         public async Task<ActionResult> Register(RegisterDto registerDto)
         {
-            var user = new ApplicationUser 
-            { 
+            var user = new ApplicationUser
+            {
                 UserName = registerDto.Email,
                 Email = registerDto.Email,
                 FirstName = registerDto.FirstName,
@@ -85,7 +86,8 @@ namespace EmployeeManager.Controllers
                 Adress = registerDto.Address,
                 PhoneNumber = registerDto.PhoneNumber,
                 PhoneNumberConfirmed = false,
-                PhotoUrl = registerDto.PhotoUrl,
+                ImgName = null,
+                ImgSrc = null,
                 JoinDate = DateTime.Now
             };
 
@@ -146,7 +148,8 @@ namespace EmployeeManager.Controllers
                 Adress = user.Adress,
                 PhoneNumber = user.PhoneNumber,
                 PhoneNumberConfirmed = user.PhoneNumberConfirmed,
-                PhotoUrl = user.PhotoUrl,
+                ImgName = user.ImgName,
+                ImgSrc = user.ImgSrc,
                 Car = user.Car,
                 Token = await _tokenService.GenerateToken(user),
                 Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault()
@@ -178,7 +181,8 @@ namespace EmployeeManager.Controllers
                         Adress = toRegister.Address,
                         PhoneNumber = toRegister.PhoneNumber,
                         PhoneNumberConfirmed = false,
-                        PhotoUrl = toRegister.PhotoUrl
+                        ImgName = null,
+                        ImgSrc = null,
                     };
                     var password = Guid.NewGuid().ToString().Substring(0, 8);
                     var result = await _userManager.CreateAsync(user, password);
@@ -203,7 +207,7 @@ namespace EmployeeManager.Controllers
         }
 
         [HttpPut("change-my-password")]
-        public async Task<ActionResult>ChangePasswordByOwner(ChangePasswordDto changePasswordDto)
+        public async Task<ActionResult> ChangePasswordByOwner(ChangePasswordDto changePasswordDto)
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null) return BadRequest();
@@ -324,7 +328,8 @@ namespace EmployeeManager.Controllers
                 CNP = updatedUser.CNP,
                 Adress = updatedUser.Adress,
                 PhoneNumber = updatedUser.PhoneNumber,
-                PhotoUrl = updatedUser.PhotoUrl,
+                ImgName = user.ImgName,
+                ImgSrc = user.ImgSrc,
                 Token = await _tokenService.GenerateToken(updatedUser)
             });
         }

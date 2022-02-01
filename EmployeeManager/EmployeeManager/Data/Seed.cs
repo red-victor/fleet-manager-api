@@ -63,6 +63,7 @@ namespace EmployeeManager.Data
                     var rowCount = worksheet.Dimension.Rows;
                     for (int row = 2; row <= rowCount; row++)
                     {
+<<<<<<< HEAD
                         var user = new ApplicationUser
                         {
                             FirstName = worksheet.Cells[row, 1].Value.ToString().Trim(),
@@ -74,6 +75,20 @@ namespace EmployeeManager.Data
                             PhoneNumber = worksheet.Cells[row, 7].Value.ToString().Trim(),
                             PhotoUrl = worksheet.Cells[row, 8].Value.ToString().Trim()
                         };
+=======
+                        FirstName = worksheet[$"A{row}:A{row}"].ToString(),
+                        LastName = worksheet[$"B{row}:B{row}"].ToString(),
+                        CNP = worksheet[$"C{row}:C{row}"].ToString(),
+                        Adress = worksheet[$"D{row}:D{row}"].ToString(),
+                        Email = worksheet[$"E{row}:E{row}"].ToString(),
+                        PhoneNumber = worksheet[$"G{row}:G{row}"].ToString(),
+                        /*PhotoUrl = worksheet[$"H{row}:H{row}"].ToString(),*/
+                        ImgName = null,
+                        UserName = worksheet[$"E{row}:E{row}"].ToString()
+                    };
+                    var password = worksheet[$"F{row}:F{row}"].ToString();
+                    var result = await userManager.CreateAsync(user, password);
+>>>>>>> User_Images
 
                         var password = worksheet.Cells[row, 6].Value.ToString();
                         var result = await userManager.CreateAsync(user, password);
