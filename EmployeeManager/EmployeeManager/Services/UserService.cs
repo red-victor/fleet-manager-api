@@ -147,7 +147,7 @@ namespace EmployeeManager.Services
 
         public async Task<PaginationDto<ApplicationUser>> SearchUsers(string str, int page, int pageSize)
         {
-            var allUsers = await _db.Users.ToListAsync();
+            var allUsers = await _db.Users.Include(u => u.Car).ToListAsync();
             var usersToReturn = new List<ApplicationUser>();
             var searchTerms = str.ToLower().Split(' ');
 
@@ -218,7 +218,7 @@ namespace EmployeeManager.Services
             var count = await query.CountAsync();
             return new PaginationDto<ApplicationUser>
             {
-                Items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(),
+                Items = await query.Skip((page - 1) * pageSize).Take(pageSize).Include(u => u.Car).ToListAsync(),
                 TotalPages = (int)Math.Ceiling(count / (double)pageSize),
                 CurrentPage = page
             };
