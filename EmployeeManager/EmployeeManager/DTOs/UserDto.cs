@@ -1,4 +1,6 @@
 ﻿using EmployeeManager.Models;
+using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EmployeeManager.DTOs
 {
@@ -15,7 +17,10 @@ namespace EmployeeManager.DTOs
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public bool PhoneNumberConfirmed { get; set; }
-        public string PhotoUrl { get; set; }
+        public string ImgName { get; set; }
+        public IFormFile ImgFile { get; set; }
+        public string ImgSrc { get; set; }
+
         public string Role { get; set; }
     }
 }

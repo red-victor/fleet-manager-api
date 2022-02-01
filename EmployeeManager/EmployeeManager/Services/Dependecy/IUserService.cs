@@ -1,5 +1,6 @@
 ﻿using EmployeeManager.DTOs;
 using EmployeeManager.Models;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace EmployeeManager.Services
     {
         Task<int> SaveChangesAsync();
         Task<ApplicationUser> ChangeEmail(ApplicationUser userToChange, string newEmail);
-        ApplicationUser TransposeFromDto(UserDto user);
+        Task<ApplicationUser> TransposeFromDtoAsync(UserDto dto);
         UserDto TransposeToDtoAsync(ApplicationUser user);
         Task<ApplicationUser> GetAsync(string id);
         Task<IEnumerable<ApplicationUser>> GetAllUsersWithoutCarAsync();
@@ -20,5 +21,7 @@ namespace EmployeeManager.Services
         IEnumerable<UserDto> TransposeToDtoAsync(IEnumerable<ApplicationUser> users);
         Task<List<ApplicationUser>> SearchUsersWithNoCar(string str);
         Task<PaginationDto<ApplicationUser>> GetUsersByPageAsync(int page, int pageSize);
+        Task<string> SaveProfileImageAsync(IFormFile imgFile);
+        void DeleteImage(string imgName);
     }
 }

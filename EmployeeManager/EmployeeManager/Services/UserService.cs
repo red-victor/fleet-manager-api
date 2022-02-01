@@ -2,9 +2,12 @@
 using EmployeeManager.Data;
 using EmployeeManager.DTOs;
 using EmployeeManager.Models;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,10 +16,12 @@ namespace EmployeeManager.Services
     public class UserService : IUserService
     {
         private readonly ApplicationDbContext _db;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public UserService(ApplicationDbContext db)
+        public UserService(ApplicationDbContext db, IWebHostEnvironment webHostEnvironment)
         {
             _db = db;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public async Task<int> SaveChangesAsync()
@@ -55,6 +60,8 @@ namespace EmployeeManager.Services
                 userToUpdate.PhoneNumber = user.PhoneNumber;
                 userToUpdate.PhoneNumberConfirmed = user.PhoneNumberConfirmed;
                 userToUpdate.CNP = user.CNP;
+                userToUpdate.ImgName = user.ImgName;
+                userToUpdate.ImgSrc = user.ImgSrc;
                 if (await _db.SaveChangesAsync() > 0) return user;
             }
 
@@ -93,14 +100,21 @@ namespace EmployeeManager.Services
             await _db.SaveChangesAsync();
         }
 
-        public ApplicationUser TransposeFromDto(UserDto dto)
+        public async Task<ApplicationUser> TransposeFromDtoAsync(UserDto dto)
         {
             var config = new MapperConfiguration(cfg =>
                     cfg.CreateMap<UserDto, ApplicationUser>()
                 );
 
             var mapper = new Mapper(config);
-            return mapper.Map<ApplicationUser>(dto);
+            var mappedObj = mapper.Map<ApplicationUser>(dto);
+            DeleteImage(mappedObj.ImgName);
+            mappedObj.ImgName = null;
+            if (dto.ImgFile != null)
+            {
+                mappedObj.ImgName = await SaveProfileImageAsync(dto.ImgFile);
+            }
+            return mappedObj;
         }
 
         public UserDto TransposeToDtoAsync(ApplicationUser user)
@@ -208,6 +222,28 @@ namespace EmployeeManager.Services
                 TotalPages = (int)Math.Ceiling(count / (double)pageSize),
                 CurrentPage = page
             };
+        }
+
+        public async Task<string> SaveProfileImageAsync(IFormFile imgFile)
+        {
+            if (imgFile == null) return null;
+
+            string imgName = Guid.NewGuid().ToString().Substring(0, 8) + Path.GetExtension(imgFile.FileName);
+            var imgPath = Path.Combine(_webHostEnvironment.ContentRootPath, "Images", imgName);
+
+            using (var fileStream = new FileStream(imgPath, FileMode.Create))
+            {
+                await imgFile.CopyToAsync(fileStream);
+            }
+
+            return imgName;
+        }
+
+        public void DeleteImage(string imgName)
+        {
+            if (imgName == null || imgName == "") return;
+            var imgPath = Path.Combine(_webHostEnvironment.ContentRootPath, "Images", imgName);
+            if (File.Exists(imgPath)) File.Delete(imgPath);
         }
     }
 }

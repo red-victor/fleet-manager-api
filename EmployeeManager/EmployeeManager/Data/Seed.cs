@@ -65,7 +65,8 @@ namespace EmployeeManager.Data
                         Adress = worksheet[$"D{row}:D{row}"].ToString(),
                         Email = worksheet[$"E{row}:E{row}"].ToString(),
                         PhoneNumber = worksheet[$"G{row}:G{row}"].ToString(),
-                        PhotoUrl = worksheet[$"H{row}:H{row}"].ToString(),
+                        /*PhotoUrl = worksheet[$"H{row}:H{row}"].ToString(),*/
+                        ImgName = null,
                         UserName = worksheet[$"E{row}:E{row}"].ToString()
                     };
                     var password = worksheet[$"F{row}:F{row}"].ToString();
