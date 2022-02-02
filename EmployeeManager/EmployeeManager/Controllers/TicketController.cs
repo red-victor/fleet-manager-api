@@ -1,5 +1,4 @@
-﻿using EmployeeManager.Data;
-using EmployeeManager.Models;
+﻿using EmployeeManager.Models;
 using EmployeeManager.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;

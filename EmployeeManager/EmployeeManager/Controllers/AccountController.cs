@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using System;
 using EmployeeManager.Services.Dependecy;
-using System.Security.Claims;
 using System.Linq;
 
 namespace EmployeeManager.Controllers

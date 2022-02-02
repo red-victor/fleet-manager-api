@@ -1,7 +1,5 @@
-﻿using EmployeeManager.Data;
-using EmployeeManager.Models;
+﻿using EmployeeManager.Models;
 using EmployeeManager.Services;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -20,7 +18,7 @@ namespace EmployeeManager.Controllers
         private readonly ITicketService _ticketService;
         private readonly ILogger<CarHistoryController> _logger;
 
-        public CarHistoryController(ILogger<CarHistoryController> logger, ApplicationDbContext db, ICarHistoryService carHistoryService, ITicketService ticketService, UserManager<ApplicationUser> userManager)
+        public CarHistoryController(ILogger<CarHistoryController> logger, ICarHistoryService carHistoryService, ITicketService ticketService)
         {
             _carHistoryService = carHistoryService;
             _ticketService = ticketService;
