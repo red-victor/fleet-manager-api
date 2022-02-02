@@ -155,7 +155,7 @@ namespace EmployeeManager.Controllers
             using (var stream = new MemoryStream())
             {
                 await file.CopyToAsync(stream);
-                carList = Utils.ParseCarsExcel(stream);
+                carList = Utils.CarStreamToList(stream);
                 await _carService.AddAsync(carList);
             }
 

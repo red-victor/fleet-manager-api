@@ -165,42 +165,9 @@ namespace EmployeeManager.Controllers
             using (var stream = new MemoryStream())
             {
                 await file.CopyToAsync(stream);
-                userList = Utils.ParseUsersExcel(stream);
-                
-                var successful = new List<string>();
-                var failed = new List<string>();
-                foreach (var toRegister in userList)
-                {
-                    var user = new ApplicationUser
-                    {
-                        UserName = toRegister.Email,
-                        Email = toRegister.Email,
-                        FirstName = toRegister.FirstName,
-                        LastName = toRegister.LastName,
-                        CNP = toRegister.Cnp,
-                        Adress = toRegister.Address,
-                        PhoneNumber = toRegister.PhoneNumber,
-                        PhoneNumberConfirmed = false,
-                        ImgName = null,
-                        ImgSrc = null,
-                    };
-                    var password = Guid.NewGuid().ToString().Substring(0, 8);
-                    var result = await _userManager.CreateAsync(user, password);
+                userList = Utils.UsersStreamToList(stream);
 
-                    // #todo: Send email to user with generated password
-
-                    if (result.Succeeded)
-                    {
-                        successful.Add(toRegister.Email);
-                        await _userManager.AddToRoleAsync(user, toRegister.Role);
-                        _logger.LogInformation($"New account created with email {toRegister.Email}");
-                    }
-                    else
-                    {
-                        failed.Add(toRegister.Email);
-                        _logger.LogInformation($"Failed to create new account created with email {toRegister.Email}. \n {result.Errors}");
-                    }
-                }
+                var (successful, failed) = await _userService.RegisterUsers(userList);
 
                 return Json(new { SuccessfullyRegistered = successful, FailedToRegister = failed });
             }
