@@ -73,6 +73,7 @@ namespace EmployeeManager.Controllers
             return loggedUserDto;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("register")]
         public async Task<ActionResult> Register(RegisterDto registerDto)
         {
