@@ -16,19 +16,14 @@ namespace EmployeeManager.Controllers
     [Route("api/Cars/")]
     public class CarHistoryController : Controller
     {
-        private readonly ApplicationDbContext _db;
-
         private readonly ICarHistoryService _carHistoryService;
         private readonly ITicketService _ticketService;
-        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<CarHistoryController> _logger;
 
         public CarHistoryController(ILogger<CarHistoryController> logger, ApplicationDbContext db, ICarHistoryService carHistoryService, ITicketService ticketService, UserManager<ApplicationUser> userManager)
         {
-            _db = db;
             _carHistoryService = carHistoryService;
             _ticketService = ticketService;
-            _userManager = userManager;
             _logger = logger;
         }
 
