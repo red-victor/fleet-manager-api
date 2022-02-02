@@ -67,7 +67,7 @@ namespace EmployeeManager.Controllers
             return cars;
         }
 
-        [Authorize(Roles="Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IEnumerable<Car>> GetAll()
         {
@@ -76,6 +76,7 @@ namespace EmployeeManager.Controllers
             return cars; 
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("get-by-page")]
         public async Task<ActionResult<PaginationDto<Car>>> GetCarsByPage([FromQuery] int page, [FromQuery] int size)
         {
@@ -162,7 +163,7 @@ namespace EmployeeManager.Controllers
             return Ok(carList);
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         [Route("download/carList")]
         public async Task<IActionResult> ExportCars()
@@ -179,6 +180,7 @@ namespace EmployeeManager.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("search")]
         public async Task<PaginationDto<Car>> SearchCars([FromQuery] string name, [FromQuery] int page, [FromQuery] int pageSize)
         {
