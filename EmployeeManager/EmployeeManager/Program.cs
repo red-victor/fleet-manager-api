@@ -1,5 +1,6 @@
 using EmployeeManager.Data;
 using EmployeeManager.Models;
+using EmployeeManager.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -28,8 +29,9 @@ namespace EmployeeManager
             {
                 var context = services.GetRequiredService<ApplicationDbContext>();
                 var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+                var userService = services.GetRequiredService<IUserService>();
                 await context.Database.MigrateAsync();
-                await Seed.SeedData(context, userManager);
+                await Seed.SeedData(context, userManager, userService: userService);
             }
             catch (Exception ex)
             {

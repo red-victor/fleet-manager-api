@@ -4,6 +4,7 @@ using EmployeeManager.DTOs;
 using EmployeeManager.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -17,11 +18,13 @@ namespace EmployeeManager.Services
     {
         private readonly ApplicationDbContext _db;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public UserService(ApplicationDbContext db, IWebHostEnvironment webHostEnvironment)
+        public UserService(ApplicationDbContext db, IWebHostEnvironment webHostEnvironment, UserManager<ApplicationUser> userManager)
         {
             _db = db;
             _webHostEnvironment = webHostEnvironment;
+            _userManager = userManager;
         }
 
         public async Task<int> SaveChangesAsync()
@@ -46,6 +49,45 @@ namespace EmployeeManager.Services
         public Task<ApplicationUser> AddAsync(ApplicationUser item)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<(List<string>, List<string>)> RegisterUsers(List<RegisterDto> userDtos)
+        {
+            var successful = new List<string>();
+            var failed = new List<string>();
+
+            foreach (var toRegister in userDtos)
+            {
+                var user = new ApplicationUser
+                {
+                    UserName = toRegister.Email,
+                    Email = toRegister.Email,
+                    FirstName = toRegister.FirstName,
+                    LastName = toRegister.LastName,
+                    CNP = toRegister.Cnp,
+                    Adress = toRegister.Address,
+                    PhoneNumber = toRegister.PhoneNumber,
+                    PhoneNumberConfirmed = false,
+                    ImgName = null,
+                    ImgSrc = null,
+                };
+
+                var result = await _userManager.CreateAsync(user, toRegister.Password);
+
+                // Send email to user with generated password
+
+                if (result.Succeeded)
+                {
+                    successful.Add(toRegister.Email);
+                    await _userManager.AddToRoleAsync(user, toRegister.Role);
+                }
+                else
+                {
+                    failed.Add(toRegister.Email);
+                }
+            }
+
+            return (successful, failed);
         }
 
         public async Task<ApplicationUser> UpdateAsync(ApplicationUser user)

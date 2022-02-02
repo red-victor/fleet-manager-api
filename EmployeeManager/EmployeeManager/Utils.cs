@@ -39,57 +39,69 @@ namespace EmployeeManager
             return values;
         }
 
-        public static List<Car> ParseCarsExcel(MemoryStream stream)
+        public static List<Car> CarStreamToList(MemoryStream stream)
         {
-            var list = new List<Car>();
-
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             using (var package = new ExcelPackage(stream))
             {
-                ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
-                var rowCount = worksheet.Dimension.Rows;
-                for (int row = 2; row <= rowCount; row++)
+                return ParseCarsExcel(package);
+            }
+        }
+
+        public static List<Car> ParseCarsExcel(ExcelPackage package)
+        {
+            var list = new List<Car>();
+
+            ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
+            var rowCount = worksheet.Dimension.Rows;
+            for (int row = 2; row <= rowCount; row++)
+            {
+                list.Add(new Car
                 {
-                    list.Add(new Car
-                    {
-                        ImagePath = worksheet.Cells[row, 1].Value.ToString().Trim(),
-                        LicencePlate = worksheet.Cells[row, 2].Value.ToString().Trim(),
-                        ChassisSeries = worksheet.Cells[row, 3].Value.ToString().Trim(),
-                        Brand = worksheet.Cells[row, 4].Value.ToString().Trim(),
-                        Model = worksheet.Cells[row, 5].Value.ToString().Trim(),
-                        FirstRegistrationDate = DateTime.Parse((worksheet.Cells[row, 6] as ExcelRange).Value.ToString()),
-                        Color = worksheet.Cells[row, 7].Value.ToString().Trim(),
-                        Mileage = int.Parse(worksheet.Cells[row, 8].Value.ToString().Trim())
-                    });
-                }
+                    ImagePath = worksheet.Cells[row, 1].Value.ToString().Trim(),
+                    LicencePlate = worksheet.Cells[row, 2].Value.ToString().Trim(),
+                    ChassisSeries = worksheet.Cells[row, 3].Value.ToString().Trim(),
+                    Brand = worksheet.Cells[row, 4].Value.ToString().Trim(),
+                    Model = worksheet.Cells[row, 5].Value.ToString().Trim(),
+                    FirstRegistrationDate = DateTime.Parse((worksheet.Cells[row, 6] as ExcelRange).Value.ToString()),
+                    Color = worksheet.Cells[row, 7].Value.ToString().Trim(),
+                    Mileage = int.Parse(worksheet.Cells[row, 8].Value.ToString().Trim())
+                });
             }
 
             return list;
         }
 
-        public static List<RegisterDto> ParseUsersExcel(MemoryStream stream)
+        public static List<RegisterDto> UsersStreamToList(MemoryStream stream)
         {
-            var list = new List<RegisterDto>();
-
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             using (var package = new ExcelPackage(stream))
             {
-                ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
-                var rowCount = worksheet.Dimension.Rows;
-                for (int row = 2; row <= rowCount; row++)
+                return ParseUsersExcel(package);
+            }
+        }
+
+        public static List<RegisterDto> ParseUsersExcel(ExcelPackage package)
+        {
+            var list = new List<RegisterDto>();
+
+            ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
+            var rowCount = worksheet.Dimension.Rows;
+            for (int row = 2; row <= rowCount; row++)
+            {
+                list.Add(new RegisterDto
                 {
-                    list.Add(new RegisterDto
-                    {
-                        FirstName = worksheet.Cells[row, 1].Value.ToString().Trim(),
-                        LastName = worksheet.Cells[row, 2].Value.ToString().Trim(),
-                        Cnp = worksheet.Cells[row, 3].Value.ToString().Trim(),
-                        Address = worksheet.Cells[row, 4].Value.ToString().Trim(),
-                        Email = worksheet.Cells[row, 5].Value.ToString(),
-                        PhoneNumber = worksheet.Cells[row, 7].Value.ToString().Trim(),
-                        PhotoUrl = worksheet.Cells[row, 8].Value.ToString().Trim(),
-                        Role = worksheet.Cells[row, 9].Value.ToString().Trim()
-                    });
-                }
+                    FirstName = worksheet.Cells[row, 1].Value.ToString().Trim(),
+                    LastName = worksheet.Cells[row, 2].Value.ToString().Trim(),
+                    Cnp = worksheet.Cells[row, 3].Value.ToString().Trim(),
+                    Address = worksheet.Cells[row, 4].Value.ToString().Trim(),
+                    Email = worksheet.Cells[row, 5].Value.ToString(),
+                    Password = worksheet.Cells[row, 6].Value.ToString(),
+                    PhoneNumber = worksheet.Cells[row, 7].Value.ToString().Trim(),
+                    ImgSrc = worksheet.Cells[row, 8].Value.ToString().Trim(),
+                    ImgName = "img",
+                    Role = worksheet.Cells[row, 9].Value.ToString().Trim()
+                });
             }
 
             return list;
