@@ -15,13 +15,11 @@ namespace EmployeeManager.Controllers
     [Route("api/[controller]")]
     public class TicketController : Controller
     {
-        private readonly ApplicationDbContext _db;
         private readonly ITicketService _ticketService;
         private readonly ILogger<TicketController> _logger;
 
-        public TicketController(ILogger<TicketController> logger, ApplicationDbContext db, ITicketService ticketService)
+        public TicketController(ILogger<TicketController> logger, ITicketService ticketService)
         {
-            _db = db;
             _ticketService = ticketService;
             _logger = logger;
         }
