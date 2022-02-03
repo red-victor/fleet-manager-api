@@ -88,7 +88,7 @@ namespace EmployeeManager.Controllers
             var user = await _userService.GetAsync(id);
 
             if (user == null)
-                return NotFound();
+                return NotFound(new ProblemDetails { Title = "User Not Found" });
 
             await _userService.RemoveAsync(id);
 

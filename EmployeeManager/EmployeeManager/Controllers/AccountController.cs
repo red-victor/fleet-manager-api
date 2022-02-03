@@ -48,7 +48,7 @@ namespace EmployeeManager.Controllers
                 {
                     _logger.LogInformation($"Failed login the user with email {loginDto.Email}. [ Wrong password ]");
                 }
-                return Unauthorized();
+                return Unauthorized(new ProblemDetails { Title = "Wrong email/password" });
             }
 
             var loggedUserDto = new LoggedUserDto
@@ -69,7 +69,7 @@ namespace EmployeeManager.Controllers
 
             _logger.LogInformation($"Successful log in the user with email {loginDto.Email}. Token: {loggedUserDto.Token}");
 
-            return loggedUserDto;
+            return Ok(loggedUserDto);
         }
 
         [Authorize(Roles = "Admin")]
@@ -94,6 +94,18 @@ namespace EmployeeManager.Controllers
             var password = Guid.NewGuid().ToString().Substring(0, 8);
             var result = await _userManager.CreateAsync(user, password);
 
+            
+
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(error.Code, error.Description);
+                }
+
+                return ValidationProblem(new ValidationProblemDetails { Title = "Could not Register Account", Detail = ModelState.ToString() });
+            }
+
             try
             {
                 var mailRequest = new MailRequest
@@ -105,19 +117,9 @@ namespace EmployeeManager.Controllers
 
                 await _mailService.SendEmailAsync(mailRequest);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
-            }
-
-            if (!result.Succeeded)
-            {
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(error.Code, error.Description);
-                }
-
-                return ValidationProblem();
+                return Conflict(new ProblemDetails { Title = "Could not Send Email", Detail = ex.ToString() });
             }
 
             await _userManager.AddToRoleAsync(user, registerDto.Role);
@@ -134,10 +136,10 @@ namespace EmployeeManager.Controllers
             
             if(user == null)
             {
-                return Unauthorized();
-            }    
+                return Unauthorized(new ProblemDetails { Title = "Not Logged in" });
+            }
 
-            return new LoggedUserDto
+            return Ok(new LoggedUserDto
             {
                 Id = user.Id,
                 UserName = user.Email,
@@ -153,14 +155,14 @@ namespace EmployeeManager.Controllers
                 Car = user.Car,
                 Token = await _tokenService.GenerateToken(user),
                 Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault()
-            };
+            });
         }
 
         [HttpPut("change-my-password")]
         public async Task<ActionResult> ChangePasswordByOwner(ChangePasswordDto changePasswordDto)
         {
             var user = await _userManager.GetUserAsync(User);
-            if (user == null) return BadRequest();
+            if (user == null) return BadRequest( new ProblemDetails { Title = "Could not find user" });
             var result = await _userManager.ChangePasswordAsync(user, changePasswordDto.CurrentPassword, changePasswordDto.NewPassword);
 
             if (!result.Succeeded)
@@ -171,7 +173,7 @@ namespace EmployeeManager.Controllers
                     
                 }
                 _logger.LogInformation($"User {user.Id} failed to change his password. Errors: \n {result.Errors}");
-                return ValidationProblem();
+                return ValidationProblem(new ValidationProblemDetails { Title = "Could not Change Password", Detail = ModelState.ToString() });
             }
 
             _logger.LogInformation($"User {user.Id} changed his password");
@@ -198,9 +200,9 @@ namespace EmployeeManager.Controllers
 
                 await _mailService.SendResetPassEmailAsync(resetMailRequest);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return Ok();
+                return BadRequest(new ProblemDetails { Title = "Could not Request Reset Password", Detail = ex.ToString() });
             }
             return Ok();
         }
@@ -209,9 +211,9 @@ namespace EmployeeManager.Controllers
         public async Task<ActionResult> ResetPassword(ResetPasswordDto resetPasswordDto)
         {
             var user = await _userManager.FindByIdAsync(resetPasswordDto.UserId);
-            if (user == null) return NotFound();
+            if (user == null) return NotFound(new ProblemDetails { Title = "User not found"} );
 
-            if (resetPasswordDto.Password != resetPasswordDto.ConfirmPassword) return BadRequest();
+            if (resetPasswordDto.Password != resetPasswordDto.ConfirmPassword) return BadRequest(new ProblemDetails { Title = "Password does not match"});
 
             var token = resetPasswordDto.Token.Replace(' ', '+');
 
@@ -223,7 +225,7 @@ namespace EmployeeManager.Controllers
                     ModelState.AddModelError("error", error.Description);
 
                 }
-                return ValidationProblem();
+                return ValidationProblem(new ValidationProblemDetails { Title = "Could not Reset Password", Detail = ModelState.ToString() });
             }
             return Ok();
         }
@@ -233,7 +235,7 @@ namespace EmployeeManager.Controllers
         {
             var user = await _userManager.FindByIdAsync(requestEmailChangeDto.UserId);
 
-            if (user == null) return BadRequest();
+            if (user == null) return BadRequest(new ValidationProblemDetails { Title = "Could not Request Email Change", Detail = ModelState.ToString() });
             if (await _userManager.CheckPasswordAsync(user, requestEmailChangeDto.Password) == false) return BadRequest(new ProblemDetails { Title = "Invalid Password" });
 
             var token = await _userManager.GenerateChangeEmailTokenAsync(user, requestEmailChangeDto.NewEmail);
@@ -252,9 +254,9 @@ namespace EmployeeManager.Controllers
                 await _userManager.UpdateAsync(user);
                 await _userService.SaveChangesAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return BadRequest(new ProblemDetails { Title = "Something went wrong" });
+                return BadRequest(new ProblemDetails { Title = "Could not Send Email Reset Confirm Request", Detail = ex.ToString()  });
             }
 
             return Ok();
@@ -269,6 +271,7 @@ namespace EmployeeManager.Controllers
             var updatedUser = await _userService.ChangeEmail(user, user.UnConfirmedEmail);
 
             if (updatedUser == null) return BadRequest(new ProblemDetails { Title = "Something went wrong" });
+
             return Ok(new LoggedUserDto
             {
                 UserName = updatedUser.Email,

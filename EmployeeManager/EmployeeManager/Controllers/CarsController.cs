@@ -98,7 +98,7 @@ namespace EmployeeManager.Controllers
             var car = await _carService.GetAsync(id);
 
             if (car == null)
-                return NotFound();
+                return NotFound(new ProblemDetails { Title = "Car Not Found" });
 
             await _carService.RemoveAsync(id);
             _logger.LogInformation("Car with id {Id} deleted", id);
@@ -112,14 +112,14 @@ namespace EmployeeManager.Controllers
             var car = await _carService.GetAsync(carId);
 
             if (car.User != null)
-                return BadRequest("Car already assigned");
+                return BadRequest(new ProblemDetails { Title = "Car already assigned" });
 
             var user = await _userManager.FindByIdAsync(userId);
 
             if (user.Car == null)
                 user.Car = car;
             else
-                return BadRequest("User already has a Car");
+                return BadRequest(new ProblemDetails { Title = "User already has a Car" });
 
             car.User = user;
             await _db.SaveChangesAsync();
@@ -134,7 +134,7 @@ namespace EmployeeManager.Controllers
             var car = await _carService.GetAsync(carId);
 
             if (car.User == null)
-                return BadRequest();
+                return BadRequest(new ProblemDetails { Title = "No User is Associated with car" });
             
             var user = await _userManager.FindByIdAsync(car.UserId);
             car.User = null;

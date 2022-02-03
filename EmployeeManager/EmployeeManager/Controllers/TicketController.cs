@@ -92,7 +92,7 @@ namespace EmployeeManager.Controllers
         public async Task<ActionResult> DeleteTicket([FromBody] int id)
         {
             if (await _ticketService.GetAsync(id) == null)
-                return NotFound();
+                return NotFound(new ProblemDetails { Title = "Ticket Not Found" });
 
             await _ticketService.RemoveAsync(id);
             _logger.LogInformation($"Ticket with id {id} removed");
