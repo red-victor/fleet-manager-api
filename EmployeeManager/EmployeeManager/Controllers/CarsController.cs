@@ -145,41 +145,6 @@ namespace EmployeeManager.Controllers
             return Ok();
         }
 
-        [HttpPost]
-        [Authorize(Roles = "Admin")]
-        [Route("upload/carList")]
-        public async Task<IActionResult> UploadCarsExcel(IFormFile file)
-        {
-            var carList = new List<Car>();
-
-            using (var stream = new MemoryStream())
-            {
-                await file.CopyToAsync(stream);
-                carList = Utils.CarStreamToList(stream);
-                await _carService.AddAsync(carList);
-            }
-
-            _logger.LogInformation("Cars added from uploaded file");
-            return Ok(carList);
-        }
-
-        [Authorize(Roles = "Admin")]
-        [HttpGet]
-        [Route("download/carList")]
-        public async Task<IActionResult> ExportCars()
-        {
-            var cars = await _carService.GetAllAsync();
-            var excel = Utils.ExportCarsExcel(cars);
-            string excelName = $"CarList-{DateTime.Now:yyyyMMddHHmmssfff}.xlsx";
-
-            using (var memoryStream = new MemoryStream())
-            {
-                excel.SaveAs(memoryStream);
-                var content = memoryStream.ToArray();
-                return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
-            }
-        }
-
         [Authorize(Roles = "Admin")]
         [HttpGet("search")]
         public async Task<PaginationDto<Car>> SearchCars([FromQuery] string name, [FromQuery] int page, [FromQuery] int pageSize)

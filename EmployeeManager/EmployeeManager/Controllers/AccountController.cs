@@ -156,23 +156,6 @@ namespace EmployeeManager.Controllers
             };
         }
 
-        [HttpPost]
-        [Route("upload/userList")]
-        public async Task<IActionResult> UploadUsersExcel(IFormFile file)
-        {
-            List<RegisterDto> userList;
-
-            using (var stream = new MemoryStream())
-            {
-                await file.CopyToAsync(stream);
-                userList = Utils.UsersStreamToList(stream);
-
-                var (successful, failed) = await _userService.RegisterUsers(userList);
-
-                return Json(new { SuccessfullyRegistered = successful, FailedToRegister = failed });
-            }
-        }
-
         [HttpPut("change-my-password")]
         public async Task<ActionResult> ChangePasswordByOwner(ChangePasswordDto changePasswordDto)
         {

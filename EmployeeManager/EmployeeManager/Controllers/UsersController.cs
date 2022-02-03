@@ -96,23 +96,6 @@ namespace EmployeeManager.Controllers
             return Ok();
         }
 
-        [AllowAnonymous]
-        [HttpGet]
-        [Route("download/userList")]
-        public async Task<IActionResult> ExportUsers()
-        {
-            var users = await _userService.GetAllAsync();
-            var excel = Utils.ExportUsersExcel(users);
-            string excelName = $"CarList-{DateTime.Now:yyyyMMddHHmmssfff}.xlsx";
-
-            using (var memoryStream = new MemoryStream())
-            {
-                excel.SaveAs(memoryStream);
-                var content = memoryStream.ToArray();
-                return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
-            }
-        }
-
         [Authorize(Roles = "Admin")]
         [HttpGet("search")]
         public async Task<PaginationDto<ApplicationUser>> SearchUsers([FromQuery]string name, [FromQuery] int page, [FromQuery] int pageSize)
