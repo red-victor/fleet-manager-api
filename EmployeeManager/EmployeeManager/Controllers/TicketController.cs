@@ -23,9 +23,8 @@ namespace EmployeeManager.Controllers
             _logger = logger;
         }
 
-        [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<Ticket> ProcessTicket(TicketDto ticketDto)
+        public async Task<Ticket> SubmitTicket(TicketDto ticketDto)
         {
             var ticketToAdd = new Ticket
             {
