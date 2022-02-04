@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="app\Images" />
     <Folder Include="Data\Seed\" />
     <Folder Include="Images\" />
   </ItemGroup>
