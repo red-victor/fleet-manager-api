@@ -1,71 +1,155 @@
-# El Proyecte Grande - Sprint 3
+﻿
+<div id="top"></div>
 
-## Story
+# Fleet Manager - Internal WEB Application API
 
-As your Codecool Journey comes closer to its conclusion, the time has come for a final Teamwork Project that will put to test all of the programming skills you've obtained so far (and some new ones you will learn on the way)!
-
-You have the freedom of choosing your teammates (assemble a team of 3-4 students) and the project's topic this time. Think of an app that you would find useful in your daily activities, a tool that an employee of a certain industry might crave, a fun game or something completely out of the box.
-
-This project is meant for 4 sprints at least, but it may keep you company until the end of the course, or even much longer. Who knows? Although we will not give you any direct tasks to fulfill, there will be some technical requirements for each sprint. You are expected to make incremental changes in a Scrum way, developing the project further and further, adding new features, technologies, etc.
-
-***¡Comience El Proyecte Grande!***
-
-## What are you going to learn?
-
-- Work in a Scrum team on a real project.
-- Grow your project iteratively.
-- Deliver increments each sprint.
-
-## Tasks
-
-1. Create a Product backlog (on Github) with user stories that cover at least the feature set you aim to complete next. Break down the user stories into smaller tasks, prioritize them, estimate them, and taking your capacities into account, determine how far you'll be able to get during this sprint.
-    - There is a Product backlog for the project.
-    - The backlog items are broken down into smaller tasks or subtasks.
-    - The backlog items are in prioritiy order in the backlog.
-    - Each backlog item (at least those that are relevant for the actual sprint) has an estimation value.
-    - The top priority part of the backlog is marked as the Sprint backlog, in accordance with the estimation values and the foreseeable team resources.
-    - The backlog and the project plan has been checked and accepted by a mentor on the first day of the sprint (before any implementation).
-    - By the end of the sprint, there is less than 30% deviation from the plan (70% - 130% is completed according to the original plan)
-
-2. You need to use technologies which help achieving agile workflow, defined below.
-    - Every item in the backlog should appear as an `Issue` on GitHub.
-    - The repository has a `Project` defined on GitHub for every sprint. The `project board` shall contain every issue related to the sprint.
-    - With every feature branch, a `Pull request` shall be opened and maintained. The `Pull request` shall contain the `Issue` linked with it. The `Pull request` shall contain the assignee, who is responsible for the given `Issue`. The `Pull request` shall contain at least one `Reviewer`, who is responsible for checking on their peers' work.
-
-3. You need to fulfill a couple of technical requirements defined below.
-    - The project has a backend part with an Object Relation Mapping tool communicating with a database, where the applications' data is persisted.
-
-4. You need to fulfill a couple of technical requirements defined below.
-    - The project has a frontend part written in React which consumes at least 5 different API endpoint patterns from the backend.
-    - The project has a frontend part written in React which consumes at least 8 different API endpoint patterns from the backend.
-    - The project has a frontend part written in React which consumes at least 10 different API endpoint patterns from the backend.
-
-5. Implement the features and tasks from the sprint backlog.
-    - By the end of the sprint, at least 50% of the sprint plan is completed (measured in estimation points)
-    - By the end of the sprint, at least 60% of the sprint plan is completed (measured in estimation points)
-    - By the end of the sprint, at least 70% of the sprint plan is completed (measured in estimation points)
-    - By the end of the sprint, at least 80% of the sprint plan is completed (measured in estimation points)
-    - By the end of the sprint, at least 90% of the sprint plan is completed (measured in estimation points)
-    - By the end of the sprint, 100% of the sprint plan is completed
-
-6. Use Scrum with your team throughout your project
-    - A Daily Scrum was organized by the Scrum Master (no longer than 15 minutes).
-    - Any necessary corrections in the sprint plan have been introduced to the backlog and validated by a mentor.
-    - After the demo, the Scrum Master organized a Sprint Review meeting, during which the team investigates how much of the planned Sprint Backlog was fulfilled - and whether it well thought out and balanced for the team to handle.
-    - Each Sprint Review produces an Increment Document - a changelog of sorts, listing out all the changes to the product that are a result of this sprint.
-    - After the Sprint Review, the Scrum Master organizes a Sprint Retrospective meeting, during which the team recalls on how the work went during this sprint, which practices were good, which should be improved and which should be stopped (and also what to introduce).
-
-## General requirements
-
-None
-
-## Hints
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#developer-features">Developer Features</a></li>
+        <li><a href="#integrated-services">Integrated Services</a></li>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#development-team">Development Team</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
+  </ol>
+</details>
 
 
 
-## Background materials
+<!-- ABOUT THE PROJECT -->
+## About The Project
 
-- <i class="far fa-exclamation"></i> [Definition of Done](project/curriculum/materials/pages/methodology/definition-of-done.md)
-- <i class="far fa-exclamation"></i> [Agile Project Management](project/curriculum/materials/pages/methodology/agile-project-management.md)
-- [Quickstart on GitHub Issues](https://docs.github.com/en/issues/tracking-your-work-with-issues/quickstart)
-- [Creating a pull request](https://docs.github.com/en/github/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request)
+Fleet Manager is an Internal website built for managing a company's vehicle assets, their usage, maintenance and costs.
+
+<p align="right"><a href="#top">Top ↑</a></p>
+
+
+### Developer Features
+
+- Entity CRUD
+- Registration/Login with JWT Token
+- Account Management
+- User Roles
+- File Import/Export (Excel, Images)
+- Search
+- Pagination
+- Email notifications
+- Error logging
+<p align="right"><a href="#top">Top ↑</a></p>
+
+### Built With
+
+ Web API design pattern
+React JS
+
+* Back End:  [ASP .NET Core][asp-net-core],  [C#][c#],  [Entity Framework Core][ef-core],   [AutoMapper][auto-mapper],  [Office Open XML][office-open-xml]
+* Security:  [Identity][identity-core]
+* Front End:  [HTML][html],  [CSS][css],   [JavaScript][js],   [React.js][react],   [Bootstrap][bootstrap]
+* Database Management:  [Microsoft SQL Server][msql-server],   [Microsoft SQL Server Management Studio][ssms]
+* IDE:  [Microsoft Visual Studio][visual-studio]
+* Deployment: [Docker][docker]
+<p align="right"><a href="#top">Top ↑</a></p>
+
+### Integrated Services
+
+* Email:  [MailKit][mail-kit]
+<p align="right"><a href="#top">Top ↑</a></p>
+
+
+<!-- GETTING STARTED -->
+## Getting Started
+
+### Installation
+
+**This Project Requires _both_ API and [Client][project-client] app in order to run.**
+
+- Clone the Repo on your machine and open the solution with **Visual Studio**.
+- Create a MSSQL database
+- Add User Secret to Project:
+	```json
+	"ConnectionStrings:Default": 
+		"Data Source={YOUR SERVER};Initial Catalog=FleetManager;Integrated Security=True;"
+	```
+- *(optional)* Create a Mail Kit account [here][mail-kit]
+- *(optional)* Add User Secret to Project -> Fill in the ...... [how to locate them in your MailKit account][stripeKey]
+    ```json
+	"MailSettings": {
+	    "Mail": "",
+	    "DisplayName": "",
+	    "Password": "",
+	    "Host": "",
+	    "Port": ""
+	  },
+    ```
+- Follow the [Client][project-client] Steps if you haven't already.
+<p align="right"><a href="#top">Top ↑</a></p>
+
+
+
+<!-- USAGE EXAMPLES -->
+## Usage
+
+Run the project with IIS Express.
+
+<p align="right"><a href="#top">Top ↑</a></p>
+
+
+## Development Team
+
+* [Victor Nicolae's GitHub][victor-nicolae]
+* [Adrian Deaconu's GitHub][adrian-deaconu]
+* [Alex Buza's GitHub][alex-buza]
+
+<p align="right"><a href="#top">Top ↑</a></p>
+
+<!-- ACKNOWLEDGMENTS -->
+## Acknowledgments
+
+Thanks for all the support to the [Codecool][codecool] mentors that have guided us!
+
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+<!-- MARKDOWN LINKS & IMAGES -->
+
+[project-client]: https://github.com/red-victor/fleet-manager-client
+[project-api]: https://github.com/red-victor/fleet-manager-api
+
+[asp-net-core]: https://dotnet.microsoft.com/en-us/learn/aspnet/what-is-aspnet-core
+[ef-core]: https://docs.microsoft.com/en-us/ef/core/
+[auto-mapper]: https://automapper.org/
+[c#]: https://docs.microsoft.com/en-us/dotnet/csharp/
+[html]: https://html.com/
+[css]: https://www.w3.org/Style/CSS/Overview.en.html
+[js]: https://www.javascript.com/
+[react]: https://reactjs.org/
+[react-net]: https://reactjs.net/
+[bootstrap]: https://getbootstrap.com
+[jquery]: https://jquery.com
+[msql-server]: https://www.microsoft.com/en-us/sql-server/sql-server-2019
+[ssms]: https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver15
+[visual-studio]: https://visualstudio.microsoft.com/
+[identity-core]: https://docs.microsoft.com/en-us/aspnet/core/security/authentication/identity?view=aspnetcore-6.0&tabs=visual-studio
+[docker]: https://www.docker.com/
+
+[victor-nicolae]: https://github.com/red-victor
+[adrian-deaconu]: https://github.com/AdiDD
+[alex-buza]: https://github.com/alexmarian99
+
+[codecool]: https://codecool.com/en/
+
+[mail-kit]: https://www.mailkit.com/
+[office-open-xml]: https://epplussoftware.com/docs/5.0/api/OfficeOpenXml.html
