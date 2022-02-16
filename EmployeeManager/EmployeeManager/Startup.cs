@@ -29,7 +29,6 @@ namespace EmployeeManager
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
             services.AddApplicationServices(Configuration);
             services.AddIdentityServices(Configuration);
-            services.AddRazorPages();
             services.AddLogging();
         }
 
@@ -66,8 +65,6 @@ namespace EmployeeManager
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                
-                endpoints.MapRazorPages();
             });
         }
     }
